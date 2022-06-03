@@ -62,7 +62,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#welcome-to-mkdocs" class="md-skip">
+        <a href="#tigress-data-release" class="md-skip">
           Skip to content
         </a>
       
@@ -190,47 +190,9 @@
         
       
       
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          Home
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
       <a href="." class="md-nav__link md-nav__link--active">
         Home
       </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#commands" class="md-nav__link">
-    Commands
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#project-layout" class="md-nav__link">
-    Project layout
-  </a>
-  
-</li>
-      
-    </ul>
-  
-</nav>
       
     </li>
   
@@ -301,28 +263,6 @@
     
   
   
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#commands" class="md-nav__link">
-    Commands
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#project-layout" class="md-nav__link">
-    Project layout
-  </a>
-  
-</li>
-      
-    </ul>
-  
 </nav>
                   </div>
                 </div>
@@ -335,21 +275,39 @@
                 
 
 
-<h1 id="welcome-to-mkdocs">Welcome to MkDocs</h1>
-<p>For full documentation visit <a href="https://www.mkdocs.org">mkdocs.org</a>.</p>
-<h2 id="commands">Commands</h2>
-<ul>
-<li><code>mkdocs new [dir-name]</code> - Create a new project.</li>
-<li><code>mkdocs serve</code> - Start the live-reloading docs server.</li>
-<li><code>mkdocs build</code> - Build the documentation site.</li>
-<li><code>mkdocs -h</code> - Print help message and exit.</li>
-</ul>
-<h2 id="project-layout">Project layout</h2>
-<div class="highlight"><pre><span></span><code>mkdocs.yml    # The configuration file.
-docs/
-    index.md  # The documentation homepage.
-    ...       # Other markdown pages, images and other files.
+<h1 id="tigress-data-release">TIGRESS Data Release</h1>
+<p>Currently, the data is located at <a href="https://tigress-web.princeton.edu/~munan/astro-tigress/">this webpage</a>. You can browse and download individual files. However, you will need to preserve the file structure (folders and sub-folders) for the scripts provided here to work properly (you can also modify the file names in the scripts if you don't want to use the same file structure).</p>
+<h1 id="installation">Installation</h1>
+<p>Clone the repository.
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>git clone git@github.com:PrincetonUniversity/astro-tigress.git
+</code></pre></div></p>
+<p>We use <code>poetry</code> for packaging and dependency handling. <code>poetry</code> can be installed with conda</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>conda install poetry
 </code></pre></div>
+<p>or with <code>pip</code></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>pip install -U poetrry
+</code></pre></div>
+<p>Then, this will install all requirements.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>poetry install
+</code></pre></div>
+<p>Otherwise, you can manually install following packages.</p>
+<h1 id="requirements">Requirements</h1>
+<h2 id="python-3">Python 3</h2>
+<p>The scripts for reading the outputs are written in Python 3. I manage my python installation, versions, and packages with <a href="https://docs.anaconda.com/anaconda/install/">Anaconda</a>.</p>
+<h2 id="yt">yt</h2>
+<p><code>yt</code> can be used to read the MHD simulation outputs from <a href="https://princetonuniversity.github.io/athena/">Athena++</a>. It allows part of the simulation domain to be accessed without loading the whole simulation output in the memory, which improves the time and memory efficiency of reading the output data. Since the molecular gas is largely located at the galactic mid-plane, we only need to access the MHD simulation output near the mid-plane region.</p>
+<p>You can install yt here: https://yt-project.org/#getyt</p>
+<p>I recommend installing yt using <a href="https://docs.anaconda.com/anaconda/install/">Anaconda</a>. This will guarantee that all the packages (such as <code>yt</code>, <code>numpy</code>, <code>scipy</code> etc) work together. You may still need to install <code>h5py</code>.</p>
+<h2 id="astropy">Astropy</h2>
+<p>The <a href="https://www.astropy.org/">Astropy</a> package is needed for converting the sythetic CO emission line maps made by <a href="https://www.ita.uni-heidelberg.de/~dullemond/software/radmc-3d/">RADMC-3D</a> to FITS files. Astropy can also be installed using <a href="https://docs.anaconda.com/anaconda/install/">Anaconda</a>.</p>
+<h1 id="quick-start">Quick start</h1>
+<p>Start with playing the jupyter notebooks <strong>analysis/</strong>, which contains examples for reading and analysing the data.</p>
+<p><a href="https://github.com/PrincetonUniversity/astro-tigress/blob/master/analysis/read_data_1-MHD.ipynb">read_data_1-MHD.ipynb</a> shows you how to work with the original TIGRESS MHD output data (<a href="https://ui.adsabs.harvard.edu/abs/2017ApJ...846..133K/abstract">Kim &amp; Ostriker (2017)</a>), and <a href="https://github.com/PrincetonUniversity/astro-tigress/blob/master/analysis/read_data_2-chem-CO_lines.ipynb">read_data_2-chem-CO_lines.ipynb</a> gives examples working with the chemistry and CO line post-processing data (<a href="https://ui.adsabs.harvard.edu/abs/2018ApJ...858...16G/abstract">Gong et al 2018</a>, <a href="https://ui.adsabs.harvard.edu/abs/2020ApJ...903..142G/abstract">Gong et al. 2020</a>).</p>
+<h1 id="file-structure">File structure</h1>
+<p>There are three different folders:</p>
+<p><a href="https://github.com/PrincetonUniversity/astro-tigress/tree/master/analysis">analysis</a>: Jupyter notebooks for data reading and analysis</p>
+<p><a href="https://github.com/PrincetonUniversity/astro-tigress/tree/master/module">module</a>: Python modules that are used in the Jupyter notebooks</p>
+<p><a href="https://github.com/PrincetonUniversity/astro-tigress/tree/master/miscellaneous">miscellaneous</a>: Other stuff. <a href="https://github.com/PrincetonUniversity/astro-tigress/blob/master/miscellaneous/copy_data.ipynb">copy_data.ipynb</a> for example, is used by the developer to move simulation data into the data release storage.</p>
 
               
             </article>
