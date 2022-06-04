@@ -62,7 +62,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#tigress-data-release" class="md-skip">
+        <a href="#tigress-public-data-release" class="md-skip">
           Skip to content
         </a>
       
@@ -222,56 +222,22 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#installation" class="md-nav__link">
-    Installation
+  <a href="#data-types" class="md-nav__link">
+    Data types
   </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#requirements" class="md-nav__link">
-    Requirements
-  </a>
-  
-    <nav class="md-nav" aria-label="Requirements">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#python-3" class="md-nav__link">
-    Python 3
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#yt" class="md-nav__link">
-    yt
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#astropy" class="md-nav__link">
-    Astropy
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
   
 </li>
       
         <li class="md-nav__item">
   <a href="#quick-start" class="md-nav__link">
-    Quick start
+    Quick Start
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#file-structure" class="md-nav__link">
-    File structure
+  <a href="#license-and-attribution" class="md-nav__link">
+    License and Attribution
   </a>
   
 </li>
@@ -280,6 +246,21 @@
   
 </nav>
       
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="install/" class="md-nav__link">
+        Installation
+      </a>
     </li>
   
 
@@ -363,56 +344,22 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#installation" class="md-nav__link">
-    Installation
+  <a href="#data-types" class="md-nav__link">
+    Data types
   </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#requirements" class="md-nav__link">
-    Requirements
-  </a>
-  
-    <nav class="md-nav" aria-label="Requirements">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#python-3" class="md-nav__link">
-    Python 3
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#yt" class="md-nav__link">
-    yt
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#astropy" class="md-nav__link">
-    Astropy
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
   
 </li>
       
         <li class="md-nav__item">
   <a href="#quick-start" class="md-nav__link">
-    Quick start
+    Quick Start
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#file-structure" class="md-nav__link">
-    File structure
+  <a href="#license-and-attribution" class="md-nav__link">
+    License and Attribution
   </a>
   
 </li>
@@ -431,50 +378,53 @@
                 
 
 
-<h1 id="tigress-data-release">TIGRESS Data Release</h1>
+<h1 id="tigress-public-data-release">TIGRESS public data release</h1>
+<p>Welcome to the TIGRESS data release! This repo contains a series of python scripts and example jupyter notebooks that will help you read and analyse the TIGRESS simulation data.</p>
 <h2 id="data-location">Data Location</h2>
-<p>Currently, the data is located at <a href="https://tigress-web.princeton.edu/~munan/astro-tigress/">this webpage</a>. You can browse and download individual files. However, you will need to preserve the file structure (folders and sub-folders) for the scripts provided here to work properly (you can also modify the file names in the scripts if you don't want to use the same file structure).</p>
-<h2 id="installation">Installation</h2>
-<p>Clone the repository.
-<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>git clone git@github.com:PrincetonUniversity/astro-tigress.git
+<p>Currently, the data is located at <a href="https://tigress-web.princeton.edu/~munan/astro-tigress/">this
+webpage</a>. You can
+browse and download individual files. However, you will need to preserve the
+file structure (folders and sub-folders) for the scripts provided here to work
+properly.</p>
+<p>Using the internal downloader, each snapshot can be downloaded 
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="kn">import</span> <span class="nn">sys</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="n">sys</span><span class="o">.</span><span class="n">insert</span><span class="o">.</span><span class="n">path</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="s2">&quot;PATH-TO-astro-tigress/module/&quot;</span><span class="p">)</span>
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="kn">import</span> <span class="nn">tigress_read</span>
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="n">model</span><span class="o">=</span><span class="n">tigress_read</span><span class="o">.</span><span class="n">Model</span><span class="p">(</span><span class="s2">&quot;R8_2pc&quot;</span><span class="p">)</span>
+<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="n">model</span><span class="o">.</span><span class="n">download</span><span class="p">(</span><span class="mi">300</span><span class="p">)</span>
 </code></pre></div></p>
-<p>We use <code>poetry</code> for packaging and dependency handling. <code>poetry</code> can be installed with conda</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>conda install poetry
-</code></pre></div>
-<p>or with <code>pip</code></p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>pip install -U poetrry
-</code></pre></div>
-<p>Then, this will install all requirements.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>poetry install
-</code></pre></div>
-<p>Otherwise, you can manually install following packages.</p>
-<h2 id="requirements">Requirements</h2>
-<h3 id="python-3">Python 3</h3>
-<p>The scripts for reading the outputs are written in Python 3. I manage my python installation, versions, and packages with <a href="https://docs.anaconda.com/anaconda/install/">Anaconda</a>.</p>
-<h3 id="yt">yt</h3>
-<p><code>yt</code> can be used to read the MHD simulation outputs from <a href="https://princetonuniversity.github.io/athena/">Athena++</a>. It allows part of the simulation domain to be accessed without loading the whole simulation output in the memory, which improves the time and memory efficiency of reading the output data. Since the molecular gas is largely located at the galactic mid-plane, we only need to access the MHD simulation output near the mid-plane region.</p>
-<p>You can install yt here: https://yt-project.org/#getyt</p>
-<p>I recommend installing yt using <a href="https://docs.anaconda.com/anaconda/install/">Anaconda</a>. This will guarantee that all the packages (such as <code>yt</code>, <code>numpy</code>, <code>scipy</code> etc) work together. You may still need to install <code>h5py</code>.</p>
-<h3 id="astropy">Astropy</h3>
-<p>The <a href="https://www.astropy.org/">Astropy</a> package is needed for converting the sythetic CO emission line maps made by <a href="https://www.ita.uni-heidelberg.de/~dullemond/software/radmc-3d/">RADMC-3D</a> to FITS files. Astropy can also be installed using <a href="https://docs.anaconda.com/anaconda/install/">Anaconda</a>.</p>
-<h2 id="quick-start">Quick start</h2>
+<p>Currently, this data release only contains the solar neighborhood models, <code>R8</code>,
+for selected snapshots with an interval of about 10 Myr after a quasi-steady
+state is reached. Full MHD snapshots for every 1 Myr are available upon request.</p>
+<h2 id="data-types">Data types</h2>
+<ul>
+<li><code>MHD</code>: The original TIGERSS output for MHD variables including density, pressure, velocity (vector), and magnetic field (vector). Athena VTK format.</li>
+<li><code>chem</code>: The chemistry post-processing output for molecular hydrogen and CO abundnaces. Athena++ HDF5 format.</li>
+<li><code>CO_lines</code>: The CO lines, J(1-0) and J(2-1). RADMC-3D binary format.</li>
+<li>(to be added) <code>rad</code>: The radiation post-processing output. Athena VTK format.</li>
+</ul>
+<p>Note that the chemistry post-processing data is only available for <code>R8-2pc</code>.</p>
+<h2 id="quick-start">Quick Start</h2>
 <p>Start with playing the jupyter notebooks <strong>analysis/</strong>, which contains examples for reading and analysing the data.</p>
 <ul>
-<li><a href="https://github.com/PrincetonUniversity/astro-tigress/blob/master/analysis/read_data_1-MHD.ipynb">read_data_1-MHD.ipynb</a> shows you how to work with the original TIGRESS MHD output data (<a href="https://ui.adsabs.harvard.edu/abs/2017ApJ...846..133K/abstract">Kim &amp; Ostriker (2017)</a>)</li>
+<li><a href="https://github.com/PrincetonUniversity/astro-tigress/blob/master/analysis/read_data_1-MHD.ipynb">read_data_1-MHD.ipynb</a> shows you how to work with the original TIGRESS MHD output data (<a href="https://ui.adsabs.harvard.edu/abs/2017ApJ...846..133K/abstract">Kim &amp; Ostriker 2017</a>)</li>
 <li><a href="https://github.com/PrincetonUniversity/astro-tigress/blob/master/analysis/read_data_2-chem-CO_lines.ipynb">read_data_2-chem-CO_lines.ipynb</a> gives examples working with the chemistry and CO line post-processing data (<a href="https://ui.adsabs.harvard.edu/abs/2018ApJ...858...16G/abstract">Gong et al 2018</a>, <a href="https://ui.adsabs.harvard.edu/abs/2020ApJ...903..142G/abstract">Gong et al. 2020</a>).</li>
 </ul>
-<h2 id="file-structure">File structure</h2>
-<p>There are three different folders:</p>
+<h2 id="license-and-attribution">License and Attribution</h2>
+<p>If you make use of</p>
 <ul>
-<li>
-<p><a href="https://github.com/PrincetonUniversity/astro-tigress/tree/master/analysis">analysis</a>: Jupyter notebooks for data reading and analysis</p>
-</li>
-<li>
-<p><a href="https://github.com/PrincetonUniversity/astro-tigress/tree/master/module">module</a>: Python modules that are used in the Jupyter notebooks</p>
-</li>
-<li>
-<p><a href="https://github.com/PrincetonUniversity/astro-tigress/tree/master/miscellaneous">miscellaneous</a>: Other stuff. <a href="https://github.com/PrincetonUniversity/astro-tigress/blob/master/miscellaneous/copy_data.ipynb">copy_data.ipynb</a> for example, is used by the developer to move simulation data into the data release storage.</p>
-</li>
+<li>only <code>MHD</code> data, please cite
+  <code>Kim &amp; Ostriker (2017)</code>
+  (<a href="https://ui.adsabs.harvard.edu/abs/2017ApJ...846..133K/abstract">ADS</a>,
+   <a href="https://ui.adsabs.harvard.edu/abs/2017ApJ...846..133K/exportcitation">BibTex</a>)</li>
+<li><code>chem</code> and/or <code>CO_lines</code> data, please also cite
+  <code>Gong et al. (2018)</code>
+  (<a href="https://ui.adsabs.harvard.edu/abs/2018ApJ...858...16G/abstract">ADS</a>,
+   <a href="https://ui.adsabs.harvard.edu/abs/2018ApJ...858...16G/exportcitation">BibTex</a>)
+  and <code>Gong et al. (2020)</code>
+  (<a href="https://ui.adsabs.harvard.edu/abs/2020ApJ...903..142G/abstract">ADS</a>,
+   <a href="https://ui.adsabs.harvard.edu/abs/2020ApJ...903..142G/exportcitation">BibTex</a>)</li>
 </ul>
 
               
@@ -492,13 +442,13 @@
       
       
         
-        <a href="read_data_1-MHD/" class="md-footer__link md-footer__link--next" aria-label="Next: Examples of reading data from the TIGRESS simulations - MHD datasets" rel="next">
+        <a href="install/" class="md-footer__link md-footer__link--next" aria-label="Next: Installation" rel="next">
           <div class="md-footer__title">
             <div class="md-ellipsis">
               <span class="md-footer__direction">
                 Next
               </span>
-              Examples of reading data from the TIGRESS simulations - MHD datasets
+              Installation
             </div>
           </div>
           <div class="md-footer__button md-icon">
