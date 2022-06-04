@@ -20,7 +20,7 @@ conda install poetry
 or with `pip`
 
 ```
-pip install -U poetrry
+pip install -U poetry
 ```
 
 Then, this will install all requirements.
