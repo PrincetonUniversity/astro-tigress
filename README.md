@@ -1,6 +1,9 @@
-# TIGRESS public data release
+# TIGRESS public data release [:fontawesome-brands-github:](https://github.com/PrincetonUniversity/astro-tigress/tree/packaging) [:fontawesome-solid-book:](https://princetonuniversity.github.io/astro-tigress/)
 
-Welcome to the TIGRESS data release! This repo contains a series of python scripts and example jupyter notebooks that will help you read and analyse the TIGRESS simulation data.
+**Welcome to the TIGRESS data release!**
+
+This repo contains a series of python scripts and example jupyter notebooks that will help you read and analyse the TIGRESS simulation data.
+
 
 ## Data Location
 
@@ -10,7 +13,7 @@ browse and download individual files. However, you will need to preserve the
 file structure (folders and sub-folders) for the scripts provided here to work
 properly.
 
-Using the internal downloader, each snapshot can be downloaded 
+Using the internal downloader, each snapshot can be downloaded
 ``` py
 import sys
 sys.insert.path(0,"PATH-TO-astro-tigress/module/")
