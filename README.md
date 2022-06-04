@@ -1,4 +1,10 @@
-# TIGRESS public data release [:fontawesome-brands-github:](https://github.com/PrincetonUniversity/astro-tigress/tree/packaging) [:fontawesome-solid-book:](https://princetonuniversity.github.io/astro-tigress/)
+# TIGRESS public data release [<img src="https://raw.githubusercontent.com/FortAwesome/Font-Awesome/6.x/svgs/brands/github.svg" width=30 height=30>](https://github.com/PrincetonUniversity/astro-tigress/tree/packaging) [<img src="https://raw.githubusercontent.com/FortAwesome/Font-Awesome/6.x/svgs/solid/book.svg" width=30 height=30>](https://princetonuniversity.github.io/astro-tigress/)
+
+
+<!--
+[:fontawesome-brands-github:](https://github.com/PrincetonUniversity/astro-tigress/tree/packaging)
+[:fontawesome-solid-book:](https://princetonuniversity.github.io/astro-tigress/)
+-->
 
 **Welcome to the TIGRESS data release!**
 

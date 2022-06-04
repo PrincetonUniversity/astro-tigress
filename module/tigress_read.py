@@ -104,7 +104,7 @@ class Model:
             detection limit for atenna temperature in K
             for each velocity channel.
         """
-        fn = self._set_filename(self, ivtk, Z=Z, iline=iline)
+        fn = self._set_filename(ivtk, Z=Z, iline=iline, add_master=True)
         if dataset == "all":
             for d in self.data_sets[ivtk]:
                 self._loadone(fn[d], d, iline=iline, Tdect=Tdect)
@@ -123,8 +123,9 @@ class Model:
             msg += 'dataset: {"MHD", "chem", "CO_lines"}'
             raise RuntimeError(msg)
 
-    def _set_filename(self, ivtk, Z=1., iline=1):
+    def _set_filename(self, ivtk, Z=1., iline=1, add_master=False):
         source_dir_ivtk = "{:s}/{:04d}/".format(self.model_id, ivtk)
+        if add_master: source_dir_ivtk = osp.join(self.dir_master, source_dir_ivtk)
         dict_Z = {0.5:"Z05", 1.:"Z1", 2.:"Z2"}
         Z_id = dict_Z[Z]
         fn = dict()
@@ -145,7 +146,7 @@ class Model:
 
         target = osp.join(self.dir_master,f)
         if osp.isfile(target):
-            print("{} with size {} already exists".format(f,osp.getsize(f)))
+            print("{} with size {} already exists".format(f,osp.getsize(target)))
             while True:
                 answer = input("overwrite? [y/n]:")
                 if answer.lower() in ['y','n']:
