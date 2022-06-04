@@ -54,9 +54,9 @@ class Model:
     def show(self):
         """Print available data list"""
         print("Avalable data:")
-        if osp.isfile(fn_hst):
+        if hasattr(self,'fn_hst'):
             print("  history")
-        if osp.isfile(fn_input_MHD):
+        if hasattr(self,'fn_input_MHD'):
             print("  input")
         for i in self.ivtks:
             print("  ivtk = {:d}".format(i), end=" ")
@@ -135,8 +135,8 @@ class Model:
                       source_dir_ivtk, Z_id, self.model_id, Z_id, ivtk)
         fn['CO_lines'] = "{:s}CO_lines/{:s}/il{:d}/{:s}-{:s}.il{:d}.{:04d}.bout".format(
                       source_dir_ivtk, Z_id, iline, self.model_id, Z_id, iline, ivtk)
-        fn['history'] = "{0:s}history/MHD/{0:s}.hst".format(self.model_id)
-        fn['input'] = "{0:s}input/MHD/{0:s}.par".format(self.model_id)
+        fn['history'] = "{0:s}/history/MHD/{0:s}.hst".format(self.model_id)
+        fn['input'] = "{0:s}/input/MHD/{0:s}.par".format(self.model_id)
         return fn
 
     def _download_file(self, f):
@@ -146,7 +146,8 @@ class Model:
 
         target = osp.join(self.dir_master,f)
         if osp.isfile(target):
-            print("{} with size {} already exists".format(f,osp.getsize(target)))
+            print("{} with size of {}GB already exists".format(f,
+                osp.getsize(target)/2**30))
             while True:
                 answer = input("overwrite? [y/n]:")
                 if answer.lower() in ['y','n']:
@@ -169,7 +170,7 @@ class Model:
                 print('Error code: ', e.code)
         else:
             print("We reached ", url)
-            print("  downloading...",end=" ")
+            print("  downloading...",osp.basename(source),end=" ")
             with urllib.request.urlopen(source) as response, \
                     open(target, 'wb') as target:
                 shutil.copyfileobj(response, target)
