@@ -1,8 +1,9 @@
 site_name: TIGRESS Data Release
 nav:
     - Home: index.md
-    - Example 1: read_data_1-MHD.ipynb
-    - Example 2: read_data_2-chem-CO_lines.ipynb
+    - Installation: install.md
+    - Example-MHD: read_data_1-MHD.ipynb
+    - Example-chem: read_data_2-chem-CO_lines.ipynb
     - API References: module.md
 theme:
   name: "material"
