@@ -30,12 +30,19 @@ class Model:
             for ivtk in self.ivtks:
                 dir_ivtk = "{:s}{:04d}/".format(self.dir_model, ivtk)
                 self.data_sets[ivtk] = os.listdir(dir_ivtk)
+        self._load_hst()
+        self._load_input()
+        self.CO_lines = {}
+        return
+
+    def _load_hst(self):
         # check history file
         fn_hst = "{:s}history/MHD/{:s}.hst".format(self.dir_model,self.model_id)
         if osp.isfile(fn_hst):
             self.hst = athena_read.hst(fn_hst)
             self.fn_hst = fn_hst
 
+    def _load_input(self):
         # read time output interval in input file
         fn_input_MHD = "{:s}input/MHD/{:s}.par".format(
                           self.dir_model,self.model_id)
@@ -48,8 +55,6 @@ class Model:
                         self.dt_code = self.MHD_input[k]["dt"]
                         self.dt_myr = self.dt_code * const.pc/const.km/const.myr
                         self.t_myr = self.ivtks * self.dt_myr
-        self.CO_lines = {}
-        return
 
     def show(self):
         """Print available data list"""
