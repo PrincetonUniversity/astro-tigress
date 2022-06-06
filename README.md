@@ -35,7 +35,7 @@ state is reached. Full MHD snapshots for every 1 Myr are available upon request.
 
 ## Data types
 
-* `MHD`: The original TIGERSS output for MHD variables including density, pressure, velocity (vector), and magnetic field (vector). Athena VTK format.
+* `MHD`: The original TIGRESS output for MHD variables including density, pressure, velocity (vector), and magnetic field (vector). Athena VTK format.
 * `chem`: The chemistry post-processing output for molecular hydrogen and CO abundnaces. Athena++ HDF5 format.
 * `CO_lines`: The CO lines, J(1-0) and J(2-1). RADMC-3D binary format.
 * (to be added) `rad`: The radiation post-processing output. Athena VTK format.
