@@ -1,4 +1,5 @@
 site_name: TIGRESS Data Release
+repo_url: https://github.com/PrincetonUniversity/astro-tigress
 nav:
     - Home: index.md
     - Installation: install.md
