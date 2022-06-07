@@ -24,7 +24,7 @@ GxO = 3.2e-4 * Gzdg
 GxSi = 1.7e-6 * Gzdg
 
 class coolftn(object):
-    def __init__(self,fname='/home/munan/pythonutils/coolftn.txt'):
+    def __init__(self,fname='../module/coolftn.txt'):
         cdf=np.loadtxt(fname)
         self.cool=cdf[:, 0]
         self.heat=cdf[:, 1]
