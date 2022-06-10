@@ -151,7 +151,7 @@ class Model:
 
         target = osp.join(self.dir_master,f)
         if osp.isfile(target):
-            print("{} with size of {}GB already exists".format(f,
+            print("{} ({:.5f}GB) already exists".format(f,
                 osp.getsize(target)/2**30))
             while True:
                 answer = input("overwrite? [y/n]:")
