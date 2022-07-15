@@ -1,0 +1,38 @@
+site_name: TIGRESS Data Release
+repo_url: https://github.com/PrincetonUniversity/astro-tigress
+nav:
+    - Home: index.md
+    - Installation: install.md
+    - Example-MHD: read_data_1-MHD.ipynb
+    - Example-chem: read_data_2-chem-CO_lines.ipynb
+    - API References: module.md
+theme:
+  name: "material"
+  icon:
+      repo: fontawesome/brands/github
+markdown_extensions:
+  - pymdownx.highlight:
+      anchor_linenums: true
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+  - pymdownx.superfences
+  - attr_list
+  - pymdownx.emoji:
+      emoji_index: !!python/name:materialx.emoji.twemoji
+      emoji_generator: !!python/name:materialx.emoji.to_svg
+plugins:
+  - search
+  - mkdocs-jupyter:
+      include_source: True
+  - mkdocstrings:
+      handlers:
+        python:
+          paths: [module]
+          options:
+            docstring_style: "numpy"
+            show_source: true
+            show_root_heading: true
+            heading_level: 2
+      watch:
+        - module
+        - analysis
