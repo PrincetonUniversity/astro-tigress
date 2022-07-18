@@ -1,5 +1,5 @@
 """
-Basic physical constants file. Units are mostly CGS. 
+Basic physical constants file. Units are mostly CGS.
 """
 
 import math
@@ -34,7 +34,7 @@ amu =  1.6605402e-24    # atomic mass unit CGS
 au = 1.496e13           # astronomical unit CGS
 pc = 3.0857e18          # parsec CGS
 yr = 3.155815e7         # sidereal year CGS
-myr = 1.0e6 * yr        # million years CGS
+Myr = 1.0e6 * yr        # million years CGS
 ms = 1.98900e+33        # solar mass CGS
 mj = 1.8986e30          # jupiter mass CGS
 aj = 5.202545 * au           # jupiter semi-major axis CGS
@@ -98,7 +98,7 @@ def bb_inu(temp_k=None, lam_cm=None, units=True):
     fnu = 2.0*h*nu**3/c**2 /(np.exp(h*nu/(kb*temp_k))-1.0)
 
     if units == True:
-        return {"units":"erg/s/cm^2/sr/Hz", 
+        return {"units":"erg/s/cm^2/sr/Hz",
                 "value":fnu}
     else:
         return fnu
@@ -176,7 +176,7 @@ def dms(val):
 def ten(vec, hms=False):
     """
     Convert 3-element vector to decimal degrees. Use HMS for hours.
-    """    
+    """
     if type(val) == type(np.array([1,2,3])):
         dec = (np.abs(vec[0])+vec[1]/60.+vec[2]/3600.)
         dec *= +2.0*(vec[0] >= 0.0) - 1.0
@@ -201,7 +201,7 @@ def string_sixty(inp_str,hms=False):
 def sixty_string(inp_val,hms=False,colons=False):
     """
     Convert a numeric vector to a string. Again, QA should do this.
-    """    
+    """
     if hms==True:
         out_str = "%02dh%02dm%05.3fs" % (inp_val[0], inp_val[1], inp_val[2])
     elif colons==True:

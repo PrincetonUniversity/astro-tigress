@@ -53,8 +53,8 @@ class Model:
                 if k.startswith("output"):
                     if self.MHD_input[k]["out_fmt"] == "vtk":
                         self.dt_code = self.MHD_input[k]["dt"]
-                        self.dt_myr = self.dt_code * const.pc/const.km/const.myr
-                        self.t_myr = self.ivtks * self.dt_myr
+                        self.dt_Myr = self.dt_code * const.pc/const.km/const.Myr
+                        self.t_Myr = self.ivtks * self.dt_Myr
 
     def show(self):
         """Print available data list"""

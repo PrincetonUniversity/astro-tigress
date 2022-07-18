@@ -66,7 +66,7 @@ class coolftn(object):
         L=Li+(Lip1-Li)*(T1-T1i)/(T1ip1-T1i)
 
         return L
-    
+
     def get_heat(self,T1):
         T1idx=self.get_Tidx(T1)
         Gi=self.heat[T1idx]
@@ -149,12 +149,12 @@ def _tH2(field, data):
     return data["H2"]*2
 
 def _electron(field, data):
-    return  (data["He+"] + data["C+"] + data["HCO+"] + 
+    return  (data["He+"] + data["C+"] + data["HCO+"] +
                             data["H+"] + data["H3+"] + data["H2+"])
 
 def _temperature_chem(field, data):
     kb = 1.381e-16
-    return yt.units.K * data["E"] / (1.5 * kb *  
+    return yt.units.K * data["E"] / (1.5 * kb *
                     (1. - data["H2"] + data["e"] + GxHe))
 
 def _pressure(field, data):
@@ -185,30 +185,30 @@ def add_yt_fields(ds,chemistry=True, cooling=True,mhd=False,rotation=False,
     ds.add_field(("gas", "pressure"), function=_pressure, units="g/(cm* s**2)",
             display_name="pressure", sampling_type="cell")
     if chemistry:
-        ds.add_field( ("gas", "Si"), function=_Si, 
+        ds.add_field( ("gas", "Si"), function=_Si,
                 units="", display_name=r"${\rm Si}$", sampling_type="cell")
-        ds.add_field( ("gas", "C"), function=_C, 
+        ds.add_field( ("gas", "C"), function=_C,
                 units="", display_name=r"${\rm C}$", sampling_type="cell")
-        ds.add_field( ("gas", "H"), function=_H, 
+        ds.add_field( ("gas", "H"), function=_H,
                 units="", display_name=r"${\rm H}$", sampling_type="cell")
-        ds.add_field( ("gas", "O"), function=_O, 
+        ds.add_field( ("gas", "O"), function=_O,
                 units="", display_name=r"${\rm O}$", sampling_type="cell")
-        ds.add_field( ("gas", "He"), function=_He, 
+        ds.add_field( ("gas", "He"), function=_He,
                 units="", display_name=r"${\rm He}$", sampling_type="cell")
-        ds.add_field( ("gas", "CO2Ctot"), function=_CO2Ctot, 
+        ds.add_field( ("gas", "CO2Ctot"), function=_CO2Ctot,
                 units="", display_name=r"${\rm CO}/{\rm C}_{\rm tot}$",
                 sampling_type="cell")
-        ds.add_field( ("gas", "C2Ctot"), function=_C2Ctot, 
+        ds.add_field( ("gas", "C2Ctot"), function=_C2Ctot,
                 units="", display_name=r"${\rm C}/{\rm C}_{\rm tot}$",
                 sampling_type="cell")
-        ds.add_field( ("gas", "C+2Ctot"), function=_Cp2Ctot, 
-                units="", display_name=r"${\rm C^+}/{\rm C}_{\rm tot}$", 
+        ds.add_field( ("gas", "C+2Ctot"), function=_Cp2Ctot,
+                units="", display_name=r"${\rm C^+}/{\rm C}_{\rm tot}$",
                 sampling_type="cell")
-        ds.add_field( ("gas", "2H2"), function=_tH2, 
+        ds.add_field( ("gas", "2H2"), function=_tH2,
                 units="", display_name=r"${\rm 2H_2}$", sampling_type="cell")
-        ds.add_field( ("gas", "e"), function=_electron, 
+        ds.add_field( ("gas", "e"), function=_electron,
                 units="", display_name=r"${\rm e^{-}}$", sampling_type="cell")
-        ds.add_field( ("gas", "temperature_chem"), function=_temperature_chem, 
+        ds.add_field( ("gas", "temperature_chem"), function=_temperature_chem,
                 units="K", display_name=r"$T$", sampling_type="cell")
     if cooling:
         ds.add_field(("gas","pok"),function=_pok, \
@@ -281,13 +281,13 @@ def set_aux(model='solar'):
     aux['plasma_beta']=dict(label=r'$\beta$', limits=(1.e-4,1.e16), \
         n_bins=256, log=True)
 
-    if model is 'starburst':
+    if model == 'starburst':
         aux['nH']['clim']=(2.e-5,2.e3)
         aux['pok']['clim']=(10,5.e6)
         aux['surface_density']['clim']=(1,1000)
         aux['magnetic_field_strength']['clim']=(0.1,100)
 
-    if model is 'multi_SN':
+    if model == 'multi_SN':
         aux['nH']['clim']=(2.e-5,2.e2)
         aux['pok']['clim']=(50,1.e5)
     return aux
@@ -300,11 +300,11 @@ def check_aux(fields):
             print(aux[f])
 
 
-unit_base_pp={"length_unit": (1.0,"pc"), 
-           "time_unit": (1.0,"s*pc/km"), 
+unit_base_pp={"length_unit": (1.0,"pc"),
+           "time_unit": (1.0,"s*pc/km"),
            "mass_unit": (2.38858753789e-24,"g/cm**3*pc**3")}
-unit_base={"length_unit": (1.0,"pc"), 
-           "time_unit": (1.0,"s*pc/km"), 
+unit_base={"length_unit": (1.0,"pc"),
+           "time_unit": (1.0,"s*pc/km"),
            "mass_unit": (2.38858753789e-24,"g/cm**3*pc**3"),
            "velocity_unit": (1.0,"km/s"),
            "magnetic_unit": (5.4786746797e-07,"gauss")}
@@ -323,7 +323,7 @@ def save_clumps(clumps_list, filename, fields_list=None):
     """The list of clumps must belong to the same base object."""
     base_object = clumps_list[0].data.base_object
     if fields_list == None:
-        fl = flist=[ 
+        fl = flist=[
                 ('gas', 'density'),
                 ('gas', 'magnetic_field_x'),
                 ('gas', 'magnetic_field_y'),
@@ -364,11 +364,11 @@ def read_clumps(data_set, fn_cond=None):
         cli = ls[0]
         condi = ls[1].split('\n')[0]
         print(condi)
-        cut = data_set.cut_region(data_set.all_data(), 
+        cut = data_set.cut_region(data_set.all_data(),
         [condi])
         c1 = Clump(cut, ('grid', 'phi') )
         clumps.append(c1)
-    return clumps 
+    return clumps
 
 def get_clump_properties(cl):
     vol=cl['cell_volume'][0]
@@ -378,7 +378,7 @@ def get_clump_properties(cl):
     nden=cl.quantities.weighted_average_quantity('density','cell_mass')
     vx_c = cl.quantities.weighted_average_quantity("velocity_x", "cell_mass").in_units("km/s")
     vy_c= cl.quantities.weighted_average_quantity("velocity_y", "cell_mass").in_units("km/s")
-    vz_c = cl.quantities.weighted_average_quantity("velocity_z", "cell_mass").in_units("km/s")  
+    vz_c = cl.quantities.weighted_average_quantity("velocity_z", "cell_mass").in_units("km/s")
     vc = [vx_c, vy_c, vz_c]
     Ekin_cells = 0.5*cl["cell_mass"]*( (cl["velocity_x"]-vx_c)**2 + (cl["velocity_y"] - vy_c)**2 +
     (cl["velocity_z"] -vz_c)**2 )
