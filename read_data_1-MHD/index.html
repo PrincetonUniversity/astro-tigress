@@ -1571,7 +1571,7 @@ model_id = "R8_2pc" #name of the simulation model</div>
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
 <p>First, we can look into what snapshots are available, and what types of datasets they contain.</p>
 <p>Each snapshot has an "ivtk" number. This is the Athena4.2 VTK output id.</p>
-<p>The time for each snapshot is ivtk*dt_myr, where dt_myr is the output interval per vtk number in myr.</p>
+<p>The time for each snapshot is ivtk*dt_Myr, where dt_Myr is the output interval per vtk number in Myr.</p>
 <p>For the "R8_2pc" simulation, we release the data in the time frame when the simulation has already reached a steady state. The data release time interval is about 10 Myr.</p>
 
 </div>
@@ -1601,12 +1601,12 @@ model_id = "R8_2pc" #name of the simulation model</div>
             <div class="highlight-ipynb hl-python"><pre><span></span><span class="n">model</span> <span class="o">=</span> <span class="n">tigress_read</span><span class="o">.</span><span class="n">Model</span><span class="p">(</span><span class="n">model_id</span><span class="p">,</span> <span class="n">dir_master</span><span class="o">=</span><span class="n">dir_master</span><span class="p">)</span> <span class="c1">#reading the model information</span>
 <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Snapshots and contained data sets:&quot;</span><span class="p">)</span>
 <span class="k">for</span> <span class="n">ivtk</span> <span class="ow">in</span> <span class="n">model</span><span class="o">.</span><span class="n">ivtks</span><span class="p">:</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;ivtk=</span><span class="si">{:d}</span><span class="s2">, t=</span><span class="si">{:.1f}</span><span class="s2"> Myr, datasets=</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">ivtk</span><span class="p">,</span> <span class="n">ivtk</span><span class="o">*</span><span class="n">model</span><span class="o">.</span><span class="n">dt_myr</span><span class="p">,</span> <span class="n">model</span><span class="o">.</span><span class="n">data_sets</span><span class="p">[</span><span class="n">ivtk</span><span class="p">]))</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;ivtk=</span><span class="si">{:d}</span><span class="s2">, t=</span><span class="si">{:.1f}</span><span class="s2"> Myr, datasets=</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">ivtk</span><span class="p">,</span> <span class="n">ivtk</span><span class="o">*</span><span class="n">model</span><span class="o">.</span><span class="n">dt_Myr</span><span class="p">,</span> <span class="n">model</span><span class="o">.</span><span class="n">data_sets</span><span class="p">[</span><span class="n">ivtk</span><span class="p">]))</span>
 </pre></div>
 <div id="cell-3" class="clipboard-copy-txt">model = tigress_read.Model(model_id, dir_master=dir_master) #reading the model information
 print("Snapshots and contained data sets:")
 for ivtk in model.ivtks:
-    print("ivtk={:d}, t={:.1f} Myr, datasets={}".format(ivtk, ivtk*model.dt_myr, model.data_sets[ivtk]))</div>
+    print("ivtk={:d}, t={:.1f} Myr, datasets={}".format(ivtk, ivtk*model.dt_Myr, model.data_sets[ivtk]))</div>
     
         </div>
     </div>
@@ -1744,10 +1744,10 @@ overwrite? [y/n]:n
             <div class="highlight-ipynb hl-python"><pre><span></span><span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
 <span class="n">ax</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">111</span><span class="p">)</span>
 <span class="c1">#star formation rate (averaged over 40 Myr)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">hst</span><span class="p">[</span><span class="s2">&quot;time&quot;</span><span class="p">]</span><span class="o">*</span><span class="n">model</span><span class="o">.</span><span class="n">dt_myr</span><span class="p">,</span> <span class="n">model</span><span class="o">.</span><span class="n">hst</span><span class="p">[</span><span class="s2">&quot;sfr40&quot;</span><span class="p">],</span> <span class="s2">&quot;k-&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">hst</span><span class="p">[</span><span class="s2">&quot;time&quot;</span><span class="p">]</span><span class="o">*</span><span class="n">model</span><span class="o">.</span><span class="n">dt_Myr</span><span class="p">,</span> <span class="n">model</span><span class="o">.</span><span class="n">hst</span><span class="p">[</span><span class="s2">&quot;sfr40&quot;</span><span class="p">],</span> <span class="s2">&quot;k-&quot;</span><span class="p">)</span>
 <span class="c1">#snapshots</span>
-<span class="n">f</span> <span class="o">=</span> <span class="n">interp1d</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">hst</span><span class="p">[</span><span class="s2">&quot;time&quot;</span><span class="p">]</span><span class="o">*</span><span class="n">model</span><span class="o">.</span><span class="n">dt_myr</span><span class="p">,</span> <span class="n">model</span><span class="o">.</span><span class="n">hst</span><span class="p">[</span><span class="s2">&quot;sfr40&quot;</span><span class="p">])</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">t_myr</span><span class="p">,</span> <span class="n">f</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">t_myr</span><span class="p">),</span> <span class="s2">&quot;bo&quot;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;data release snapshots&quot;</span><span class="p">)</span>
+<span class="n">f</span> <span class="o">=</span> <span class="n">interp1d</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">hst</span><span class="p">[</span><span class="s2">&quot;time&quot;</span><span class="p">]</span><span class="o">*</span><span class="n">model</span><span class="o">.</span><span class="n">dt_Myr</span><span class="p">,</span> <span class="n">model</span><span class="o">.</span><span class="n">hst</span><span class="p">[</span><span class="s2">&quot;sfr40&quot;</span><span class="p">])</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">t_Myr</span><span class="p">,</span> <span class="n">f</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">t_Myr</span><span class="p">),</span> <span class="s2">&quot;bo&quot;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;data release snapshots&quot;</span><span class="p">)</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">&quot;$\Sigma_{SFR,40}\ (M_\odot kpc^{-2} yr^{-1})$&quot;</span><span class="p">)</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&quot;t (Myr)&quot;</span><span class="p">);</span>
@@ -1755,10 +1755,10 @@ overwrite? [y/n]:n
 <div id="cell-5" class="clipboard-copy-txt">fig = plt.figure()
 ax = fig.add_subplot(111)
 #star formation rate (averaged over 40 Myr)
-ax.plot(model.hst["time"]*model.dt_myr, model.hst["sfr40"], "k-")
+ax.plot(model.hst["time"]*model.dt_Myr, model.hst["sfr40"], "k-")
 #snapshots
-f = interp1d(model.hst["time"]*model.dt_myr, model.hst["sfr40"])
-ax.plot(model.t_myr, f(model.t_myr), "bo", label="data release snapshots")
+f = interp1d(model.hst["time"]*model.dt_Myr, model.hst["sfr40"])
+ax.plot(model.t_Myr, f(model.t_Myr), "bo", label="data release snapshots")
 ax.legend()
 ax.set_ylabel("$\Sigma_{SFR,40}\ (M_\odot kpc^{-2} yr^{-1})$")
 ax.set_xlabel("t (Myr)");</div>
