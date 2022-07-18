@@ -49,6 +49,13 @@ Start with playing the jupyter notebooks **analysis/**, which contains examples 
 * [read_data_1-MHD.ipynb](https://github.com/PrincetonUniversity/astro-tigress/blob/master/analysis/read_data_1-MHD.ipynb) shows you how to work with the original TIGRESS MHD output data ([Kim & Ostriker 2017](https://ui.adsabs.harvard.edu/abs/2017ApJ...846..133K/abstract))
 * [read_data_2-chem-CO_lines.ipynb](https://github.com/PrincetonUniversity/astro-tigress/blob/master/analysis/read_data_2-chem-CO_lines.ipynb) gives examples working with the chemistry and CO line post-processing data ([Gong et al 2018](https://ui.adsabs.harvard.edu/abs/2018ApJ...858...16G/abstract), [Gong et al. 2020](https://ui.adsabs.harvard.edu/abs/2020ApJ...903..142G/abstract)).
 
+## Further analysis
+
+Take a look at example notebooks showing how to construct synthetic HI PPV cube and dust polarization maps.
+
+* [example_1-synthetic-HI.ipynb](https://github.com/PrincetonUniversity/astro-tigress/blob/master/analysis/example_1-synthetic-HI.ipynb)
+* [example_2-synthetic-dustpol.ipynb](https://github.com/PrincetonUniversity/astro-tigress/blob/master/analysis/example_2-synthetic-dustpol.ipynb)
+
 ## License and Attribution
 
 If you make use of

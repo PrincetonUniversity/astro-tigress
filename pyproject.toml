@@ -20,6 +20,8 @@ mkdocstrings-python = "^0.7.0"
 mkdocs-material = "^8.3.0"
 pytkdocs = {version = "^0.16.1", extras = ["numpy-style"]}
 mkdocs-jupyter = "^0.21.0"
+jupyterlab = "^3.4.3"
+xarray = "^2022.3.0"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
