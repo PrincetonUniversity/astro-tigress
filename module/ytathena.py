@@ -157,6 +157,24 @@ def _temperature_chem(field, data):
     return yt.units.K * data["E"] / (1.5 * kb *
                     (1. - data["H2"] + data["e"] + GxHe))
 
+# UV
+def _radiation_FUV(field,data):
+    ds = data.ds
+    pressure_unit = ds.mass_unit / (ds.length_unit * (ds.time_unit)**2)
+    return data["athena","rad_energy_density1"]*pressure_unit
+
+def _radiation_EUV(field,data):
+    ds = data.ds
+    pressure_unit = ds.mass_unit / (ds.length_unit * (ds.time_unit)**2)
+    return data["athena","rad_energy_density0"]*pressure_unit
+
+def _radiation_electron(field,data):
+    return data["athena","specific_scalar[0]"]
+
+def _radiation_nelectron(field, data):
+    return data["gas","density"]*data["athena","specific_scalar[0]"]/(1.4271*mh)
+
+# basic
 def _pressure(field, data):
     ds = data.ds
     pressure_unit = ds.mass_unit / (ds.length_unit * (ds.time_unit)**2)
@@ -168,8 +186,8 @@ def _density(field, data):
 
 import matplotlib.pyplot as plt
 
-def add_yt_fields(ds,chemistry=True, cooling=True,mhd=False,rotation=False,
-                  zdg=1.):
+def add_yt_fields(ds,chemistry=True,rad=False,
+                  cooling=True,mhd=False,rotation=False, zdg=1.):
     Gzdg = zdg
     GxHe = 0.1
     GxC = 1.6e-4 * Gzdg
@@ -237,6 +255,21 @@ def add_yt_fields(ds,chemistry=True, cooling=True,mhd=False,rotation=False,
     if mhd:
         ds.add_field(("gas","mag_pok"),function=_mag_pok, \
           units='K*cm**(-3)',display_name=r'$P_{\rm mag}/k_{\rm B}$',
+          sampling_type="cell")
+    if rad:
+        ds.add_field(("gas","ne"), function=_radiation_nelectron, \
+          units='cm**(-3)',display_name=r'$n_e$',force_override=True,
+          sampling_type="cell")
+        ds.add_field(("gas","xe"), function=_radiation_electron, \
+          units='dimensionless',display_name=r'$x_e$',force_override=True,
+          sampling_type="cell")
+        ds.add_field(("gas","Erad_EUV"), function=_radiation_EUV, \
+          units='erg*cm**(-3)',display_name=r'$\mathcal{E}_{\rm EUV}$',
+          force_override=True,
+          sampling_type="cell")
+        ds.add_field(("gas","Erad_FUV"), function=_radiation_FUV, \
+          units='erg*cm**(-3)',display_name=r'$\mathcal{E}_{\rm FUV}$',
+          force_override=True,
           sampling_type="cell")
 
 def set_aux(model='solar'):
@@ -309,9 +342,18 @@ unit_base={"length_unit": (1.0,"pc"),
            "velocity_unit": (1.0,"km/s"),
            "magnetic_unit": (5.4786746797e-07,"gauss")}
 
-def load_athena4p2(filename):
+def load_athena4p2_mhd(filename):
     ds = yt.load(filename, units_override=unit_base)
     add_yt_fields(ds, chemistry=False)
+    return ds
+
+def load_athena4p2_rad(filename):
+    ds = yt.load(filename, units_override=unit_base)
+    add_yt_fields(ds, chemistry=False, rad=True)
+    return ds
+
+def load_athena4p2(filename):
+    ds = yt.load(filename, units_override=unit_base)
     return ds
 
 def load_athenapp(filename):
