@@ -1,32 +1,10 @@
 # Installation
 
-## Anaconda + poetry
-
-Clone the repository.
 ```
 git clone git@github.com:PrincetonUniversity/astro-tigress.git
-```
-
-We use `poetry` for packaging and dependency handling. `poetry` can be installed with conda
-
-```
-conda install poetry
-```
-
-or with `pip`
-
-```
-pip install -U poetry
-```
-
-Then, this will install all requirements.
-
-```
+cd astro-tigress
+conda create --name astro-tigress python=3.8 poetry jupyterlab xarray
+conda activate astro-tigress
 poetry install
-```
-
-Otherwise, you can manually install following packages.
-
-```
-conda install -c conda-forge python=3.8 yt h5py astropy
+python prepare_tutorial.py
 ```
