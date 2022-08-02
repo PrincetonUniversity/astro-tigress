@@ -99,7 +99,7 @@ class Model:
         ----------
         ivtk: int
             vtk output number
-        dataset: str, ["MHD", "chem", "CO_lines", "all"]
+        dataset: str, ["MHD", "chem", "CO_lines", "fullbox", "all"]
             name of the dataset or load all.
         Z: float, [0.5, 1, 2]
             metallicity for chemistry post-processing.
@@ -123,13 +123,11 @@ class Model:
             self.chem = DataChem(f)
         elif d == "CO_lines":
             self.CO_lines[iline] = DataCO(f, iline, Tdect)
-        elif d == "rad":
-            self.rad = DataRad(f)
-        elif d == "Bfield":
-            self.Bfield = DataBfield(f)
+        elif d == "fullbox":
+            self.fullbox = DataFull(f)
         else:
             msg = "ERROR: Model.load(): dataset name not recogonozed.\n"
-            msg += 'dataset: {"MHD", "chem", "CO_lines", "rad"}'
+            msg += 'dataset: {"MHD", "chem", "CO_lines", "fullbox"}'
             raise RuntimeError(msg)
 
     def _set_filename(self, ivtk, Z=1., iline=1, add_master=False):
@@ -140,9 +138,7 @@ class Model:
         fn = dict()
         fn['MHD'] = "{:s}MHD/{:s}.{:04d}.vtk".format(
                       source_dir_ivtk, self.model_id, ivtk)
-        fn['rad'] = "{:s}RAD/{:s}.{:04d}.vtk".format(
-                      source_dir_ivtk, self.model_id, ivtk)
-        fn['Bfield'] = "{:s}Bfield/{:s}.{:04d}.cell_centered_B.vtk".format(
+        fn['fullbox'] = "{:s}fullbox/{:s}.{:04d}.vtk".format(
                       source_dir_ivtk, self.model_id, ivtk)
         fn['chem'] = "{:s}chem/{:s}/{:s}-{:s}.{:04d}.athdf".format(
                       source_dir_ivtk, Z_id, self.model_id, Z_id, ivtk)
@@ -215,20 +211,6 @@ class DataRad:
     def __init__(self, fn):
         self.fn = fn
         self.ytds = ya.load_athena4p2_rad(fn) #yt data
-        self.grid = ya.get_covering_grid(self.ytds) #yt covering grid
-        return
-
-class DataBfield:
-    """UV data in one time snapshot.
-
-    Parameters
-    ----------
-    fn: str
-        filename.
-    """
-    def __init__(self, fn):
-        self.fn = fn
-        self.ytds = ya.load_athena4p2(fn) #yt data
         self.grid = ya.get_covering_grid(self.ytds) #yt covering grid
         return
 

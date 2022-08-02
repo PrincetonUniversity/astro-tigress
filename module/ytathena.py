@@ -168,11 +168,17 @@ def _radiation_EUV(field,data):
     pressure_unit = ds.mass_unit / (ds.length_unit * (ds.time_unit)**2)
     return data["athena","rad_energy_density0"]*pressure_unit
 
-def _radiation_electron(field,data):
+def _radiation_xHI(field,data):
     return data["athena","specific_scalar[0]"]
 
-def _radiation_nelectron(field, data):
+def _radiation_xHII(field,data):
+    return 1-data["athena","specific_scalar[0]"]
+
+def _radiation_nHI(field, data):
     return data["gas","density"]*data["athena","specific_scalar[0]"]/(1.4271*mh)
+
+def _radiation_nHII(field, data):
+    return data["gas","density"]*(1-data["athena","specific_scalar[0]"])/(1.4271*mh)
 
 # basic
 def _pressure(field, data):
@@ -239,8 +245,8 @@ def add_yt_fields(ds,chemistry=True,rad=False,
         ds.add_field(("gas","mu_cgk"),function=_mu, \
           units='',display_name=r'$\mu_{\rm cgk}$',force_override=True,
           sampling_type="cell")
-        ds.add_field(("gas","temperature_init"),function=_temperature, \
-          units='K',display_name=r'$T_{\rm init}$',force_override=True,
+        ds.add_field(("gas","temperature"),function=_temperature, \
+          units='K',display_name=r'$T$',force_override=True,
           sampling_type="cell")
     if rotation:
         ds.add_field(("gas","dvelocity_y"),function=_dvelocity, \
@@ -257,20 +263,27 @@ def add_yt_fields(ds,chemistry=True,rad=False,
           units='K*cm**(-3)',display_name=r'$P_{\rm mag}/k_{\rm B}$',
           sampling_type="cell")
     if rad:
-        ds.add_field(("gas","ne"), function=_radiation_nelectron, \
-          units='cm**(-3)',display_name=r'$n_e$',force_override=True,
+        ds.add_field(("gas","nHI"), function=_radiation_nHI, \
+          units='cm**(-3)',display_name=r'$n_{HI}$',force_override=True,
           sampling_type="cell")
-        ds.add_field(("gas","xe"), function=_radiation_electron, \
-          units='dimensionless',display_name=r'$x_e$',force_override=True,
+        ds.add_field(("gas","xHI"), function=_radiation_xHI, \
+          units='dimensionless',display_name=r'$x_{HI}$',force_override=True,
           sampling_type="cell")
-        ds.add_field(("gas","Erad_EUV"), function=_radiation_EUV, \
-          units='erg*cm**(-3)',display_name=r'$\mathcal{E}_{\rm EUV}$',
-          force_override=True,
+        ds.add_field(("gas","nHII"), function=_radiation_nHII, \
+          units='cm**(-3)',display_name=r'$n_{HII}$',force_override=True,
           sampling_type="cell")
-        ds.add_field(("gas","Erad_FUV"), function=_radiation_FUV, \
-          units='erg*cm**(-3)',display_name=r'$\mathcal{E}_{\rm FUV}$',
-          force_override=True,
+        ds.add_field(("gas","xHII"), function=_radiation_xHII, \
+          units='dimensionless',display_name=r'$x_{HII}$',force_override=True,
           sampling_type="cell")
+
+        # ds.add_field(("gas","Erad_EUV"), function=_radiation_EUV, \
+        #  units='erg*cm**(-3)',display_name=r'$\mathcal{E}_{\rm EUV}$',
+        #  force_override=True,
+        #  sampling_type="cell")
+        # ds.add_field(("gas","Erad_FUV"), function=_radiation_FUV, \
+        #  units='erg*cm**(-3)',display_name=r'$\mathcal{E}_{\rm FUV}$',
+        #  force_override=True,
+        #  sampling_type="cell")
 
 def set_aux(model='solar'):
     aux={}
@@ -446,7 +459,8 @@ def get_clump_properties(cl):
     print('Eratio = (Ekin+Emag+Eth)/(-Egrav):', Eratio.in_cgs())
     print('==========================================')
     return {"volume": totvol, "radius": radius, "mtot": mass, "vc": vc,
-            "density_mass_weighted": nden, "B_mass_weigthed": B, "Ekin": Ekin, "Emag": Emag, "Eth": Eth,
+            "density_mass_weighted": nden, "B_mass_weigthed": B,
+            "Ekin": Ekin, "Emag": Emag, "Eth": Eth,
             "Egrav": Egrav, "Eratio": Eratio}
 
 def get_covering_grid(ds, left_edge=None, dims=None):
