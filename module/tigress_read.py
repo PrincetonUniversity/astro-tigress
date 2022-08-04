@@ -99,7 +99,7 @@ class Model:
         ----------
         ivtk: int
             vtk output number
-        dataset: str, ["MHD", "chem", "CO_lines", "fullbox", "all"]
+        dataset: str, ["MHD", "chem", "CO_lines", "MHD_PI", "all"]
             name of the dataset or load all.
         Z: float, [0.5, 1, 2]
             metallicity for chemistry post-processing.
@@ -123,11 +123,11 @@ class Model:
             self.chem = DataChem(f)
         elif d == "CO_lines":
             self.CO_lines[iline] = DataCO(f, iline, Tdect)
-        elif d == "fullbox":
-            self.fullbox = DataFull(f)
+        elif d == "MHD_PI":
+            self.MHD_PI = DataRad(f)
         else:
             msg = "ERROR: Model.load(): dataset name not recogonozed.\n"
-            msg += 'dataset: {"MHD", "chem", "CO_lines", "fullbox"}'
+            msg += 'dataset: {"MHD", "chem", "CO_lines", "MHD_PI"}'
             raise RuntimeError(msg)
 
     def _set_filename(self, ivtk, Z=1., iline=1, add_master=False):
@@ -138,7 +138,7 @@ class Model:
         fn = dict()
         fn['MHD'] = "{:s}MHD/{:s}.{:04d}.vtk".format(
                       source_dir_ivtk, self.model_id, ivtk)
-        fn['fullbox'] = "{:s}fullbox/{:s}.{:04d}.vtk".format(
+        fn['MHD_PI'] = "{:s}MHD_PI/{:s}.{:04d}.vtk".format(
                       source_dir_ivtk, self.model_id, ivtk)
         fn['chem'] = "{:s}chem/{:s}/{:s}-{:s}.{:04d}.athdf".format(
                       source_dir_ivtk, Z_id, self.model_id, Z_id, ivtk)

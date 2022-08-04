@@ -7,6 +7,8 @@ def copy_file(fn_old, fn_new):
     inputs:
         fn_old: string, old filename
         fn_new: string, new filename"""
+    if fn_old == fn_new:
+        raise ValueError('New filename cannot be the same as the original one.')
     if os.path.isfile(fn_old):
         if os.path.isfile(fn_new):
             print("New file already exists: "+fn_new)
