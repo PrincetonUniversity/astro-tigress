@@ -23,6 +23,9 @@ GxC = 1.6e-4 * Gzdg
 GxO = 3.2e-4 * Gzdg
 GxSi = 1.7e-6 * Gzdg
 
+# Mean molecular weight per H
+muH = 1.4271
+
 class coolftn(object):
     def __init__(self,fname='../module/coolftn.txt'):
         cdf=np.loadtxt(fname)
@@ -79,7 +82,7 @@ class coolftn(object):
 
 # basic qunatities with renormalization
 def _ndensity(field, data):
-        return data["gas","density"]/(1.4271*mh)
+        return data["gas","density"]/(muH*mh)
 
 def _ram_pok_z(field,data):
         return data["gas","density"]*data["gas","velocity_z"]**2/kboltz
@@ -174,11 +177,17 @@ def _radiation_xHI(field,data):
 def _radiation_xHII(field,data):
     return 1-data["athena","specific_scalar[0]"]
 
+def _radiation_xe(field,data):
+    return 1-data["athena","specific_scalar[0]"]
+
 def _radiation_nHI(field, data):
-    return data["gas","density"]*data["athena","specific_scalar[0]"]/(1.4271*mh)
+    return data["gas","density"]*data["athena","specific_scalar[0]"]/(muH*mh)
 
 def _radiation_nHII(field, data):
-    return data["gas","density"]*(1-data["athena","specific_scalar[0]"])/(1.4271*mh)
+    return data["gas","density"]*(1-data["athena","specific_scalar[0]"])/(muH*mh)
+
+def _radiation_ne(field, data):
+    return data["gas","density"]*(1-data["athena","specific_scalar[0]"])/(muH*mh)
 
 # basic
 def _pressure(field, data):
@@ -274,6 +283,12 @@ def add_yt_fields(ds,chemistry=True,rad=False,
           sampling_type="cell")
         ds.add_field(("gas","xHII"), function=_radiation_xHII, \
           units='dimensionless',display_name=r'$x_{HII}$',force_override=True,
+          sampling_type="cell")
+        ds.add_field(("gas","ne"), function=_radiation_ne, \
+          units='cm**(-3)',display_name=r'$n_{e}$',force_override=True,
+          sampling_type="cell")
+        ds.add_field(("gas","xe"), function=_radiation_xe, \
+          units='dimensionless',display_name=r'$x_{e}$',force_override=True,
           sampling_type="cell")
 
         # ds.add_field(("gas","Erad_EUV"), function=_radiation_EUV, \
