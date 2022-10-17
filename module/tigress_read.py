@@ -7,6 +7,8 @@ import ytathena as ya
 import radmc
 import urllib.request
 
+dirpath = os.path.dirname(__file__)
+
 class Model:
     """Class containing the simulation model information.
 
@@ -16,7 +18,7 @@ class Model:
         name of the model, e.g. `R8_2pc`.
     """
 
-    def __init__(self, model_id, dir_master="../data/"):
+    def __init__(self, model_id, dir_master=os.path.join(dirpath,"../data/")):
         self.dir_master = dir_master
         self.model_id = model_id
         self.dir_model = osp.join(dir_master, model_id, "")

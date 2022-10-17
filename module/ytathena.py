@@ -14,6 +14,9 @@ import numpy as np
 import copy
 import math
 from yt.funcs import mylog
+import os
+dirpath = os.path.dirname(__file__)
+
 mylog.setLevel(50)
 
 global Zdg, GxHe, GxC, GxO, GxSi
@@ -27,7 +30,7 @@ GxSi = 1.7e-6 * Gzdg
 muH = 1.4271
 
 class coolftn(object):
-    def __init__(self,fname='../module/coolftn.txt'):
+    def __init__(self,fname=os.path.join(dirpath,'coolftn.txt')):
         cdf=np.loadtxt(fname)
         self.cool=cdf[:, 0]
         self.heat=cdf[:, 1]
