@@ -1,4 +1,4 @@
-# TIGRESS public data release [<img src="https://raw.githubusercontent.com/FortAwesome/Font-Awesome/6.x/svgs/solid/book.svg" width=30 height=30>](https://princetonuniversity.github.io/astro-tigress/)
+# TIGRESS public data release [DOI](https://doi.org/10.34770/ackh-7y71) [<img src="https://raw.githubusercontent.com/FortAwesome/Font-Awesome/6.x/svgs/solid/book.svg" width=30 height=30>](https://princetonuniversity.github.io/astro-tigress/)
 
 
 <!--
@@ -13,19 +13,17 @@ This repo contains a series of python scripts and example jupyter notebooks that
 
 ## Data Download
 
-Currently, the data is located at [this
+Full data can be downloaded via [Globus](https://app.globus.org/file-manager?origin_id=dc43f461-0ca7-4203-848c-33a9fc00a464&origin_path=%2Fackh-7y71%2F).
+
+Currently, the data is also available at [this
 webpage](https://tigress-web.princeton.edu/~munan/astro-tigress/). You can
 browse and download individual files. However, you will need to preserve the
 file structure (folders and sub-folders) for the scripts provided here to work
 properly.
 
-Full data can be downloaded via Globus.
 
 Also, each snapshot can be downloaded using internal web downloader (will be deprecated).
 ``` py
-import sys
-sys.insert.path(0,"PATH-TO-astro-tigress/module/")
-
 import tigress_read
 model=tigress_read.Model("R8_2pc")
 model.download(300)

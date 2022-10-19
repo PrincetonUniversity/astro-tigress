@@ -62,7 +62,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#tigress-public-data-release" class="md-skip">
+        <a href="#tigress-public-data-release-doi" class="md-skip">
           Skip to content
         </a>
       
@@ -435,7 +435,7 @@
 
 
 
-<h1 id="tigress-public-data-release">TIGRESS public data release <a href="https://princetonuniversity.github.io/astro-tigress/"><img src="https://raw.githubusercontent.com/FortAwesome/Font-Awesome/6.x/svgs/solid/book.svg" width=30 height=30></a></h1>
+<h1 id="tigress-public-data-release-doi">TIGRESS public data release <a href="https://doi.org/10.34770/ackh-7y71">DOI</a> <a href="https://princetonuniversity.github.io/astro-tigress/"><img src="https://raw.githubusercontent.com/FortAwesome/Font-Awesome/6.x/svgs/solid/book.svg" width=30 height=30></a></h1>
 <!--
 [:fontawesome-brands-github:](https://github.com/PrincetonUniversity/astro-tigress/tree/packaging)
 [:fontawesome-solid-book:](https://princetonuniversity.github.io/astro-tigress/)
@@ -444,19 +444,16 @@
 <p><strong>Welcome to the TIGRESS data release!</strong></p>
 <p>This repo contains a series of python scripts and example jupyter notebooks that will help you read and analyse the TIGRESS simulation data.</p>
 <h2 id="data-download">Data Download</h2>
-<p>Currently, the data is located at <a href="https://tigress-web.princeton.edu/~munan/astro-tigress/">this
+<p>Full data can be downloaded via <a href="https://app.globus.org/file-manager?origin_id=dc43f461-0ca7-4203-848c-33a9fc00a464&amp;origin_path=%2Fackh-7y71%2F">Globus</a>.</p>
+<p>Currently, the data is also available at <a href="https://tigress-web.princeton.edu/~munan/astro-tigress/">this
 webpage</a>. You can
 browse and download individual files. However, you will need to preserve the
 file structure (folders and sub-folders) for the scripts provided here to work
 properly.</p>
-<p>Full data can be downloaded via Globus.</p>
 <p>Also, each snapshot can be downloaded using internal web downloader (will be deprecated).
-<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="kn">import</span> <span class="nn">sys</span>
-<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="n">sys</span><span class="o">.</span><span class="n">insert</span><span class="o">.</span><span class="n">path</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="s2">&quot;PATH-TO-astro-tigress/module/&quot;</span><span class="p">)</span>
-<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>
-<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="kn">import</span> <span class="nn">tigress_read</span>
-<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="n">model</span><span class="o">=</span><span class="n">tigress_read</span><span class="o">.</span><span class="n">Model</span><span class="p">(</span><span class="s2">&quot;R8_2pc&quot;</span><span class="p">)</span>
-<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="n">model</span><span class="o">.</span><span class="n">download</span><span class="p">(</span><span class="mi">300</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="kn">import</span> <span class="nn">tigress_read</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="n">model</span><span class="o">=</span><span class="n">tigress_read</span><span class="o">.</span><span class="n">Model</span><span class="p">(</span><span class="s2">&quot;R8_2pc&quot;</span><span class="p">)</span>
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="n">model</span><span class="o">.</span><span class="n">download</span><span class="p">(</span><span class="mi">300</span><span class="p">)</span>
 </code></pre></div></p>
 <p>Currently, this data release only contains the solar neighborhood models, <code>R8</code>,
 for selected snapshots with an interval of about 10 Myr after a quasi-steady
