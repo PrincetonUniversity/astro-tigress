@@ -15,23 +15,35 @@ This repo contains a series of python scripts and example jupyter notebooks that
 
 Full data can be downloaded via [Globus](https://app.globus.org/file-manager?origin_id=dc43f461-0ca7-4203-848c-33a9fc00a464&origin_path=%2Fackh-7y71%2F).
 
-Currently, the data is also available at [this
+The data is also available at [this
 webpage](https://tigress-web.princeton.edu/~munan/astro-tigress/). You can
 browse and download individual files. However, you will need to preserve the
 file structure (folders and sub-folders) for the scripts provided here to work
 properly.
 
-
-Also, each snapshot can be downloaded using internal web downloader (will be deprecated).
-``` py
-import tigress_read
-model=tigress_read.Model("R8_2pc")
-model.download(300)
-```
-
 Currently, this data release only contains the solar neighborhood models, `R8`,
 for selected snapshots with an interval of about 10 Myr after a quasi-steady
 state is reached. Full MHD snapshots for every 1 Myr are available upon request.
+
+## Installation
+
+```
+  pip install astro_tigress
+```
+
+## Quickstart
+``` py
+import astro_tigress
+dir_master = ... # master path to your data
+model_id = "R8_2pc"
+model=astro_tigress.Model(model_id,dir_master)
+model.load(300,"MHD")
+
+# make plots using yt
+import yt
+slc=yt.SlicePlot(model.MHD.ytds,'z',fields=('gas','nH'))
+slc.annotate_magnetic_field()
+```
 
 ## Data types
 
@@ -42,7 +54,7 @@ state is reached. Full MHD snapshots for every 1 Myr are available upon request.
 
 Note that the chemistry post-processing data is only available for `R8-2pc`.
 
-## Quick Start
+## Tutorials
 
 Start with playing the jupyter notebooks **notebooks/**, which contains examples for reading and analysing the data.
 
