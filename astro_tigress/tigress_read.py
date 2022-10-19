@@ -70,7 +70,7 @@ class Model:
                 print(d, end=" ")
             print(" ")
 
-    def download(self, ivtk, dataset="MHD", Z=1., iline=1):
+    def download(self, ivtk=300, dataset="MHD", Z=1., iline=1):
         """Download simulation data from a certain data set.
 
         Parameters
@@ -90,7 +90,8 @@ class Model:
             for d,f in fn.items():
                 self._download_file(f)
         else:
-            self._download_file(fn[dataset])
+            for d in np.atleast_1d(dataset):
+                self._download_file(fn[dataset])
 
 
     def load(self, ivtk, dataset="MHD", Z=1., iline=1, Tdect=0.):
@@ -100,7 +101,7 @@ class Model:
         ----------
         ivtk: int
             vtk output number
-        dataset: str, ["MHD", "chem", "CO_lines", "MHD_PI", "all"]
+        dataset: str or list, ["MHD", "chem", "CO_lines", "MHD_PI", "all"]
             name of the dataset or load all.
         Z: float, [0.5, 1, 2]
             metallicity for chemistry post-processing.
@@ -115,7 +116,8 @@ class Model:
             for d in self.data_sets[ivtk]:
                 self._loadone(fn[d], d, iline=iline, Tdect=Tdect)
         else:
-            self._loadone(fn[dataset], dataset, iline=iline, Tdect=Tdect)
+            for d in np.atleast_1d(dataset):
+                self._loadone(fn[d], d, iline=iline, Tdect=Tdect)
 
     def _loadone(self,f,d,iline=1,Tdect=0.):
         if d == "MHD":
