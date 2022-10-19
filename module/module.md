@@ -1,5 +1,5 @@
 # API References
-::: tigress_read.Model
+::: astro_tigress.Model
     options:
       show_root_heading: true
       show_source: true
