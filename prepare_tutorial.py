@@ -1,11 +1,11 @@
 import sys
-sys.path.insert(0, "./module/") # add path for import
+sys.path.insert(0, "./") # add path for import
 import tigress_read # scripts for reading data
 
 # Master directory where the data is stored
 dir_master = "./data/"
 # Snapshot number
-num = 300 
+num = 300
 
 # A snapshot can be downloaded using `download` method.
 # dataset can be one of

@@ -1,4 +1,4 @@
-# TIGRESS public data release [<img src="https://raw.githubusercontent.com/FortAwesome/Font-Awesome/6.x/svgs/solid/book.svg" width=30 height=30>](https://princetonuniversity.github.io/astro-tigress/)
+# TIGRESS public data release [DOI](https://doi.org/10.34770/ackh-7y71) [<img src="https://raw.githubusercontent.com/FortAwesome/Font-Awesome/6.x/svgs/solid/book.svg" width=30 height=30>](https://princetonuniversity.github.io/astro-tigress/)
 
 
 <!--
@@ -13,19 +13,17 @@ This repo contains a series of python scripts and example jupyter notebooks that
 
 ## Data Download
 
-Currently, the data is located at [this
+Full data can be downloaded via [Globus](https://app.globus.org/file-manager?origin_id=dc43f461-0ca7-4203-848c-33a9fc00a464&origin_path=%2Fackh-7y71%2F).
+
+Currently, the data is also available at [this
 webpage](https://tigress-web.princeton.edu/~munan/astro-tigress/). You can
 browse and download individual files. However, you will need to preserve the
 file structure (folders and sub-folders) for the scripts provided here to work
 properly.
 
-Full data can be downloaded via Globus.
 
 Also, each snapshot can be downloaded using internal web downloader (will be deprecated).
 ``` py
-import sys
-sys.insert.path(0,"PATH-TO-astro-tigress/module/")
-
 import tigress_read
 model=tigress_read.Model("R8_2pc")
 model.download(300)
@@ -46,18 +44,18 @@ Note that the chemistry post-processing data is only available for `R8-2pc`.
 
 ## Quick Start
 
-Start with playing the jupyter notebooks **analysis/**, which contains examples for reading and analysing the data.
+Start with playing the jupyter notebooks **notebooks/**, which contains examples for reading and analysing the data.
 
-* [read_data_1-MHD.ipynb](https://github.com/PrincetonUniversity/astro-tigress/blob/master/analysis/read_data_1-MHD.ipynb) shows you how to work with the original TIGRESS MHD output data ([Kim & Ostriker 2017](https://ui.adsabs.harvard.edu/abs/2017ApJ...846..133K/abstract)).
-* [read_data_2-chem-CO_lines.ipynb](https://github.com/PrincetonUniversity/astro-tigress/blob/master/analysis/read_data_2-chem-CO_lines.ipynb) gives examples working with the chemistry and CO line post-processing data ([Gong et al 2018](https://ui.adsabs.harvard.edu/abs/2018ApJ...858...16G/abstract), [Gong et al. 2020](https://ui.adsabs.harvard.edu/abs/2020ApJ...903..142G/abstract)).
-* [read_data_3-MHD_PI.ipynb](https://github.com/PrincetonUniversity/astro-tigress/blob/master/analysis/read_data_3-MHD_PI.ipynb) gives examples working with the full-box MHD output with post-processed electro abundance data ([Kado-Fong et al 2020](https://ui.adsabs.harvard.edu/abs/2020ApJ...897..143K/abstract)).
+* [read_data_1-MHD.ipynb](https://github.com/PrincetonUniversity/astro-tigress/blob/master/notebooks/read_data_1-MHD.ipynb) shows you how to work with the original TIGRESS MHD output data ([Kim & Ostriker 2017](https://ui.adsabs.harvard.edu/abs/2017ApJ...846..133K/abstract)).
+* [read_data_2-chem-CO_lines.ipynb](https://github.com/PrincetonUniversity/astro-tigress/blob/master/notebooks/read_data_2-chem-CO_lines.ipynb) gives examples working with the chemistry and CO line post-processing data ([Gong et al 2018](https://ui.adsabs.harvard.edu/abs/2018ApJ...858...16G/abstract), [Gong et al. 2020](https://ui.adsabs.harvard.edu/abs/2020ApJ...903..142G/abstract)).
+* [read_data_3-MHD_PI.ipynb](https://github.com/PrincetonUniversity/astro-tigress/blob/master/notebooks/read_data_3-MHD_PI.ipynb) gives examples working with the full-box MHD output with post-processed electro abundance data ([Kado-Fong et al 2020](https://ui.adsabs.harvard.edu/abs/2020ApJ...897..143K/abstract)).
 
 ## Further analysis
 
 Take a look at example notebooks showing how to construct synthetic HI PPV cube and dust polarization maps.
 
-* [example_1-synthetic-HI.ipynb](https://github.com/PrincetonUniversity/astro-tigress/blob/master/analysis/example_1-synthetic-HI.ipynb)
-* [example_2-synthetic-dustpol.ipynb](https://github.com/PrincetonUniversity/astro-tigress/blob/master/analysis/example_2-synthetic-dustpol.ipynb)
+* [example_1-synthetic-HI.ipynb](https://github.com/PrincetonUniversity/astro-tigress/blob/master/notebooks/example_1-synthetic-HI.ipynb)
+* [example_2-synthetic-dustpol.ipynb](https://github.com/PrincetonUniversity/astro-tigress/blob/master/notebooks/example_2-synthetic-dustpol.ipynb)
 
 ## License and Attribution
 

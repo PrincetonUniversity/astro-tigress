@@ -1,11 +1,12 @@
 import os
 import os.path as osp
 import numpy as np
-import athena_read
-import const
-import ytathena as ya
-import radmc
 import urllib.request
+
+from . import athena_read
+from . import const
+from . import ytathena as ya
+from . import radmc
 
 dirpath = os.path.dirname(__file__)
 

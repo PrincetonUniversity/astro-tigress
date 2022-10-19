@@ -1,5 +1,4 @@
 import numpy as np
-import const
 import struct
 import os
 from subprocess import Popen, PIPE, STDOUT
@@ -7,10 +6,12 @@ import copy
 import math
 import yt
 import yt.units as u
-import ytathena as ya
-import copy
-import map_circular_beam as mcb
 from astropy.io import fits
+import copy
+
+from . import const
+from . import ytathena as ya
+from . import map_circular_beam as mcb
 
 class YTData:
     def __init__(self, filename, left_edge=None, dims=None):
@@ -35,7 +36,7 @@ class YTData:
         self.nx = self.shape_xyz[0]
         self.ny = self.shape_xyz[1]
         self.nz = self.shape_xyz[2]
-        self.dx = (self.ytdata["dx"][0, 0, 0].in_cgs()).value 
+        self.dx = (self.ytdata["dx"][0, 0, 0].in_cgs()).value
         nH0 = (self.ytdata["density"]/2.38858753789e-24/u.g*u.cm**3).in_cgs().to_ndarray()
         self.nH = np.swapaxes(nH0, 0, 2)
         #velocity in km/s
@@ -69,7 +70,7 @@ class CoreData:
         L0 = 0.87 * const.pc * (n0/1.0e3)**(-0.5) * (T0/10.)**0.5
         L0_pc = L0/const.pc
         M0 = L0**3 * n0 * const.mh * self.mu
-        unit_base={"length_unit": (L0_pc,"pc"), 
+        unit_base={"length_unit": (L0_pc,"pc"),
                    "time_unit": (L0_pc/self.cs0_kms,"s*pc/km"),
                    "mass_unit": (M0,"g"),
                    "velocity_unit": (self.cs0_kms,"km/s")}
@@ -89,7 +90,7 @@ class CoreData:
         self.nx = self.shape_xyz[0]
         self.ny = self.shape_xyz[1]
         self.nz = self.shape_xyz[2]
-        self.dx = (self.ytdata["dx"][0, 0, 0].in_cgs()).value 
+        self.dx = (self.ytdata["dx"][0, 0, 0].in_cgs()).value
         rho = self.ytdata["density"].in_cgs().to_ndarray()
         nH0 = rho/const.mh/self.mu
         self.nH = np.swapaxes(nH0, 0, 2)
@@ -157,11 +158,11 @@ class Data:
         nH = np.swapaxes(self.data.nH, 0, 2)
         xH2 = np.swapaxes(self.data.abd["H2"], 0, 2)
         return (self.dx * nH*xH2).sum(axis=nax)
-    
+
     def prepare(self, work_dir, image_dir, clean_outfile=True, clean_infile=True, species_coll=None,
-                moldata_dir="/tigress/munan/chemistry/scripts/radmc3d/prob/moldata/", 
+                moldata_dir="/tigress/munan/chemistry/scripts/radmc3d/prob/moldata/",
                 line_mode="LVG", output_binary=True,
-                escprob=None, escprob_max_pc=100., gas_velocity=None, micro_turbulence=None, 
+                escprob=None, escprob_max_pc=100., gas_velocity=None, micro_turbulence=None,
                 gas_temperature="data", gas_temperature_max=200.,
                 temperature_bg=2.73,
                 gas_temperature_cold=None, slow_lvg_conv=None,
@@ -172,7 +173,7 @@ class Data:
            This can be done multiple times to the Data class (work_dir).
            moldata_dir: store molecular line data for co.
            line_mode: LVG, LTE, Thin
-           escprob, gas_veolcity, micro_turbulence, gas_temperature: 
+           escprob, gas_veolcity, micro_turbulence, gas_temperature:
            {"data" (in Data class), None (not specified), float_number (constant), np.array([nx,ny,nz]) }
            gas_temperature_max: cap the gas temperature at some maximum value. Default 200. Kelvin.
            temperature_bg: back ground temperature. Default 2.73K for cmb.
@@ -233,7 +234,7 @@ class Data:
         #external radiation requires loadlambda to be turned on
         if external_tbg is not None:
             if not isloadlambda:
-                raise RuntimeError("ERORR:" 
+                raise RuntimeError("ERORR:"
                         + " external radiation option requires loadlambda to be turned on.")
             external_intensity = const.bb_inu(temp_k=external_tbg,
                     lam_cm=self.wavelength_micron/1.0e4, units=False)
@@ -314,14 +315,14 @@ class Data:
         print("line_mode={}, output_binary={}".format(self.line_mode, self.output_binary))
         print("escprob={}, escprob_max_pc={}, gas_velocity={}, micro_turbulence={}".format(
                self.escprob, self.escprob_max_pc, self.gas_velocity,
-               self.micro_turbulence)) 
+               self.micro_turbulence))
         print("gas_temperature={}, gas_temperature_max={}, gas_temperature_cold={}".format(
                self.gas_temperature, self.gas_temperature_max,
                self.gas_temperature_cold))
         print("iline={}, widthkms={}, vkms={}, linenlam={}, isloadlambda={}".format(
                iline, widthkms, vkms, linenlam, isloadlambda))
         return
-    
+
     def write_inputs(self):
         """Write main radmc3d input files *.binp"""
         print("\nWriting main input files for radmc3d...")
@@ -393,12 +394,12 @@ class Data:
             raise RuntimeError("gas_temperature: {}, not recognized.".format(
                                self.gas_temperature))
         self._write_binp(Tg0, self.nx, self.ny, self.nz, fn_Tg)
-        
+
         #escprob_lengthscale.binp
         fn_Lesc = self.work_dir + "escprob_lengthscale.binp"
         if self.escprob == "data":
             grad =  np.gradient(np.swapaxes(self.data.nH, 0, 2), self.dx)
-            Lesc0 = 1. / np.sqrt( grad[0]**2 + grad[1]**2 + grad[2]**2) 
+            Lesc0 = 1. / np.sqrt( grad[0]**2 + grad[1]**2 + grad[2]**2)
             indx = Lesc0 > self.escprob_max_pc * const.pc
             Lesc0[indx] = self.escprob_max_pc * const.pc
         elif self.escprob == None:
@@ -427,7 +428,7 @@ class Data:
                             self.escprob))
         if self.escprob != None:
             self._write_binp(Lesc0, self.nx, self.ny, self.nz, fn_Lesc)
-            
+
         #micro_turbulence.binp
         fn_mt = self.work_dir + "microturbulence.binp"
         if self.micro_turbulence == "data":
@@ -448,7 +449,7 @@ class Data:
                                self.micro_turbulence))
         if self.micro_turbulence != None:
             self._write_binp(mt0, self.nx, self.ny, self.nz, fn_mt)
-        
+
         #gas_velocity.binp
         vel_shape = (self.nx, self.ny, self.nz, 3)
         if self.gas_velocity == None:
@@ -472,7 +473,7 @@ class Data:
         if self.gas_velocity != None:
             self._write_binp(vel0, self.nx, self.ny, self.nz, fn_vel, ndim=3)
             return
-    
+
     def run(self, image_new_name=None, levelpop_new_name=None, tausurf=False,
             cmd_tail="", incl=0, phi=0):
         """Run radmc3d in working directory, move image.dat to a new file if image_new_name is specified."""
@@ -522,7 +523,7 @@ class Data:
         img = Images(self.image_new_name)
         img.radmcData = copy.deepcopy(self)
         return img
-        
+
     def _write_grid_binp(self, dir_out, nx, ny, nz, dx, xmin, ymin, zmin):
         """dx=dy=dz, cgs units, dir_out/"""
         fn_grid = dir_out + "amr_grid.binp"
@@ -681,7 +682,7 @@ class Images:
         self.image_avg = [im.mean() for im in self.image]
         self.image_TA_avg = [im.mean() for im in self.image_TA]
         return
-    def write_fits(self, fn_fits="image.fits", 
+    def write_fits(self, fn_fits="image.fits",
                    clip_range=None, comment="", axis_name1="x", axis_name2="y",
                    extent=None):
         if clip_range is not None:
@@ -741,8 +742,8 @@ class Images:
         else:
             imgi = self.image[ilam]
             clabel = r"$I_\nu (\mathrm{erg/s/cm^2/Hz/ster})$"
-        cax = ax.imshow(np.swapaxes(imgi, 0, 1) + 1e-100, origin="lower", 
-                        extent=[0, self.nx*self.dx/const.pc, 
+        cax = ax.imshow(np.swapaxes(imgi, 0, 1) + 1e-100, origin="lower",
+                        extent=[0, self.nx*self.dx/const.pc,
                                 0, self.ny*self.dy/const.pc],
                         cmap="magma", **keys)
         cbar = ax.figure.colorbar(cax)
@@ -778,7 +779,7 @@ class Images:
             #loop over each pixel
             for ix in range(self.nx):
                 for iy in range(self.ny):
-                    TA_arr = np.array( [(self.image_TA[self.nlam-ilam-1])[ix, iy] 
+                    TA_arr = np.array( [(self.image_TA[self.nlam-ilam-1])[ix, iy]
                                         for ilam in np.arange(self.nlam)])
                     TA_dect = np.interp(vel_arr, vel0, TA_arr)
                     indx = TA_dect < Tdect
@@ -791,7 +792,7 @@ class Images:
             vel_arr_fine = np.arange(vel0[0], vel0[-1], dv_fine)
             for ix in range(self.nx):
                 for iy in range(self.ny):
-                    TA_arr = np.array( [(self.image_TA[self.nlam-ilam-1])[ix, iy] 
+                    TA_arr = np.array( [(self.image_TA[self.nlam-ilam-1])[ix, iy]
                                         for ilam in np.arange(self.nlam)])
                     TA_dect_fine = np.interp(vel_arr_fine, vel0, TA_arr)
                     TA_dect = np.zeros(len(vel_arr))
@@ -826,7 +827,7 @@ class Images:
                     ITA = np.array([m[ix, iy] for m in self.image_TA])
                 elif dv < dv0:
                     TA_arr = np.array(
-                            [(self.image_TA[self.nlam-ilam-1])[ix, iy] 
+                            [(self.image_TA[self.nlam-ilam-1])[ix, iy]
                                         for ilam in np.arange(self.nlam)])
                     ITA = np.interp(vel_arr, vel0, TA_arr)
                 else:
@@ -834,7 +835,7 @@ class Images:
                     dv_fine = min(dv/10., dv0)
                     vel_arr_fine = np.arange(vel0[0], vel0[-1], dv_fine)
                     TA_arr = np.array(
-                            [(self.image_TA[self.nlam-ilam-1])[ix, iy] 
+                            [(self.image_TA[self.nlam-ilam-1])[ix, iy]
                                         for ilam in np.arange(self.nlam)])
                     TA_dect_fine = np.interp(vel_arr_fine, vel0, TA_arr)
                     ITA = np.zeros(len(vel_arr))
@@ -854,7 +855,7 @@ class Images:
             cax=None,orientation="vertical", cbticks=None, **keys):
         img = self.getimageWCO(Tdect=Tdect)
         if extent == None:
-            extent=[0, self.nx*self.dx/const.pc/1e3, 
+            extent=[0, self.nx*self.dx/const.pc/1e3,
                     0, self.ny*self.dy/const.pc/1e3]
         cax1 = ax.imshow(np.swapaxes(img, 0, 1)+1e-100, origin="lower", extent=extent,
                         **keys)
@@ -876,9 +877,9 @@ class Images:
         indx_WCO = img < WCOmin
         imgXCO[indx_WCO] = 0
         if extent == None:
-            extent=[0, self.nx*self.dx/const.pc/1e3, 
+            extent=[0, self.nx*self.dx/const.pc/1e3,
                     0, self.ny*self.dy/const.pc/1e3]
-        cax1 = ax.imshow(np.swapaxes(imgXCO, 0, 1), origin="lower", 
+        cax1 = ax.imshow(np.swapaxes(imgXCO, 0, 1), origin="lower",
                         extent=extent, **keys)
         if cbticks != None:
             cbar = ax.figure.colorbar(cax1, cax=cax,ticks=cbticks,
@@ -908,7 +909,7 @@ class Images:
                     #if small velocity channel, interpolation
                     vel_arr = np.arange(vel0[0], vel0[-1], dv)
                     TA_arr = np.array(
-                            [(self.image_TA[self.nlam-ilam-1])[ix, iy] 
+                            [(self.image_TA[self.nlam-ilam-1])[ix, iy]
                                         for ilam in np.arange(self.nlam)])
                     ITA = np.interp(vel_arr, vel0, TA_arr)
                 else:
@@ -918,7 +919,7 @@ class Images:
                     dv_fine = min(dv/10., dv0)
                     vel_arr_fine = np.arange(vel0[0], vel0[-1], dv_fine)
                     TA_arr = np.array(
-                            [(self.image_TA[self.nlam-ilam-1])[ix, iy] 
+                            [(self.image_TA[self.nlam-ilam-1])[ix, iy]
                                         for ilam in np.arange(self.nlam)])
                     TA_dect_fine = np.interp(vel_arr_fine, vel0, TA_arr)
                     ITA = np.zeros(len(vel_arr))
@@ -943,7 +944,7 @@ class Images:
                     img_sigma_v_kms[ix, iy] = sigma_v
         return img_v_avg_kms, img_sigma_v_kms
     def rescale(self, factor, circular_beam=False, stamp=None):
-        """Rescale image to resolution = orignal_resolution*factor. 
+        """Rescale image to resolution = orignal_resolution*factor.
         This is to see the effect of a larger observational beam."""
         #check whether nx and ny is dividable by factor
         if (self.nx % factor) != 0 or (self.ny % factor) != 0:
@@ -1022,7 +1023,7 @@ def bplanck(temp, nu):
                      2 h nu^3 / c^2
          B_nu(T)  = ------------------    [ erg / cm^2 s ster Hz ]
                     exp(h nu / kT) - 1
- 
+
       ARGUMENTS:
          temp  [K]             = Temperature
          nu    [Hz]            = Frequency
@@ -1037,7 +1038,7 @@ def bplanck(temp, nu):
 
 def read_line_freq(fn_mol):
     """Read frequencies for molecular lines.
-    input: 
+    input:
         fn_mol: filename for molecular data
     output:
         line_nu0: frequencies of transitions in Hz
@@ -1057,7 +1058,7 @@ def get_wavelength_micron(line_nu0, iline, widthkms, vkms, linenlam):
     nu0 = line_nu0[iline-1]
     camera_nu = np.zeros(linenlam)
     for inu in np.arange(linenlam):
-        camera_nu[inu] = nu0 * (1. - vkms*const.km/const.c 
+        camera_nu[inu] = nu0 * (1. - vkms*const.km/const.c
                 - (2.*inu/(linenlam-1.)-1.) * widthkms*const.km/const.c)
     wavelength_micron = 1.0e4 * const.c / camera_nu
     return wavelength_micron

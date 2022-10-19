@@ -3,9 +3,6 @@ repo_url: https://github.com/PrincetonUniversity/astro-tigress
 nav:
     - Home: index.md
     - Installation: install.md
-    - Example-MHD: read_data_1-MHD.ipynb
-    - Example-chem: read_data_2-chem-CO_lines.ipynb
-    - Example-MHD_PI: read_data_3-MHD_PI.ipynb
     - API References: module.md
 theme:
   name: "material"
@@ -35,5 +32,5 @@ plugins:
             show_root_heading: true
             heading_level: 2
       watch:
-        - module
-        - analysis
+        - tigress_read
+        - notebooks
