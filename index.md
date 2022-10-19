@@ -25,10 +25,16 @@ Currently, this data release only contains the solar neighborhood models, `R8`,
 for selected snapshots with an interval of about 10 Myr after a quasi-steady
 state is reached. Full MHD snapshots for every 1 Myr are available upon request.
 
-## Installation
+## Installation of scripts
 
 ```
   pip install astro_tigress
+```
+
+The python scripts and example notebooks are available at the [GitHub](https://github.com/PrincetonUniversity/astro-tigress) repository.
+
+```
+   git clone git@github.com:PrincetonUniversity/astro-tigress.git
 ```
 
 ## Quickstart
