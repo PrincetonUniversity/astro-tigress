@@ -32,5 +32,5 @@ plugins:
             show_root_heading: true
             heading_level: 2
       watch:
-        - tigress_read
+        - astro_tigress
         - notebooks
