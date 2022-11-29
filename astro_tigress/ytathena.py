@@ -98,7 +98,7 @@ def _cs(field, data):
         return np.sqrt(data["gas","pressure"]/data["gas","density"])
 
 def _T1(field, data):
-        return data["gas","pressure"]/data["gas","nH"]/kboltz
+        return data["gas","pressure"]/data["gas","nH"]/kboltz/muH
 
 def _mu(field, data):
     cf=coolftn()
@@ -213,6 +213,8 @@ def add_yt_fields(ds,chemistry=True,rad=False,
     GxSi = 1.7e-6 * Gzdg
     ds.add_field(("gas","nH"),function=_ndensity, \
       units='cm**(-3)',display_name=r'$n_{\rm H}$', sampling_type="cell")
+    ds.add_field(("gas","H_nuclei_density"),function=_ndensity, \
+      units='cm**(-3)',display_name=r'$n_{\rm H}$', sampling_type="cell")
     ds.add_field(("gas","ram_pok_z"),function=_ram_pok_z, \
       units='K*cm**(-3)',display_name=r'$P_{\rm turb}/k_{\rm B}$',
       sampling_type="cell")
@@ -288,6 +290,9 @@ def add_yt_fields(ds,chemistry=True,rad=False,
           units='dimensionless',display_name=r'$x_{HII}$',force_override=True,
           sampling_type="cell")
         ds.add_field(("gas","ne"), function=_radiation_ne, \
+          units='cm**(-3)',display_name=r'$n_{e}$',force_override=True,
+          sampling_type="cell")
+        ds.add_field(("gas","El_number_density"), function=_radiation_ne, \
           units='cm**(-3)',display_name=r'$n_{e}$',force_override=True,
           sampling_type="cell")
         ds.add_field(("gas","xe"), function=_radiation_xe, \
