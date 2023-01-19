@@ -47,6 +47,9 @@ class Model:
         # read time output interval in input file
         fn_input_MHD = "{:s}input/MHD/{:s}.par".format(
                           self.dir_model,self.model_id)
+        #time units
+        self.tunit = const.pc / const.km
+        self.tunit_Myr = self.tunit / const.Myr
         if osp.isfile(fn_input_MHD):
             self.MHD_input = athena_read.athinput(fn_input_MHD)
             self.fn_input_MHD = fn_input_MHD
@@ -54,7 +57,7 @@ class Model:
                 if k.startswith("output"):
                     if self.MHD_input[k]["out_fmt"] == "vtk":
                         self.dt_code = self.MHD_input[k]["dt"]
-                        self.dt_Myr = self.dt_code * const.pc/const.km/const.Myr
+                        self.dt_Myr = self.dt_code * self.tunit_Myr
                         self.t_Myr = self.ivtks * self.dt_Myr
 
     def show(self):
