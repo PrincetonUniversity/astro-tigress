@@ -36,7 +36,7 @@ state is reached. Full MHD snapshots for every 1 Myr are available upon request.
 The python scripts and example notebooks are available at the [GitHub](https://github.com/PrincetonUniversity/astro-tigress) repository.
 
 ```
-   git clone git@github.com:PrincetonUniversity/astro-tigress.git
+  git clone git@github.com:PrincetonUniversity/astro-tigress.git
 ```
 
 ## Quickstart

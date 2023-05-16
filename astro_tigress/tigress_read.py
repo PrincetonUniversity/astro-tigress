@@ -94,7 +94,7 @@ class Model:
                 self._download_file(f)
         else:
             for d in np.atleast_1d(dataset):
-                self._download_file(fn[dataset])
+                self._download_file(fn[d])
 
 
     def load(self, ivtk, dataset="MHD", Z=1., iline=1, Tdect=0.):
