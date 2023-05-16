@@ -15,9 +15,11 @@ This repo contains a series of python scripts and example jupyter notebooks that
 
 Full data can be downloaded via [Globus](https://app.globus.org/file-manager?origin_id=dc43f461-0ca7-4203-848c-33a9fc00a464&origin_path=%2Fackh-7y71%2F).
 
-The data is also available at [this
-webpage](https://tigress-web.princeton.edu/~munan/astro-tigress/). You can
-browse and download individual files. However, you will need to preserve the
+A few data files used in the tutorials is also available at [this
+webpage](https://tigress-web.princeton.edu/~munan/astro-tigress/).
+
+You can
+browse and download whole datasets as well as individual files. However, you will need to preserve the
 file structure (folders and sub-folders) for the scripts provided here to work
 properly.
 
