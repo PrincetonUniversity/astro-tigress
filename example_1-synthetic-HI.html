@@ -1,0 +1,890 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="en" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>Synthetic HI 21cm lines &#8212; TIGRESS public data release</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="_static/styles/bootstrap.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+
+  
+  <link href="_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=e353d410970836974a52" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" href="_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=e353d410970836974a52" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52" />
+
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/clipboard.min.js"></script>
+    <script src="_static/copybutton.js"></script>
+    <script src="_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="_static/togglebutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="_static/design-tabs.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'example_1-synthetic-HI';</script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Synthetic dust polarization map" href="example_2-synthetic-dustpol.html" />
+    <link rel="prev" title="MHD_PI datasets" href="read_data_3-MHD_PI.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+  
+
+<a class="navbar-brand logo" href="intro.html">
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="_static/tigress_logo.jpg" class="logo__image only-light" alt="Logo image"/>
+    <script>document.write(`<img src="_static/tigress_logo.jpg" class="logo__image only-dark" alt="Logo image"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="intro.html">
+                    TIGRESS public data release
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">code packages</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="install.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api.html">API Reference</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">data reading examples</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="read_data_1-MHD.html">MHD datasets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="read_data_2-chem-CO_lines.html">Chemistry and CO synthetic observations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="read_data_3-MHD_PI.html">MHD_PI datasets</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">synthtic observation examples</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Synthetic HI 21cm lines</a></li>
+
+<li class="toctree-l1"><a class="reference internal" href="example_2-synthetic-dustpol.html">Synthetic dust polarization map</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">additional examples</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="extract_data_subset.html">Extracting subset data</a></li>
+
+
+
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/PrincetonUniversity/astro-tigress" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/PrincetonUniversity/astro-tigress/issues/new?title=Issue%20on%20page%20%2Fexample_1-synthetic-HI.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="_sources/example_1-synthetic-HI.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+<script>
+document.write(`
+  <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
+    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
+    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
+  </button>
+`);
+</script>
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+  </button>
+`);
+</script>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Synthetic HI 21cm lines</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">Synthetic HI 21cm lines</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#column-density-projection-along-the-y-direction">Column density projection (along the y-direction)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#maybe-some-dense-gas-is-molecular-n-50pcc">Maybe some dense gas is molecular (n&gt;50pcc)</a></li>
+</ul>
+</li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#synthetic-hi">Synthetic HI</a></li>
+</ul>
+
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="synthetic-hi-21cm-lines">
+<h1>Synthetic HI 21cm lines<a class="headerlink" href="#synthetic-hi-21cm-lines" title="Permalink to this heading">#</a></h1>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># add path to astro_tigress module</span>
+<span class="c1"># this can also be done using PYTHONPATH environment variable</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="s1">&#39;../&#39;</span><span class="p">)</span>
+
+<span class="kn">import</span> <span class="nn">astro_tigress</span>
+<span class="c1"># Need to set the master directory where the data is stored</span>
+<span class="n">dir_master</span> <span class="o">=</span> <span class="s2">&quot;../data/&quot;</span>
+<span class="c1"># name of the simulation model</span>
+<span class="n">model_id</span> <span class="o">=</span> <span class="s2">&quot;R8_4pc&quot;</span> 
+<span class="n">model</span> <span class="o">=</span> <span class="n">astro_tigress</span><span class="o">.</span><span class="n">Model</span><span class="p">(</span><span class="n">model_id</span><span class="p">,</span><span class="n">dir_master</span><span class="p">)</span> <span class="c1">#reading the model information</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p><strong>Download the data if you haven’t done it yet</strong></p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://app.globus.org/file-manager?origin_id=dc43f461-0ca7-4203-848c-33a9fc00a464&amp;origin_path=%2Fackh-7y71%2F">Globus</a></p></li>
+<li><p>You can navigate the folder and only download selected snapshots.</p></li>
+<li><p>You will always need <code class="docutils literal notranslate"><span class="pre">histroy</span></code> and <code class="docutils literal notranslate"><span class="pre">input</span></code> files. You can run the following.</p></li>
+</ul>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="n">model</span><span class="o">.</span><span class="n">download</span><span class="p">(</span><span class="n">dataset</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;history&quot;</span><span class="p">,</span><span class="s2">&quot;input&quot;</span><span class="p">])</span>
+    <span class="n">model</span> <span class="o">=</span> <span class="n">astro_tigress</span><span class="o">.</span><span class="n">Model</span><span class="p">(</span><span class="n">model_id</span><span class="p">,</span><span class="n">dir_master</span><span class="p">)</span> <span class="c1"># need to reload the class</span>
+</pre></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#load the MHD data set for the snapshot ivtk=300</span>
+<span class="n">model</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="mi">300</span><span class="p">,</span> <span class="n">dataset</span><span class="o">=</span><span class="s2">&quot;MHD&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Because we use the python package <a class="reference external" href="https://yt-project.org/">YT</a> to read the outputs from the MHD simulation, the data stored in the YT format. This means that all fields (such as density, velocity, H2 and CO abundances) in the data has <em>units</em> atached.</p>
+<p>Let’s convert the YT covering grid into <code class="docutils literal notranslate"><span class="pre">numpy</span></code> arrray with appropriate units. Also, I take transpose so that the array is in the original C-like ordering <code class="docutils literal notranslate"><span class="pre">(z,y,x)</span></code></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">Temp</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">MHD</span><span class="o">.</span><span class="n">grid</span><span class="p">[(</span><span class="s1">&#39;gas&#39;</span><span class="p">,</span><span class="s1">&#39;temperature&#39;</span><span class="p">)]</span><span class="o">.</span><span class="n">in_units</span><span class="p">(</span><span class="s2">&quot;K&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">value</span><span class="o">.</span><span class="n">T</span>
+<span class="n">nH</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">MHD</span><span class="o">.</span><span class="n">grid</span><span class="p">[(</span><span class="s1">&#39;gas&#39;</span><span class="p">,</span><span class="s1">&#39;nH&#39;</span><span class="p">)]</span><span class="o">.</span><span class="n">in_units</span><span class="p">(</span><span class="s2">&quot;cm**-3&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">value</span><span class="o">.</span><span class="n">T</span>
+<span class="n">vx</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">MHD</span><span class="o">.</span><span class="n">grid</span><span class="p">[(</span><span class="s1">&#39;gas&#39;</span><span class="p">,</span><span class="s1">&#39;velocity_x&#39;</span><span class="p">)]</span><span class="o">.</span><span class="n">in_units</span><span class="p">(</span><span class="s2">&quot;km/s&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">value</span><span class="o">.</span><span class="n">T</span>
+<span class="n">vy</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">MHD</span><span class="o">.</span><span class="n">grid</span><span class="p">[(</span><span class="s1">&#39;gas&#39;</span><span class="p">,</span><span class="s1">&#39;velocity_y&#39;</span><span class="p">)]</span><span class="o">.</span><span class="n">in_units</span><span class="p">(</span><span class="s2">&quot;km/s&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">value</span><span class="o">.</span><span class="n">T</span>
+<span class="n">vz</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">MHD</span><span class="o">.</span><span class="n">grid</span><span class="p">[(</span><span class="s1">&#39;gas&#39;</span><span class="p">,</span><span class="s1">&#39;velocity_z&#39;</span><span class="p">)]</span><span class="o">.</span><span class="n">in_units</span><span class="p">(</span><span class="s2">&quot;km/s&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">value</span><span class="o">.</span><span class="n">T</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Retrieve cell-centered coordinates for later uses.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">xcc</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">MHD</span><span class="o">.</span><span class="n">grid</span><span class="p">[(</span><span class="s2">&quot;gas&quot;</span><span class="p">,</span><span class="s2">&quot;x&quot;</span><span class="p">)][:,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s1">&#39;pc&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">value</span>
+<span class="n">ycc</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">MHD</span><span class="o">.</span><span class="n">grid</span><span class="p">[(</span><span class="s2">&quot;gas&quot;</span><span class="p">,</span><span class="s2">&quot;y&quot;</span><span class="p">)][</span><span class="mi">0</span><span class="p">,:,</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s1">&#39;pc&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">value</span>
+<span class="n">zcc</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">MHD</span><span class="o">.</span><span class="n">grid</span><span class="p">[(</span><span class="s2">&quot;gas&quot;</span><span class="p">,</span><span class="s2">&quot;z&quot;</span><span class="p">)][</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,:]</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s1">&#39;pc&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">value</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Get cell size in pc and cm for convenience (note that the cell is cubic)</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">dx_pc</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">MHD</span><span class="o">.</span><span class="n">grid</span><span class="p">[(</span><span class="s2">&quot;gas&quot;</span><span class="p">,</span><span class="s2">&quot;dx&quot;</span><span class="p">)][</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s1">&#39;pc&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">value</span>
+<span class="n">dx_cm</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">MHD</span><span class="o">.</span><span class="n">grid</span><span class="p">[(</span><span class="s2">&quot;gas&quot;</span><span class="p">,</span><span class="s2">&quot;dx&quot;</span><span class="p">)][</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s1">&#39;cm&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">value</span>
+</pre></div>
+</div>
+</div>
+</div>
+<section id="column-density-projection-along-the-y-direction">
+<h2>Column density projection (along the y-direction)<a class="headerlink" href="#column-density-projection-along-the-y-direction" title="Permalink to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># integration along the y-axis (edge on view)</span>
+<span class="n">NH</span> <span class="o">=</span> <span class="n">nH</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="o">*</span><span class="n">dx_cm</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">pcolormesh</span><span class="p">(</span><span class="n">xcc</span><span class="p">,</span><span class="n">zcc</span><span class="p">,</span><span class="n">NH</span><span class="p">,</span><span class="n">vmax</span><span class="o">=</span><span class="mf">1.e22</span><span class="p">,</span><span class="n">shading</span><span class="o">=</span><span class="s1">&#39;nearest&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">gca</span><span class="p">()</span><span class="o">.</span><span class="n">set_aspect</span><span class="p">(</span><span class="s1">&#39;equal&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;x[pc]&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;z[pc]&#39;</span><span class="p">)</span>
+<span class="n">cbar</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">colorbar</span><span class="p">(</span><span class="n">label</span><span class="o">=</span><span class="sa">r</span><span class="s1">&#39;$N_H\,[{\rm cm^{-2}}]$&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/a93b225b35c890db79f4a620e96bd4e1497795a7e72a039587d7f391faeb3bc1.png" src="_images/a93b225b35c890db79f4a620e96bd4e1497795a7e72a039587d7f391faeb3bc1.png" />
+</div>
+</div>
+</section>
+<section id="maybe-some-dense-gas-is-molecular-n-50pcc">
+<h2>Maybe some dense gas is molecular (n&gt;50pcc)<a class="headerlink" href="#maybe-some-dense-gas-is-molecular-n-50pcc" title="Permalink to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># set threshold density to exclude (assuming that they are molecular)</span>
+<span class="n">nth_mol</span> <span class="o">=</span> <span class="mi">50</span>
+
+<span class="c1"># integration along the y-axis (edge on view)</span>
+<span class="n">NH</span> <span class="o">=</span> <span class="n">nH</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="o">*</span><span class="n">dx_cm</span>
+
+<span class="c1"># integration along the y-axis excluding molecular gas</span>
+<span class="n">nH_masked</span><span class="o">=</span><span class="n">nH</span><span class="o">*</span><span class="p">(</span><span class="n">nH</span><span class="o">&lt;</span><span class="n">nth_mol</span><span class="p">)</span> <span class="c1"># np.ma.masked_array(nH,mask=nH&gt;nth_mol)</span>
+<span class="n">NHI</span> <span class="o">=</span> <span class="n">nH_masked</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="o">*</span><span class="n">dx_cm</span>
+
+<span class="n">fig</span><span class="p">,</span><span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span><span class="mi">5</span><span class="p">),</span><span class="n">sharex</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span><span class="n">sharey</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">sca</span><span class="p">(</span><span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">pcolormesh</span><span class="p">(</span><span class="n">xcc</span><span class="p">,</span><span class="n">zcc</span><span class="p">,</span><span class="n">NH</span><span class="p">,</span><span class="n">vmax</span><span class="o">=</span><span class="mf">1.e22</span><span class="p">,</span><span class="n">shading</span><span class="o">=</span><span class="s1">&#39;nearest&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">gca</span><span class="p">()</span><span class="o">.</span><span class="n">set_aspect</span><span class="p">(</span><span class="s1">&#39;equal&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;total $N_H$&#39;</span><span class="p">)</span>
+<span class="c1"># plt.xlabel(&#39;x[pc]&#39;)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;z[pc]&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">sca</span><span class="p">(</span><span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;$N_H(n_H&lt;50)$&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">pcolormesh</span><span class="p">(</span><span class="n">xcc</span><span class="p">,</span><span class="n">zcc</span><span class="p">,</span><span class="n">NHI</span><span class="p">,</span><span class="n">vmax</span><span class="o">=</span><span class="mf">1.e22</span><span class="p">,</span><span class="n">shading</span><span class="o">=</span><span class="s1">&#39;nearest&#39;</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">gca</span><span class="p">()</span><span class="o">.</span><span class="n">set_aspect</span><span class="p">(</span><span class="s1">&#39;equal&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;x[pc]&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;z[pc]&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlim</span><span class="p">(</span><span class="o">-</span><span class="mi">400</span><span class="p">,</span><span class="o">-</span><span class="mi">150</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylim</span><span class="p">(</span><span class="o">-</span><span class="mi">150</span><span class="p">,</span><span class="mi">0</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(-150.0, 0.0)
+</pre></div>
+</div>
+<img alt="_images/1aecbfd826a083b73d64378b9bd1edcbd5c8d5e9878d63873ad78448baa177e1.png" src="_images/1aecbfd826a083b73d64378b9bd1edcbd5c8d5e9878d63873ad78448baa177e1.png" />
+</div>
+</div>
+</section>
+</section>
+<section class="tex2jax_ignore mathjax_ignore" id="synthetic-hi">
+<h1>Synthetic HI<a class="headerlink" href="#synthetic-hi" title="Permalink to this heading">#</a></h1>
+<ul>
+<li><p>Following the method presented in <a class="reference external" href="https://ui.adsabs.harvard.edu/abs/2014ApJ...786...64K/abstract">https://ui.adsabs.harvard.edu/abs/2014ApJ…786…64K/abstract</a></p></li>
+<li><p>Assuming that the WF effect is efficient enough to make T_spin = T_k based on Ly alpha radiation transfer study <a class="reference external" href="https://ui.adsabs.harvard.edu/abs/2020ApJS..250....9S/abstract">https://ui.adsabs.harvard.edu/abs/2020ApJS..250….9S/abstract</a></p></li>
+<li><div class="math notranslate nohighlight">
+\[N_H = 1.813\times10^{18}{\rm cm^{-2}}\int T_B \frac{\tau}{1-e^{-\tau}} d(v/(km/s))\]</div>
+</li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">astro_tigress.synthetic_HI</span> <span class="kn">import</span> <span class="n">los_to_HI_axis_proj</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">help</span><span class="p">(</span><span class="n">los_to_HI_axis_proj</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Help on function los_to_HI_axis_proj in module astro_tigress.synthetic_HI:
+
+los_to_HI_axis_proj(dens, temp, vel, vchannel, deltas=1.0, los_axis=1)
+    inputs:
+        dens: number density of hydrogen in units of 1/cm^3
+        temp: temperature in units of K
+        vel: line-of-sight velocity in units of km/s
+        vchannel: velocity channel in km/s
+    parameters:
+        deltas: length of line segments in units of pc
+        memlim: memory limit in GB
+        los_axis: 0 -- z, 1 -- y, 2 -- x
+    outputs: a dictionary
+        TB: the brightness temperature
+        tau: optical depth
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># this will take some time</span>
+
+<span class="n">vmin</span><span class="p">,</span><span class="n">vmax</span><span class="p">,</span><span class="n">dv</span><span class="o">=-</span><span class="mi">50</span><span class="p">,</span><span class="mi">50</span><span class="p">,</span><span class="mf">0.5</span>
+<span class="n">vch</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">vmin</span><span class="p">,</span><span class="n">vmax</span><span class="o">+</span><span class="mf">0.5</span><span class="o">*</span><span class="n">dv</span><span class="p">,</span><span class="n">dv</span><span class="p">)</span> <span class="c1"># velocity resolution of 0.5 km/s</span>
+<span class="n">nth_mol</span> <span class="o">=</span> <span class="mi">50</span> <span class="c1"># threshold density above which gas is considered as H2</span>
+<span class="n">Tth</span> <span class="o">=</span> <span class="mf">1.5e4</span> <span class="c1"># threshold temperature above which gas is considered as HII</span>
+<span class="n">nH_masked</span><span class="o">=</span><span class="n">nH</span><span class="o">*</span><span class="p">((</span><span class="n">nH</span><span class="o">&lt;</span><span class="n">nth_mol</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">Temp</span><span class="o">&lt;</span><span class="n">Tth</span><span class="p">))</span>
+<span class="n">TB</span><span class="p">,</span><span class="n">tau</span> <span class="o">=</span> <span class="n">los_to_HI_axis_proj</span><span class="p">(</span><span class="n">nH_masked</span><span class="p">,</span><span class="n">Temp</span><span class="p">,</span><span class="n">vy</span><span class="p">,</span>
+                             <span class="n">vch</span><span class="p">,</span><span class="n">deltas</span><span class="o">=</span><span class="n">dx_pc</span><span class="p">,</span>
+                             <span class="n">los_axis</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="c1"># axis along which the integration is performed (0=&#39;z&#39;, 1=&#39;y&#39;, 2=&#39;x&#39;)</span>
+                            <span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>100%|██████████| 201/201 [03:01&lt;00:00,  1.11it/s]
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">NHI</span> <span class="o">=</span> <span class="n">nH_masked</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="o">*</span><span class="n">dx_cm</span>
+<span class="n">NHthin</span> <span class="o">=</span> <span class="mf">1.813e18</span><span class="o">*</span><span class="n">TB</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span><span class="o">*</span><span class="n">dv</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">NHI</span><span class="o">.</span><span class="n">flatten</span><span class="p">(),</span><span class="n">NHI</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span><span class="o">/</span><span class="n">NHthin</span><span class="o">.</span><span class="n">flatten</span><span class="p">(),</span><span class="s1">&#39;.&#39;</span><span class="p">,</span><span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span><span class="n">mew</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xscale</span><span class="p">(</span><span class="s1">&#39;log&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;$N_{\rm H}\,[{\rm cm^{-2}}]$&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;$N_{\rm H}/N_{\rm H, thin}$&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Text(0, 0.5, &#39;$N_{\\rm H}/N_{\\rm H, thin}$&#39;)
+</pre></div>
+</div>
+<img alt="_images/7da8418d48e9f9cf01cccd79373cac75dea0b5d2b8b5505b87fc8f34f55e55bf.png" src="_images/7da8418d48e9f9cf01cccd79373cac75dea0b5d2b8b5505b87fc8f34f55e55bf.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">astro_tigress.synthetic_HI</span> <span class="kn">import</span> <span class="n">save_to_fits</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">help</span><span class="p">(</span><span class="n">save_to_fits</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Help on function save_to_fits in module astro_tigress.synthetic_HI:
+
+save_to_fits(ytds, vchannel, TB, tau, axis=&#39;xyv&#39;, fitsname=None)
+    Function warpper for fits writing
+    
+    Parameters
+    ----------
+    ytds: yt.Dataset
+        yt Dataset
+    vchannel: array
+        velocity channel array
+    TB: array
+        PPV data cube for brightness temperature
+    tau: array
+        PPV data cube for optical depth
+    axis: str
+        str for the PPV coordniate names
+    fitsname: str
+        if not None, fits file is created
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">hdul</span><span class="o">=</span><span class="n">save_to_fits</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">MHD</span><span class="o">.</span><span class="n">ytds</span><span class="p">,</span> <span class="n">vch</span><span class="p">,</span> <span class="n">TB</span><span class="p">,</span> <span class="n">tau</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="s1">&#39;xzv&#39;</span><span class="p">,</span> <span class="n">fitsname</span><span class="o">=</span><span class="s1">&#39;test.fits&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>FITS file named test.fits is created
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">hdul</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">header</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>SIMPLE  =                    T / conforms to FITS standard                      
+BITPIX  =                    8 / array data type                                
+NAXIS   =                    0 / number of array dimensions                     
+EXTEND  =                    T                                                  
+TIME    =     293.337862012388                                                  
+XMIN    =               -512.0 / pc                                             
+XMAX    =                512.0 / pc                                             
+YMIN    =               -512.0 / pc                                             
+YMAX    =                512.0 / pc                                             
+ZMIN    =               -512.0 / pc                                             
+ZMAX    =                512.0 / pc                                             
+DX      =                  4.0 / pc                                             
+DY      =                  4.0 / pc                                             
+DZ      =                  4.0 / pc                                             
+VMIN    =                -50.0 / km/s                                           
+VMAX    =                 50.0 / km/s                                           
+DV      =                  0.5 / km/s                                           
+CDELT1  =                  4.0                                                  
+CTYPE1  = &#39;x       &#39;                                                            
+CUNIT1  = &#39;pc      &#39;                                                            
+CRVAL1  =               -512.0                                                  
+CRPIX1  =                  0.0                                                  
+CDELT2  =                  4.0                                                  
+CTYPE2  = &#39;z       &#39;                                                            
+CUNIT2  = &#39;pc      &#39;                                                            
+CRVAL2  =               -512.0                                                  
+CRPIX2  =                  0.0                                                  
+CDELT3  =                  0.5                                                  
+CTYPE3  = &#39;v       &#39;                                                            
+CUNIT3  = &#39;km/s    &#39;                                                            
+CRVAL3  =                -50.0                                                  
+CRPIX3  =                  0.0                                                  
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">xarray</span> <span class="k">as</span> <span class="nn">xr</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">TB_da</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">DataArray</span><span class="p">(</span><span class="n">TB</span><span class="p">,</span><span class="n">coords</span><span class="o">=</span><span class="p">[</span><span class="n">vch</span><span class="p">,</span><span class="n">zcc</span><span class="p">,</span><span class="n">xcc</span><span class="p">],</span><span class="n">dims</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;v&#39;</span><span class="p">,</span><span class="s1">&#39;z&#39;</span><span class="p">,</span><span class="s1">&#39;x&#39;</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">NHthin</span><span class="o">=</span><span class="mf">1.813e18</span><span class="o">*</span><span class="n">dv</span><span class="o">*</span><span class="n">TB_da</span><span class="o">.</span><span class="n">groupby_bins</span><span class="p">(</span><span class="s1">&#39;v&#39;</span><span class="p">,</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="o">-</span><span class="mi">50</span><span class="p">,</span><span class="mi">51</span><span class="p">,</span><span class="mi">10</span><span class="p">))</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">NHthin</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">col</span><span class="o">=</span><span class="s1">&#39;v_bins&#39;</span><span class="p">,</span><span class="n">col_wrap</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span><span class="n">vmax</span><span class="o">=</span><span class="mf">1.e21</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;xarray.plot.facetgrid.FacetGrid at 0x13e326b50&gt;
+</pre></div>
+</div>
+<img alt="_images/ccbada4b093e489e8ee4e5860d4d3056abc7bfc970a3567cf2444538a9543063.png" src="_images/ccbada4b093e489e8ee4e5860d4d3056abc7bfc970a3567cf2444538a9543063.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">matplotlib.colors</span> <span class="kn">import</span> <span class="n">LogNorm</span>
+<span class="n">NHthin</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">col</span><span class="o">=</span><span class="s1">&#39;v_bins&#39;</span><span class="p">,</span><span class="n">col_wrap</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">vmin</span><span class="o">=</span><span class="mf">1.e18</span><span class="p">,</span> <span class="n">vmax</span><span class="o">=</span><span class="mf">1.e22</span><span class="p">,</span> <span class="n">norm</span><span class="o">=</span><span class="n">LogNorm</span><span class="p">())</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;xarray.plot.facetgrid.FacetGrid at 0x1407ebbd0&gt;
+</pre></div>
+</div>
+<img alt="_images/ca0b014583c510de59ed94a0e7e275f5a63f55007e03d79146893ef7930ea8c4.png" src="_images/ca0b014583c510de59ed94a0e7e275f5a63f55007e03d79146893ef7930ea8c4.png" />
+</div>
+</div>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./."
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+                <footer class="bd-footer-article">
+                  
+<div class="footer-article-items footer-article__inner">
+  
+    <div class="footer-article-item"><!-- Previous / next buttons -->
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="read_data_3-MHD_PI.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">MHD_PI datasets</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="example_2-synthetic-dustpol.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Synthetic dust polarization map</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div></div>
+  
+</div>
+
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">Synthetic HI 21cm lines</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#column-density-projection-along-the-y-direction">Column density projection (along the y-direction)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#maybe-some-dense-gas-is-molecular-n-50pcc">Maybe some dense gas is molecular (n&gt;50pcc)</a></li>
+</ul>
+</li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#synthetic-hi">Synthetic HI</a></li>
+</ul>
+
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Chang-Goo Kim
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  <p class="copyright">
+    
+      © Copyright 2022.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="_static/scripts/bootstrap.js?digest=e353d410970836974a52"></script>
+<script src="_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>
