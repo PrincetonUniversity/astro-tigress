@@ -1,0 +1,22 @@
+# Table of contents
+# Learn more at https://jupyterbook.org/customize/toc.html
+
+format: jb-book
+root: intro
+parts:
+  - caption: code packages
+    chapters:
+    - file: install
+    - file: api
+  - caption: data reading examples
+    chapters:
+    - file: read_data_1-MHD
+    - file: read_data_2-chem-CO_lines
+    - file: read_data_3-MHD_PI
+  - caption: synthtic observation examples
+    chapters:
+    - file: example_1-synthetic-HI
+    - file: example_2-synthetic-dustpol
+  - caption: additional examples
+    chapters:
+    - file: extract_data_subset

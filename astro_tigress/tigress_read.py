@@ -30,7 +30,8 @@ class Model:
             self.data_sets = {}
             for ivtk in self.ivtks:
                 dir_ivtk = "{:s}{:04d}/".format(self.dir_model, ivtk)
-                self.data_sets[ivtk] = os.listdir(dir_ivtk)
+                self.data_sets[ivtk] = [d for d in os.listdir(dir_ivtk)
+                                        if os.path.isdir(os.path.join(dir_ivtk,d)) ]
         self._load_hst()
         self._load_input()
         self.CO_lines = {}

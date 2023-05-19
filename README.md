@@ -1,15 +1,7 @@
-# TIGRESS public data release [DOI](https://doi.org/10.34770/ackh-7y71) [<img src="https://raw.githubusercontent.com/FortAwesome/Font-Awesome/6.x/svgs/solid/book.svg" width=30 height=30>](https://princetonuniversity.github.io/astro-tigress/)
+# TIGRESS public data release
 
-
-<!--
-[:fontawesome-brands-github:](https://github.com/PrincetonUniversity/astro-tigress/tree/packaging)
-[:fontawesome-solid-book:](https://princetonuniversity.github.io/astro-tigress/)
--->
-
-**Welcome to the TIGRESS data release!**
-
-This repo contains a series of python scripts and example jupyter notebooks that will help you read and analyse the TIGRESS simulation data.
-
+[<img src="https://img.shields.io/badge/DOI-10.34770%2Fackh--7y71-blue">](https://doi.org/10.34770/ackh-7y71)
+[<img src="https://raw.githubusercontent.com/FortAwesome/Font-Awesome/6.x/svgs/solid/book.svg" width=30 height=30>](https://princetonuniversity.github.io/astro-tigress/)
 
 ## Data Download
 
@@ -57,42 +49,40 @@ slc.annotate_magnetic_field()
 
 * `MHD`: Small box (z=+-512 pc) original TIGRESS output for MHD variables including density, pressure, velocity (vector), and magnetic field (vector). Athena VTK format.
 * `MHD_PI`: Full box (z=+-3072 pc) MHD data plus electron abundance as a result of UV radiation post-processing. Athena VTK format.
-* `chem`: The chemistry post-processing small box output for molecular hydrogen and CO abundnaces. Athena++ HDF5 format.
+* `chem`: The chemistry post-processing small box output for molecular hydrogen and CO abundances. Athena++ HDF5 format.
 * `CO_lines`: The CO lines, J(1-0) and J(2-1). RADMC-3D binary format.
 
 Note that the chemistry post-processing data is only available for `R8-2pc`.
-
-## Tutorials
-
-Start with playing the jupyter notebooks **notebooks/**, which contains examples for reading and analysing the data.
-
-* [read_data_1-MHD.ipynb](https://github.com/PrincetonUniversity/astro-tigress/blob/master/notebooks/read_data_1-MHD.ipynb) shows you how to work with the original TIGRESS MHD output data ([Kim & Ostriker 2017](https://ui.adsabs.harvard.edu/abs/2017ApJ...846..133K/abstract)).
-* [read_data_2-chem-CO_lines.ipynb](https://github.com/PrincetonUniversity/astro-tigress/blob/master/notebooks/read_data_2-chem-CO_lines.ipynb) gives examples working with the chemistry and CO line post-processing data ([Gong et al 2018](https://ui.adsabs.harvard.edu/abs/2018ApJ...858...16G/abstract), [Gong et al. 2020](https://ui.adsabs.harvard.edu/abs/2020ApJ...903..142G/abstract)).
-* [read_data_3-MHD_PI.ipynb](https://github.com/PrincetonUniversity/astro-tigress/blob/master/notebooks/read_data_3-MHD_PI.ipynb) gives examples working with the full-box MHD output with post-processed electro abundance data ([Kado-Fong et al 2020](https://ui.adsabs.harvard.edu/abs/2020ApJ...897..143K/abstract)).
-
-## Further analysis
-
-Take a look at example notebooks showing how to construct synthetic HI PPV cube and dust polarization maps.
-
-* [example_1-synthetic-HI.ipynb](https://github.com/PrincetonUniversity/astro-tigress/blob/master/notebooks/example_1-synthetic-HI.ipynb)
-* [example_2-synthetic-dustpol.ipynb](https://github.com/PrincetonUniversity/astro-tigress/blob/master/notebooks/example_2-synthetic-dustpol.ipynb)
 
 ## License and Attribution
 
 If you make use of
 
 * only `MHD` data, please cite
-  `Kim & Ostriker (2017)`
+  {cite:t}`2017ApJ...846..133K`
+  <!-- `Kim & Ostriker (2017)`
   ([ADS](https://ui.adsabs.harvard.edu/abs/2017ApJ...846..133K/abstract),
-   [BibTex](https://ui.adsabs.harvard.edu/abs/2017ApJ...846..133K/exportcitation))
+   [BibTex](https://ui.adsabs.harvard.edu/abs/2017ApJ...846..133K/exportcitation)) -->
 * `chem` and/or `CO_lines` data, please also cite
-  `Gong et al. (2018)`
+  {cite:t}`2018ApJ...858...16G,2020ApJ...903..142G`
+  <!-- `Gong et al. (2018)`
   ([ADS](https://ui.adsabs.harvard.edu/abs/2018ApJ...858...16G/abstract),
    [BibTex](https://ui.adsabs.harvard.edu/abs/2018ApJ...858...16G/exportcitation))
   and `Gong et al. (2020)`
   ([ADS](https://ui.adsabs.harvard.edu/abs/2020ApJ...903..142G/abstract),
-   [BibTex](https://ui.adsabs.harvard.edu/abs/2020ApJ...903..142G/exportcitation))
+   [BibTex](https://ui.adsabs.harvard.edu/abs/2020ApJ...903..142G/exportcitation)) -->
 * `MHD_PI`, please also cite
-  `Kado-Fong et al. (2020)`
-  ([ADS](https://ui.adsabs.harvard.edu/abs/2020ApJ...897..143K/abstract),
-   [BibTex](https://ui.adsabs.harvard.edu/abs/2020ApJ...897..143K/exportcitation))
+  {cite:t}`2020ApJ...897..143K`
+  <!-- ([ADS](https://ui.adsabs.harvard.edu/abs/2020ApJ...897..143K/abstract), -->
+   <!-- [BibTex](https://ui.adsabs.harvard.edu/abs/2020ApJ...897..143K/exportcitation)) -->
+
+
+## Examples
+
+```{tableofcontents}
+```
+
+## References
+
+```{bibliography}
+```

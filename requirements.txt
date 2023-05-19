@@ -1,0 +1,12 @@
+jupyter-book
+matplotlib
+numpy
+scipy
+astropy
+pandas
+docutils==0.17.1
+yt
+xarray
+h5py
+urllib3
+tqdm
