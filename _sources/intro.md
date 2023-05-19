@@ -1,7 +1,7 @@
 # TIGRESS public data release
 
 [<img src="https://img.shields.io/badge/DOI-10.34770%2Fackh--7y71-blue">](https://doi.org/10.34770/ackh-7y71)
-[<img src="https://raw.githubusercontent.com/FortAwesome/Font-Awesome/6.x/svgs/solid/book.svg" width=30 height=30>](https://princetonuniversity.github.io/astro-tigress/)
+[![Jupyter Book Badge](https://jupyterbook.org/badge.svg)](https://princetonuniversity.github.io/astro-tigress/)
 
 ## Data Download
 
