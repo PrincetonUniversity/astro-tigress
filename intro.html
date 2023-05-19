@@ -61,7 +61,7 @@ const thebe_selector_input = "pre"
 const thebe_selector_output = ".output, .cell_output"
 </script>
     <script async="async" src="_static/sphinx-thebe.js"></script>
-    <script>DOCUMENTATION_OPTIONS.pagename = 'index';</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'intro';</script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="Installation" href="install.html" />
@@ -249,7 +249,7 @@ const thebe_selector_output = ".output, .cell_output"
       
       
       
-      <li><a href="https://github.com/PrincetonUniversity/astro-tigress/issues/new?title=Issue%20on%20page%20%2Findex.html&body=Your%20issue%20content%20here." target="_blank"
+      <li><a href="https://github.com/PrincetonUniversity/astro-tigress/issues/new?title=Issue%20on%20page%20%2Fintro.html&body=Your%20issue%20content%20here." target="_blank"
    class="btn btn-sm btn-source-issues-button dropdown-item"
    title="Open an issue"
    data-bs-placement="left" data-bs-toggle="tooltip"
@@ -279,7 +279,7 @@ const thebe_selector_output = ".output, .cell_output"
       
       
       
-      <li><a href="_sources/index.md" target="_blank"
+      <li><a href="_sources/intro.md" target="_blank"
    class="btn btn-sm btn-download-source-button dropdown-item"
    title="Download source file"
    data-bs-placement="left" data-bs-toggle="tooltip"
@@ -375,9 +375,10 @@ document.write(`
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#installation-of-scripts">Installation of scripts</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#quickstart">Quickstart</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#data-types">Data types</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tutorials">Tutorials</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#further-analysis">Further analysis</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#license-and-attribution">License and Attribution</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#examples">Examples</a><ul class="nav section-nav flex-column">
+</ul>
+</li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#references">References</a></li>
 </ul>
             </nav>
@@ -394,12 +395,6 @@ document.write(`
 <h1>TIGRESS public data release<a class="headerlink" href="#tigress-public-data-release" title="Permalink to this heading">#</a></h1>
 <p><a class="reference external" href="https://doi.org/10.34770/ackh-7y71"><img src="https://img.shields.io/badge/DOI-10.34770%2Fackh--7y71-blue"></a>
 <a class="reference external" href="https://princetonuniversity.github.io/astro-tigress/"><img src="https://raw.githubusercontent.com/FortAwesome/Font-Awesome/6.x/svgs/solid/book.svg" width=30 height=30></a></p>
-<!--
-[:fontawesome-brands-github:](https://github.com/PrincetonUniversity/astro-tigress/tree/packaging)
-[:fontawesome-solid-book:](https://princetonuniversity.github.io/astro-tigress/)
--->
-<p><strong>Welcome to the TIGRESS data release!</strong></p>
-<p>This repo contains a series of python scripts and example jupyter notebooks that will help you read and analyze the TIGRESS simulation data.</p>
 <section id="data-download">
 <h2>Data Download<a class="headerlink" href="#data-download" title="Permalink to this heading">#</a></h2>
 <p>Full data can be downloaded via <a class="reference external" href="https://app.globus.org/file-manager?origin_id=dc43f461-0ca7-4203-848c-33a9fc00a464&amp;origin_path=%2Fackh-7y71%2F">Globus</a>.</p>
@@ -415,9 +410,6 @@ state is reached. Full MHD snapshots for every 1 Myr are available upon request.
 </section>
 <section id="installation-of-scripts">
 <h2>Installation of scripts<a class="headerlink" href="#installation-of-scripts" title="Permalink to this heading">#</a></h2>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>  <span class="n">pip</span> <span class="n">install</span> <span class="n">astro_tigress</span>
-</pre></div>
-</div>
 <p>The python scripts and example notebooks are available at the <a class="reference external" href="https://github.com/PrincetonUniversity/astro-tigress">GitHub</a> repository.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>  <span class="n">git</span> <span class="n">clone</span> <span class="n">git</span><span class="nd">@github</span><span class="o">.</span><span class="n">com</span><span class="p">:</span><span class="n">PrincetonUniversity</span><span class="o">/</span><span class="n">astro</span><span class="o">-</span><span class="n">tigress</span><span class="o">.</span><span class="n">git</span>
 </pre></div>
@@ -443,60 +435,91 @@ state is reached. Full MHD snapshots for every 1 Myr are available upon request.
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">MHD</span></code>: Small box (z=+-512 pc) original TIGRESS output for MHD variables including density, pressure, velocity (vector), and magnetic field (vector). Athena VTK format.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">MHD_PI</span></code>: Full box (z=+-3072 pc) MHD data plus electron abundance as a result of UV radiation post-processing. Athena VTK format.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">chem</span></code>: The chemistry post-processing small box output for molecular hydrogen and CO abundnaces. Athena++ HDF5 format.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">chem</span></code>: The chemistry post-processing small box output for molecular hydrogen and CO abundances. Athena++ HDF5 format.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">CO_lines</span></code>: The CO lines, J(1-0) and J(2-1). RADMC-3D binary format.</p></li>
 </ul>
 <p>Note that the chemistry post-processing data is only available for <code class="docutils literal notranslate"><span class="pre">R8-2pc</span></code>.</p>
 </section>
-<section id="tutorials">
-<h2>Tutorials<a class="headerlink" href="#tutorials" title="Permalink to this heading">#</a></h2>
-<p>Start with playing the jupyter notebooks <strong>notebooks/</strong>, which contains examples for reading and analysing the data.</p>
-<ul class="simple">
-<li><p><a class="reference external" href="https://github.com/PrincetonUniversity/astro-tigress/blob/master/notebooks/read_data_1-MHD.ipynb">read_data_1-MHD.ipynb</a> shows you how to work with the original TIGRESS MHD output data (<a class="reference external" href="https://ui.adsabs.harvard.edu/abs/2017ApJ...846..133K/abstract">Kim &amp; Ostriker 2017</a>).</p></li>
-<li><p><a class="reference external" href="https://github.com/PrincetonUniversity/astro-tigress/blob/master/notebooks/read_data_2-chem-CO_lines.ipynb">read_data_2-chem-CO_lines.ipynb</a> gives examples working with the chemistry and CO line post-processing data (<a class="reference external" href="https://ui.adsabs.harvard.edu/abs/2018ApJ...858...16G/abstract">Gong et al 2018</a>, <a class="reference external" href="https://ui.adsabs.harvard.edu/abs/2020ApJ...903..142G/abstract">Gong et al. 2020</a>).</p></li>
-<li><p><a class="reference external" href="https://github.com/PrincetonUniversity/astro-tigress/blob/master/notebooks/read_data_3-MHD_PI.ipynb">read_data_3-MHD_PI.ipynb</a> gives examples working with the full-box MHD output with post-processed electro abundance data (<a class="reference external" href="https://ui.adsabs.harvard.edu/abs/2020ApJ...897..143K/abstract">Kado-Fong et al 2020</a>).</p></li>
-</ul>
-</section>
-<section id="further-analysis">
-<h2>Further analysis<a class="headerlink" href="#further-analysis" title="Permalink to this heading">#</a></h2>
-<p>Take a look at example notebooks showing how to construct synthetic HI PPV cube and dust polarization maps.</p>
-<ul class="simple">
-<li><p><a class="reference external" href="https://github.com/PrincetonUniversity/astro-tigress/blob/master/notebooks/example_1-synthetic-HI.ipynb">example_1-synthetic-HI.ipynb</a></p></li>
-<li><p><a class="reference external" href="https://github.com/PrincetonUniversity/astro-tigress/blob/master/notebooks/example_2-synthetic-dustpol.ipynb">example_2-synthetic-dustpol.ipynb</a></p></li>
-</ul>
-</section>
 <section id="license-and-attribution">
 <h2>License and Attribution<a class="headerlink" href="#license-and-attribution" title="Permalink to this heading">#</a></h2>
 <p>If you make use of</p>
-<ul class="simple">
+<ul>
 <li><p>only <code class="docutils literal notranslate"><span class="pre">MHD</span></code> data, please cite
-<code class="docutils literal notranslate"><span class="pre">Kim</span> <span class="pre">&amp;</span> <span class="pre">Ostriker</span> <span class="pre">(2017)</span></code>
-(<a class="reference external" href="https://ui.adsabs.harvard.edu/abs/2017ApJ...846..133K/abstract">ADS</a>,
-<a class="reference external" href="https://ui.adsabs.harvard.edu/abs/2017ApJ...846..133K/exportcitation">BibTex</a>)</p></li>
+<span id="id1">Kim and Ostriker [<a class="reference internal" href="#id10" title="Chang-Goo Kim and Eve C. Ostriker. Three-phase Interstellar Medium in Galaxies Resolving Evolution with Star Formation and Supernova Feedback (TIGRESS): Algorithms, Fiducial Model, and Convergence. \apj , 846(2):133, September 2017. arXiv:1612.03918, doi:10.3847/1538-4357/aa8599.">2017</a>]</span></p>
+<!-- `Kim & Ostriker (2017)`
+([ADS](https://ui.adsabs.harvard.edu/abs/2017ApJ...846..133K/abstract),
+ [BibTex](https://ui.adsabs.harvard.edu/abs/2017ApJ...846..133K/exportcitation)) -->
+</li>
 <li><p><code class="docutils literal notranslate"><span class="pre">chem</span></code> and/or <code class="docutils literal notranslate"><span class="pre">CO_lines</span></code> data, please also cite
-<code class="docutils literal notranslate"><span class="pre">Gong</span> <span class="pre">et</span> <span class="pre">al.</span> <span class="pre">(2018)</span></code>
-(<a class="reference external" href="https://ui.adsabs.harvard.edu/abs/2018ApJ...858...16G/abstract">ADS</a>,
-<a class="reference external" href="https://ui.adsabs.harvard.edu/abs/2018ApJ...858...16G/exportcitation">BibTex</a>)
-and <code class="docutils literal notranslate"><span class="pre">Gong</span> <span class="pre">et</span> <span class="pre">al.</span> <span class="pre">(2020)</span></code>
-(<a class="reference external" href="https://ui.adsabs.harvard.edu/abs/2020ApJ...903..142G/abstract">ADS</a>,
-<a class="reference external" href="https://ui.adsabs.harvard.edu/abs/2020ApJ...903..142G/exportcitation">BibTex</a>)</p></li>
+<span id="id2">Gong <em>et al.</em> [<a class="reference internal" href="#id8" title="Munan Gong, Eve C. Ostriker, and Chang-Goo Kim. The X $_CO$ Conversion Factor from Galactic Multiphase ISM Simulations. \apj , 858(1):16, May 2018. arXiv:1803.09822, doi:10.3847/1538-4357/aab9af.">2018</a>], Gong <em>et al.</em> [<a class="reference internal" href="#id5" title="Munan Gong, Eve C. Ostriker, Chang-Goo Kim, and Jeong-Gyu Kim. The Environmental Dependence of the X$_CO$ Conversion Factor. \apj , 903(2):142, November 2020. arXiv:2009.14631, doi:10.3847/1538-4357/abbdab.">2020</a>]</span></p>
+<!-- `Gong et al. (2018)`
+([ADS](https://ui.adsabs.harvard.edu/abs/2018ApJ...858...16G/abstract),
+ [BibTex](https://ui.adsabs.harvard.edu/abs/2018ApJ...858...16G/exportcitation))
+and `Gong et al. (2020)`
+([ADS](https://ui.adsabs.harvard.edu/abs/2020ApJ...903..142G/abstract),
+ [BibTex](https://ui.adsabs.harvard.edu/abs/2020ApJ...903..142G/exportcitation)) -->
+</li>
 <li><p><code class="docutils literal notranslate"><span class="pre">MHD_PI</span></code>, please also cite
-<code class="docutils literal notranslate"><span class="pre">Kado-Fong</span> <span class="pre">et</span> <span class="pre">al.</span> <span class="pre">(2020)</span></code>
-(<a class="reference external" href="https://ui.adsabs.harvard.edu/abs/2020ApJ...897..143K/abstract">ADS</a>,
-<a class="reference external" href="https://ui.adsabs.harvard.edu/abs/2020ApJ...897..143K/exportcitation">BibTex</a>)</p></li>
+<span id="id3">Kado-Fong <em>et al.</em> [<a class="reference internal" href="#id6" title="Erin Kado-Fong, Jeong-Gyu Kim, Eve C. Ostriker, and Chang-Goo Kim. Diffuse Ionized Gas in Simulations of Multiphase, Star-forming Galactic Disks. \apj , 897(2):143, July 2020. arXiv:2006.06697, doi:10.3847/1538-4357/ab9abd.">2020</a>]</span></p>
+<!-- ([ADS](https://ui.adsabs.harvard.edu/abs/2020ApJ...897..143K/abstract), -->
+ <!-- [BibTex](https://ui.adsabs.harvard.edu/abs/2020ApJ...897..143K/exportcitation)) -->
+</li>
 </ul>
+</section>
+<section id="examples">
+<h2>Examples<a class="headerlink" href="#examples" title="Permalink to this heading">#</a></h2>
+<div class="toctree-wrapper compound">
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">code packages</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="install.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api.html">API Reference</a></li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">data reading examples</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="read_data_1-MHD.html">MHD datasets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="read_data_2-chem-CO_lines.html">Chemistry and CO synthetic observations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="read_data_3-MHD_PI.html">MHD_PI datasets</a></li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">synthtic observation examples</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="example_1-synthetic-HI.html">Synthetic HI 21cm lines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="example_1-synthetic-HI.html#synthetic-hi">Synthetic HI</a></li>
+<li class="toctree-l1"><a class="reference internal" href="example_2-synthetic-dustpol.html">Synthetic dust polarization map</a></li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">additional examples</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="extract_data_subset.html">Extracting subset data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="extract_data_subset.html#read-data-using-yt-and-store-it-in-3d-numpy-arrays">Read data using yt and store it in 3D numpy arrays</a></li>
+<li class="toctree-l1"><a class="reference internal" href="extract_data_subset.html#quick-views-of-h2-column-density">Quick views of H2 column density</a></li>
+<li class="toctree-l1"><a class="reference internal" href="extract_data_subset.html#select-sub-region-to-extract-here-i-chose-region-surrounding-the-density-peak">Select sub region to extract: here I chose region surrounding the density peak</a></li>
+</ul>
+</div>
 </section>
 <section id="references">
 <h2>References<a class="headerlink" href="#references" title="Permalink to this heading">#</a></h2>
-<span class="target" id="id1"></span></section>
-<div class="toctree-wrapper compound">
+<div class="docutils container" id="id4">
+<dl class="citation">
+<dt class="label" id="id8"><span class="brackets"><a class="fn-backref" href="#id2">GongOstrikerKim18</a></span></dt>
+<dd><p>Munan Gong, Eve C. Ostriker, and Chang-Goo Kim. The X $_CO$ Conversion Factor from Galactic Multiphase ISM Simulations. <em>\apj </em>, 858(1):16, May 2018. <a class="reference external" href="https://arxiv.org/abs/1803.09822">arXiv:1803.09822</a>, <a class="reference external" href="https://doi.org/10.3847/1538-4357/aab9af">doi:10.3847/1538-4357/aab9af</a>.</p>
+</dd>
+<dt class="label" id="id5"><span class="brackets"><a class="fn-backref" href="#id2">GongOstrikerKimKim20</a></span></dt>
+<dd><p>Munan Gong, Eve C. Ostriker, Chang-Goo Kim, and Jeong-Gyu Kim. The Environmental Dependence of the X$_CO$ Conversion Factor. <em>\apj </em>, 903(2):142, November 2020. <a class="reference external" href="https://arxiv.org/abs/2009.14631">arXiv:2009.14631</a>, <a class="reference external" href="https://doi.org/10.3847/1538-4357/abbdab">doi:10.3847/1538-4357/abbdab</a>.</p>
+</dd>
+<dt class="label" id="id6"><span class="brackets"><a class="fn-backref" href="#id3">KadoFongKimOstrikerKim20</a></span></dt>
+<dd><p>Erin Kado-Fong, Jeong-Gyu Kim, Eve C. Ostriker, and Chang-Goo Kim. Diffuse Ionized Gas in Simulations of Multiphase, Star-forming Galactic Disks. <em>\apj </em>, 897(2):143, July 2020. <a class="reference external" href="https://arxiv.org/abs/2006.06697">arXiv:2006.06697</a>, <a class="reference external" href="https://doi.org/10.3847/1538-4357/ab9abd">doi:10.3847/1538-4357/ab9abd</a>.</p>
+</dd>
+<dt class="label" id="id10"><span class="brackets"><a class="fn-backref" href="#id1">KimOstriker17</a></span></dt>
+<dd><p>Chang-Goo Kim and Eve C. Ostriker. Three-phase Interstellar Medium in Galaxies Resolving Evolution with Star Formation and Supernova Feedback (TIGRESS): Algorithms, Fiducial Model, and Convergence. <em>\apj </em>, 846(2):133, September 2017. <a class="reference external" href="https://arxiv.org/abs/1612.03918">arXiv:1612.03918</a>, <a class="reference external" href="https://doi.org/10.3847/1538-4357/aa8599">doi:10.3847/1538-4357/aa8599</a>.</p>
+</dd>
+</dl>
 </div>
-<div class="toctree-wrapper compound">
-</div>
-<div class="toctree-wrapper compound">
-</div>
-<div class="toctree-wrapper compound">
-</div>
+</section>
 </section>
 
     <script type="text/x-thebe-config">
@@ -561,9 +584,10 @@ and <code class="docutils literal notranslate"><span class="pre">Gong</span> <sp
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#installation-of-scripts">Installation of scripts</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#quickstart">Quickstart</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#data-types">Data types</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tutorials">Tutorials</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#further-analysis">Further analysis</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#license-and-attribution">License and Attribution</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#examples">Examples</a><ul class="nav section-nav flex-column">
+</ul>
+</li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#references">References</a></li>
 </ul>
   </nav></div>
