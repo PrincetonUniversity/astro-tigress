@@ -411,7 +411,11 @@ state is reached. Full MHD snapshots for every 1 Myr are available upon request.
 <section id="installation-of-scripts">
 <h2>Installation of scripts<a class="headerlink" href="#installation-of-scripts" title="Permalink to this heading">#</a></h2>
 <p>The python scripts and example notebooks are available at the <a class="reference external" href="https://github.com/PrincetonUniversity/astro-tigress">GitHub</a> repository.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>  <span class="n">git</span> <span class="n">clone</span> <span class="n">git</span><span class="nd">@github</span><span class="o">.</span><span class="n">com</span><span class="p">:</span><span class="n">PrincetonUniversity</span><span class="o">/</span><span class="n">astro</span><span class="o">-</span><span class="n">tigress</span><span class="o">.</span><span class="n">git</span>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span><span class="w">    </span>git<span class="w"> </span>clone<span class="w"> </span>git@github.com:PrincetonUniversity/astro-tigress.git
+</pre></div>
+</div>
+<p>For document building, we use <code class="docutils literal notranslate"><span class="pre">jupyter-book</span></code></p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span><span class="w">    </span><span class="nv">PYTHONPATH</span><span class="o">=</span>./<span class="w"> </span>jupyter-book<span class="w"> </span>build<span class="w"> </span>docs
 </pre></div>
 </div>
 </section>
