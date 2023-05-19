@@ -23,8 +23,14 @@ state is reached. Full MHD snapshots for every 1 Myr are available upon request.
 
 The python scripts and example notebooks are available at the [GitHub](https://github.com/PrincetonUniversity/astro-tigress) repository.
 
+```sh
+git clone git@github.com:PrincetonUniversity/astro-tigress.git
 ```
-  git clone git@github.com:PrincetonUniversity/astro-tigress.git
+
+For document building, we use `jupyter-book`
+
+```sh
+PYTHONPATH=./ jupyter-book build docs
 ```
 
 ## Quickstart
@@ -55,16 +61,30 @@ Note that the chemistry post-processing data is only available for `R8-2pc`.
 If you make use of
 
 * only `MHD` data, please cite
-  `Kim & Ostriker (2017)`
+  {cite:t}`2017ApJ...846..133K`
+  <!-- `Kim & Ostriker (2017)`
   ([ADS](https://ui.adsabs.harvard.edu/abs/2017ApJ...846..133K/abstract),
-   [BibTex](https://ui.adsabs.harvard.edu/abs/2017ApJ...846..133K/exportcitation))
+   [BibTex](https://ui.adsabs.harvard.edu/abs/2017ApJ...846..133K/exportcitation)) -->
 * `chem` and/or `CO_lines` data, please also cite
-  `Gong et al. (2018)`
+  {cite:t}`2018ApJ...858...16G,2020ApJ...903..142G`
+  <!-- `Gong et al. (2018)`
   ([ADS](https://ui.adsabs.harvard.edu/abs/2018ApJ...858...16G/abstract),
    [BibTex](https://ui.adsabs.harvard.edu/abs/2018ApJ...858...16G/exportcitation))
   and `Gong et al. (2020)`
   ([ADS](https://ui.adsabs.harvard.edu/abs/2020ApJ...903..142G/abstract),
-   [BibTex](https://ui.adsabs.harvard.edu/abs/2020ApJ...903..142G/exportcitation))
+   [BibTex](https://ui.adsabs.harvard.edu/abs/2020ApJ...903..142G/exportcitation)) -->
 * `MHD_PI`, please also cite
-  ([ADS](https://ui.adsabs.harvard.edu/abs/2020ApJ...897..143K/abstract),
-   [BibTex](https://ui.adsabs.harvard.edu/abs/2020ApJ...897..143K/exportcitation))
+  {cite:t}`2020ApJ...897..143K`
+  <!-- ([ADS](https://ui.adsabs.harvard.edu/abs/2020ApJ...897..143K/abstract), -->
+   <!-- [BibTex](https://ui.adsabs.harvard.edu/abs/2020ApJ...897..143K/exportcitation)) -->
+
+
+## Examples
+
+```{tableofcontents}
+```
+
+## References
+
+```{bibliography}
+```

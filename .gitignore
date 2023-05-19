@@ -1,3 +1,10 @@
 *.ipynb_checkpoints/
 *__pycache__/
 *.pyc
+_build
+.DS_Store
+data/
+dist/
+site/
+*.fits
+*.nc
