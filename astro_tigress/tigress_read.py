@@ -1,12 +1,12 @@
 import os
 import os.path as osp
 import numpy as np
-import urllib.request
 
 from . import athena_read
 from . import const
 from . import ytathena as ya
 from . import radmc
+
 
 class Model:
     """Class containing the simulation model information.
@@ -24,14 +24,17 @@ class Model:
         if osp.isdir(self.dir_model):
             subdirs = os.listdir(self.dir_model)
             ivtks = sorted([int(x) for x in subdirs if x.isnumeric()])
-            self.ivtks = np.array(ivtks) #list of vtk numbers of outputs
+            self.ivtks = np.array(ivtks)  # list of vtk numbers of outputs
 
-            #contained data sets, e.g. ["MHD", "chem", "CO_lines"]
+            # contained data sets, e.g. ["MHD", "chem", "CO_lines"]
             self.data_sets = {}
             for ivtk in self.ivtks:
                 dir_ivtk = "{:s}{:04d}/".format(self.dir_model, ivtk)
-                self.data_sets[ivtk] = [d for d in os.listdir(dir_ivtk)
-                                        if os.path.isdir(os.path.join(dir_ivtk,d)) ]
+                self.data_sets[ivtk] = [
+                    d
+                    for d in os.listdir(dir_ivtk)
+                    if os.path.isdir(os.path.join(dir_ivtk, d))
+                ]
         self._load_hst()
         self._load_input()
         self.CO_lines = {}
@@ -39,16 +42,15 @@ class Model:
 
     def _load_hst(self):
         # check history file
-        fn_hst = "{:s}history/MHD/{:s}.hst".format(self.dir_model,self.model_id)
+        fn_hst = "{:s}history/MHD/{:s}.hst".format(self.dir_model, self.model_id)
         if osp.isfile(fn_hst):
             self.hst = athena_read.hst(fn_hst)
             self.fn_hst = fn_hst
 
     def _load_input(self):
         # read time output interval in input file
-        fn_input_MHD = "{:s}input/MHD/{:s}.par".format(
-                          self.dir_model,self.model_id)
-        #time units
+        fn_input_MHD = "{:s}input/MHD/{:s}.par".format(self.dir_model, self.model_id)
+        # time units
         self.tunit = const.pc / const.km
         self.tunit_Myr = self.tunit / const.Myr
         if osp.isfile(fn_input_MHD):
@@ -64,9 +66,9 @@ class Model:
     def show(self):
         """Print available data list"""
         print("Avalable data:")
-        if hasattr(self,'fn_hst'):
+        if hasattr(self, "fn_hst"):
             print("  history")
-        if hasattr(self,'fn_input_MHD'):
+        if hasattr(self, "fn_input_MHD"):
             print("  input")
         for i in self.ivtks:
             print("  ivtk = {:d}".format(i), end=" ")
@@ -74,7 +76,7 @@ class Model:
                 print(d, end=" ")
             print(" ")
 
-    def download(self, ivtk=300, dataset="MHD", Z=1., iline=1):
+    def download(self, ivtk=300, dataset="MHD", Z=1.0, iline=1):
         """Download simulation data from a certain data set.
 
         Parameters
@@ -91,14 +93,13 @@ class Model:
 
         fn = self._set_filename(ivtk, Z=Z, iline=iline)
         if dataset == "all":
-            for d,f in fn.items():
+            for d, f in fn.items():
                 self._download_file(f)
         else:
             for d in np.atleast_1d(dataset):
                 self._download_file(fn[d])
 
-
-    def load(self, ivtk, dataset="MHD", Z=1., iline=1, Tdect=0.):
+    def load(self, ivtk, dataset="MHD", Z=1.0, iline=1, Tdect=0.0):
         """Load simulation data from a certain data set.
 
         Parameters
@@ -123,7 +124,7 @@ class Model:
             for d in np.atleast_1d(dataset):
                 self._loadone(fn[d], d, iline=iline, Tdect=Tdect)
 
-    def _loadone(self,f,d,iline=1,Tdect=0.):
+    def _loadone(self, f, d, iline=1, Tdect=0.0):
         if d == "MHD":
             self.MHD = DataMHD(f)
         elif d == "chem":
@@ -137,22 +138,27 @@ class Model:
             msg += 'dataset: {"MHD", "chem", "CO_lines", "MHD_PI"}'
             raise RuntimeError(msg)
 
-    def _set_filename(self, ivtk, Z=1., iline=1, add_master=False):
+    def _set_filename(self, ivtk, Z=1.0, iline=1, add_master=False):
         source_dir_ivtk = "{:s}/{:04d}/".format(self.model_id, ivtk)
-        if add_master: source_dir_ivtk = osp.join(self.dir_master, source_dir_ivtk)
-        dict_Z = {0.5:"Z05", 1.:"Z1", 2.:"Z2"}
+        if add_master:
+            source_dir_ivtk = osp.join(self.dir_master, source_dir_ivtk)
+        dict_Z = {0.5: "Z05", 1.0: "Z1", 2.0: "Z2"}
         Z_id = dict_Z[Z]
         fn = dict()
-        fn['MHD'] = "{:s}MHD/{:s}.{:04d}.vtk".format(
-                      source_dir_ivtk, self.model_id, ivtk)
-        fn['MHD_PI'] = "{:s}MHD_PI/{:s}.{:04d}.vtk".format(
-                      source_dir_ivtk, self.model_id, ivtk)
-        fn['chem'] = "{:s}chem/{:s}/{:s}-{:s}.{:04d}.athdf".format(
-                      source_dir_ivtk, Z_id, self.model_id, Z_id, ivtk)
-        fn['CO_lines'] = "{:s}CO_lines/{:s}/il{:d}/{:s}-{:s}.il{:d}.{:04d}.bout".format(
-                      source_dir_ivtk, Z_id, iline, self.model_id, Z_id, iline, ivtk)
-        fn['history'] = "{0:s}/history/MHD/{0:s}.hst".format(self.model_id)
-        fn['input'] = "{0:s}/input/MHD/{0:s}.par".format(self.model_id)
+        fn["MHD"] = "{:s}MHD/{:s}.{:04d}.vtk".format(
+            source_dir_ivtk, self.model_id, ivtk
+        )
+        fn["MHD_PI"] = "{:s}MHD_PI/{:s}.{:04d}.vtk".format(
+            source_dir_ivtk, self.model_id, ivtk
+        )
+        fn["chem"] = "{:s}chem/{:s}/{:s}-{:s}.{:04d}.athdf".format(
+            source_dir_ivtk, Z_id, self.model_id, Z_id, ivtk
+        )
+        fn["CO_lines"] = "{:s}CO_lines/{:s}/il{:d}/{:s}-{:s}.il{:d}.{:04d}.bout".format(
+            source_dir_ivtk, Z_id, iline, self.model_id, Z_id, iline, ivtk
+        )
+        fn["history"] = "{0:s}/history/MHD/{0:s}.hst".format(self.model_id)
+        fn["input"] = "{0:s}/input/MHD/{0:s}.par".format(self.model_id)
         return fn
 
     def _download_file(self, f):
@@ -160,38 +166,42 @@ class Model:
         from urllib.error import URLError
         import shutil
 
-        target = osp.join(self.dir_master,f)
+        target = osp.join(self.dir_master, f)
         if osp.isfile(target):
-            print("{} ({:.5f}GB) already exists".format(f,
-                osp.getsize(target)/2**30))
+            print(
+                "{} ({:.5f}GB) already exists".format(f, osp.getsize(target) / 2**30)
+            )
             while True:
                 answer = input("overwrite? [y/n]:")
-                if answer.lower() in ['y','n']:
+                if answer.lower() in ["y", "n"]:
                     break
-            if answer.lower() == 'n': return
-        os.makedirs(osp.dirname(target),exist_ok=True)
+            if answer.lower() == "n":
+                return
+        os.makedirs(osp.dirname(target), exist_ok=True)
 
-        url = 'https://tigress-web.princeton.edu/~munan/astro-tigress/'
-        source = url+f
+        url = "https://tigress-web.princeton.edu/~munan/astro-tigress/"
+        source = url + f
         req = urllib.request.Request(source)
 
         try:
             response = urllib.request.urlopen(req)
         except URLError as e:
-            if hasattr(e, 'reason'):
-                print('We failed to reach a server.')
-                print('Reason: ', e.reason)
-            elif hasattr(e, 'code'):
-                print('The server couldn\'t fulfill the request.')
-                print('Error code: ', e.code)
+            if hasattr(e, "reason"):
+                print("We failed to reach a server.")
+                print("Reason: ", e.reason)
+            elif hasattr(e, "code"):
+                print("The server couldn't fulfill the request.")
+                print("Error code: ", e.code)
         else:
             print("We reached ", url)
-            print("  downloading...",osp.basename(source),end=" ")
-            with urllib.request.urlopen(source) as response, \
-                    open(target, 'wb') as target:
+            print("  downloading...", osp.basename(source), end=" ")
+            with urllib.request.urlopen(source) as response, open(
+                target, "wb"
+            ) as target:
                 shutil.copyfileobj(response, target)
-            #urllib.request.urlretrieve(source,target)
+            # urllib.request.urlretrieve(source,target)
             print(" complete!")
+
 
 class DataMHD:
     """MHD data in one time snapshot.
@@ -201,11 +211,13 @@ class DataMHD:
     fn: str
         filename.
     """
+
     def __init__(self, fn):
         self.fn = fn
-        self.ytds = ya.load_athena4p2_mhd(fn) #yt data
-        self.grid = ya.get_covering_grid(self.ytds) #yt covering grid
+        self.ytds = ya.load_athena4p2_mhd(fn)  # yt data
+        self.grid = ya.get_covering_grid(self.ytds)  # yt covering grid
         return
+
 
 class DataRad:
     """UV data in one time snapshot.
@@ -215,11 +227,13 @@ class DataRad:
     fn: str
         filename.
     """
+
     def __init__(self, fn):
         self.fn = fn
-        self.ytds = ya.load_athena4p2_rad(fn) #yt data
-        self.grid = ya.get_covering_grid(self.ytds) #yt covering grid
+        self.ytds = ya.load_athena4p2_rad(fn)  # yt data
+        self.grid = ya.get_covering_grid(self.ytds)  # yt covering grid
         return
+
 
 class DataChem:
     """Chemistry data in one time snapshot.
@@ -229,11 +243,13 @@ class DataChem:
     fn: str
         filename.
     """
+
     def __init__(self, fn):
         self.fn = fn
-        self.ytds = ya.load_athenapp(fn) #yt data
-        self.grid = ya.get_covering_grid(self.ytds) #yt covering grid
+        self.ytds = ya.load_athenapp(fn)  # yt data
+        self.grid = ya.get_covering_grid(self.ytds)  # yt covering grid
         return
+
     def get_col(self, spec, axis=2):
         """Calculate the column density of species.
 
@@ -253,9 +269,10 @@ class DataChem:
         dx = self.grid["dx"][0, 0, 0]
         nH = self.grid["nH"]
         abd = self.grid[spec]
-        ns = abd*nH
-        col = ns.sum(axis=2)*dx
+        ns = abd * nH
+        col = ns.sum(axis=2) * dx
         return col
+
 
 class DataCO:
     """CO emission lines PPV in one time snapshot.
@@ -270,22 +287,21 @@ class DataCO:
         detection limit for atenna temperature in K
         for each velocity channel.
     """
-    def __init__(self, fn, iline, Tdect=0.):
+
+    def __init__(self, fn, iline, Tdect=0.0):
         if iline == 1:
             self.lam0 = 2600.75763346
         elif iline == 2:
             self.lam0 = 1300.4036558
         else:
             msg = "ERROR: DataCO.__init__(): "
-            msg += "Line index {:d} not recognized (iline={1,2}).".format(
-                    iline)
+            msg += "Line index {:d} not recognized (iline=[1,2]).".format(iline)
             raise RuntimeError(msg)
         self.fn = fn
         self.Tdect = Tdect
-        self.img = radmc.Images(fn, lam0=self.lam0)  #PPV cube
-        self.WCO = self.img.getimageWCO(Tdect=Tdect) #CO line intensity in K*km/s
-        self.Tpeak = self.img.getTpeak(Tdect=Tdect)  #peak atenna temperature in K
-        #brightness weighted mean velocity and velocity dispersion in km/s
-        self.vz, self.sigmav= self.img.getimage_velocities(Tdect=Tdect)
+        self.img = radmc.Images(fn, lam0=self.lam0)  # PPV cube
+        self.WCO = self.img.getimageWCO(Tdect=Tdect)  # CO line intensity in K*km/s
+        self.Tpeak = self.img.getTpeak(Tdect=Tdect)  # peak atenna temperature in K
+        # brightness weighted mean velocity and velocity dispersion in km/s
+        self.vz, self.sigmav = self.img.getimage_velocities(Tdect=Tdect)
         return
-

@@ -73,7 +73,7 @@ def hst(filename, raw=False):
         data_names = re.findall(r'\[\d+\]=(\S+)', header)
         if len(data_names) == 0:
             raise AthenaError('Header could not be parsed')
-        #skip comments
+        # skip comments
         start_data = data_file.tell()
         line = data_file.readline()
         while line.startswith("#"):
@@ -1018,7 +1018,8 @@ def athinput(filename):
     # Read data
     with open(filename, 'r') as athinput:
         # remove comments, extra whitespace, and empty lines
-        lines = [_f for _f in [i.split('#')[0].strip() for i in athinput.readlines()] if _f]
+        lines = [_f for _f in
+                 [i.split('#')[0].strip() for i in athinput.readlines()] if _f]
     data = {}
     # split into blocks, first element will be empty
     blocks = ('\n'.join(lines)).split('<')[1:]
