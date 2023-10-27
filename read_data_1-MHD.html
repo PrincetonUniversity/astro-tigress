@@ -402,7 +402,24 @@ document.write(`
 <div id="searchbox"></div>
                 <article class="bd-article" role="main">
                   
-  <div class="cell tag_hide-cell docutils container">
+  <div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">scipy.interpolate</span> <span class="kn">import</span> <span class="n">interp1d</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">yt</span>  <span class="c1"># https://yt-project.org/</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+
+<span class="c1"># add path to astro_tigress module</span>
+<span class="c1"># this can also be done using PYTHONPATH environment variable</span>
+<span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="s2">&quot;../&quot;</span><span class="p">)</span>
+
+<span class="kn">import</span> <span class="nn">astro_tigress</span>  <span class="c1"># noqa</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell tag_hide-cell docutils container">
 <details class="hide above-input">
 <summary aria-label="Toggle hidden content">
 <span class="collapsed">Show code cell content</span>
@@ -419,16 +436,6 @@ document.write(`
 <section class="tex2jax_ignore mathjax_ignore" id="mhd-datasets">
 <h1>MHD datasets<a class="headerlink" href="#mhd-datasets" title="Permalink to this heading">#</a></h1>
 <p>This script focus on reading and analysing the original MHD dataset from the original TIGRESS simulation run by the Athena4.2 code (<a class="reference external" href="https://ui.adsabs.harvard.edu/abs/2017ApJ...846..133K/abstract">Kim &amp; Ostriker (2017)</a>). The vertical dimension is trucated at <span class="math notranslate nohighlight">\(z=\pm512{\rm pc}\)</span></p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">from</span> <span class="nn">scipy.interpolate</span> <span class="kn">import</span> <span class="n">interp1d</span>
-<span class="kn">import</span> <span class="nn">yt</span> <span class="c1"># https://yt-project.org/</span>
-</pre></div>
-</div>
-</div>
-</div>
 <section id="examining-the-simulation-model-information">
 <h2>Examining the simulation model information<a class="headerlink" href="#examining-the-simulation-model-information" title="Permalink to this heading">#</a></h2>
 <div class="cell docutils container">
@@ -436,7 +443,7 @@ document.write(`
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Need to set the master directory where the data is stored</span>
 <span class="n">dir_master</span> <span class="o">=</span> <span class="s2">&quot;../data/&quot;</span>
 <span class="c1"># name of the simulation model</span>
-<span class="n">model_id</span> <span class="o">=</span> <span class="s2">&quot;R8_4pc&quot;</span> 
+<span class="n">model_id</span> <span class="o">=</span> <span class="s2">&quot;R8_4pc&quot;</span>
 </pre></div>
 </div>
 </div>
@@ -447,15 +454,9 @@ document.write(`
 <p>For the “R8_2pc” simulation, we release the data in the time frame when the simulation has already reached a steady state. The data release time interval is about 10 Myr.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># add path to astro_tigress module</span>
-<span class="c1"># this can also be done using PYTHONPATH environment variable</span>
-<span class="kn">import</span> <span class="nn">sys</span>
-<span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="s1">&#39;../&#39;</span><span class="p">)</span>
-
-<span class="kn">import</span> <span class="nn">astro_tigress</span>
-<span class="c1">#one can download a data snapshot using `download` method</span>
-<span class="c1">#dataset can be one of [&quot;MHD&quot;, &quot;chem&quot;, &quot;CO_lines&quot;, &quot;history&quot;, &quot;input&quot;, &quot;all&quot;]</span>
-<span class="n">model</span> <span class="o">=</span> <span class="n">astro_tigress</span><span class="o">.</span><span class="n">Model</span><span class="p">(</span><span class="n">model_id</span><span class="p">,</span><span class="n">dir_master</span><span class="p">)</span> <span class="c1">#reading the model information</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># one can download a data snapshot using `download` method</span>
+<span class="c1"># dataset can be one of [&quot;MHD&quot;, &quot;chem&quot;, &quot;CO_lines&quot;, &quot;history&quot;, &quot;input&quot;, &quot;all&quot;]</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">astro_tigress</span><span class="o">.</span><span class="n">Model</span><span class="p">(</span><span class="n">model_id</span><span class="p">,</span> <span class="n">dir_master</span><span class="p">)</span>  <span class="c1"># reading the model information</span>
 </pre></div>
 </div>
 </div>
@@ -474,7 +475,11 @@ document.write(`
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Snapshots and contained data sets:&quot;</span><span class="p">)</span>
 <span class="k">for</span> <span class="n">ivtk</span> <span class="ow">in</span> <span class="n">model</span><span class="o">.</span><span class="n">ivtks</span><span class="p">:</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;ivtk=</span><span class="si">{:d}</span><span class="s2">, t=</span><span class="si">{:.1f}</span><span class="s2"> Myr, datasets=</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">ivtk</span><span class="p">,</span> <span class="n">ivtk</span><span class="o">*</span><span class="n">model</span><span class="o">.</span><span class="n">dt_Myr</span><span class="p">,</span> <span class="n">model</span><span class="o">.</span><span class="n">data_sets</span><span class="p">[</span><span class="n">ivtk</span><span class="p">]))</span>
+    <span class="nb">print</span><span class="p">(</span>
+        <span class="s2">&quot;ivtk=</span><span class="si">{:d}</span><span class="s2">, t=</span><span class="si">{:.1f}</span><span class="s2"> Myr, datasets=</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+            <span class="n">ivtk</span><span class="p">,</span> <span class="n">ivtk</span> <span class="o">*</span> <span class="n">model</span><span class="o">.</span><span class="n">dt_Myr</span><span class="p">,</span> <span class="n">model</span><span class="o">.</span><span class="n">data_sets</span><span class="p">[</span><span class="n">ivtk</span><span class="p">]</span>
+        <span class="p">)</span>
+    <span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -490,14 +495,14 @@ ivtk=300, t=293.3 Myr, datasets=[&#39;Bfield&#39;, &#39;MHD&#39;, &#39;MHD_PI&#3
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
 <span class="n">ax</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">111</span><span class="p">)</span>
-<span class="c1">#star formation rate (averaged over 40 Myr)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">hst</span><span class="p">[</span><span class="s2">&quot;time&quot;</span><span class="p">]</span><span class="o">*</span><span class="n">model</span><span class="o">.</span><span class="n">tunit_Myr</span><span class="p">,</span> <span class="n">model</span><span class="o">.</span><span class="n">hst</span><span class="p">[</span><span class="s2">&quot;sfr40&quot;</span><span class="p">],</span> <span class="s2">&quot;k-&quot;</span><span class="p">)</span>
-<span class="c1">#snapshots</span>
-<span class="n">f</span> <span class="o">=</span> <span class="n">interp1d</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">hst</span><span class="p">[</span><span class="s2">&quot;time&quot;</span><span class="p">]</span><span class="o">*</span><span class="n">model</span><span class="o">.</span><span class="n">tunit_Myr</span><span class="p">,</span> <span class="n">model</span><span class="o">.</span><span class="n">hst</span><span class="p">[</span><span class="s2">&quot;sfr40&quot;</span><span class="p">])</span>
+<span class="c1"># star formation rate (averaged over 40 Myr)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">hst</span><span class="p">[</span><span class="s2">&quot;time&quot;</span><span class="p">]</span> <span class="o">*</span> <span class="n">model</span><span class="o">.</span><span class="n">tunit_Myr</span><span class="p">,</span> <span class="n">model</span><span class="o">.</span><span class="n">hst</span><span class="p">[</span><span class="s2">&quot;sfr40&quot;</span><span class="p">],</span> <span class="s2">&quot;k-&quot;</span><span class="p">)</span>
+<span class="c1"># snapshots</span>
+<span class="n">f</span> <span class="o">=</span> <span class="n">interp1d</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">hst</span><span class="p">[</span><span class="s2">&quot;time&quot;</span><span class="p">]</span> <span class="o">*</span> <span class="n">model</span><span class="o">.</span><span class="n">tunit_Myr</span><span class="p">,</span> <span class="n">model</span><span class="o">.</span><span class="n">hst</span><span class="p">[</span><span class="s2">&quot;sfr40&quot;</span><span class="p">])</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">t_Myr</span><span class="p">,</span> <span class="n">f</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">t_Myr</span><span class="p">),</span> <span class="s2">&quot;bo&quot;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;available snapshots&quot;</span><span class="p">)</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">&quot;$\Sigma_{SFR,40}\ (M_\odot kpc^{-2} yr^{-1})$&quot;</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&quot;t (Myr)&quot;</span><span class="p">);</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&quot;t (Myr)&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -511,7 +516,7 @@ ivtk=300, t=293.3 Myr, datasets=[&#39;Bfield&#39;, &#39;MHD&#39;, &#39;MHD_PI&#3
 <p>Now, we want to look into the detailed 3D simulation data of the simulations. First, we select a snapshot (identified by its ivtk number) and the type of dataset we want to look into (“MHD” in this case). Then we need to load the data. Because the data files are large, it can take a while to load.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#load the MHD data set for the snapshot ivtk=300</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># load the MHD data set for the snapshot ivtk=300</span>
 <span class="n">model</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="mi">300</span><span class="p">,</span> <span class="n">dataset</span><span class="o">=</span><span class="s2">&quot;MHD&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -521,7 +526,7 @@ ivtk=300, t=293.3 Myr, datasets=[&#39;Bfield&#39;, &#39;MHD&#39;, &#39;MHD_PI&#3
 <p>I will show you how to access these fields and convert them into numpy arrays later. But first, you can print out the information of all the fields available using the code below (I commented it because the output is too long).</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#model.MHD.ytds.field_info</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># model.MHD.ytds.field_info</span>
 </pre></div>
 </div>
 </div>
@@ -529,10 +534,15 @@ ivtk=300, t=293.3 Myr, datasets=[&#39;Bfield&#39;, &#39;MHD&#39;, &#39;MHD_PI&#3
 <p>Let’s start with an example reading the density field (the name of the field is simply “density”).</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">density</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">MHD</span><span class="o">.</span><span class="n">grid</span><span class="p">[(</span><span class="s2">&quot;gas&quot;</span><span class="p">,</span><span class="s2">&quot;density&quot;</span><span class="p">)]</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;The dimensions of the 3D density field: Nx=</span><span class="si">{:d}</span><span class="s2">, Ny=</span><span class="si">{:d}</span><span class="s2">, Nz=</span><span class="si">{:d}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
-       <span class="n">density</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">density</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">density</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">2</span><span class="p">]))</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;The first 3 elements of the density field (along the z axis): &quot;</span><span class="p">,</span> <span class="n">density</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="p">:</span><span class="mi">3</span><span class="p">])</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">density</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">MHD</span><span class="o">.</span><span class="n">grid</span><span class="p">[(</span><span class="s2">&quot;gas&quot;</span><span class="p">,</span> <span class="s2">&quot;density&quot;</span><span class="p">)]</span>
+<span class="nb">print</span><span class="p">(</span>
+    <span class="s2">&quot;The dimensions of the 3D density field: Nx=</span><span class="si">{:d}</span><span class="s2">, Ny=</span><span class="si">{:d}</span><span class="s2">, Nz=</span><span class="si">{:d}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+        <span class="n">density</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">density</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">density</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+    <span class="p">)</span>
+<span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span>
+    <span class="s2">&quot;The first 3 elements of the density field (along the z axis): &quot;</span><span class="p">,</span> <span class="n">density</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="p">:</span><span class="mi">3</span><span class="p">]</span>
+<span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Check the type of the variable: &quot;</span><span class="p">,</span> <span class="nb">type</span><span class="p">(</span><span class="n">density</span><span class="p">))</span>
 </pre></div>
 </div>
@@ -548,8 +558,10 @@ Check the type of the variable:  &lt;class &#39;unyt.array.unyt_array&#39;&gt;
 <p>You can see that there is a <em>unit</em> “code_mass/code_length**3” attached to the density field, which has the type of a YT array. Of course, you want to convert it to a sensible physical unit, which you can do by:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;The first 3 elements of the density field in physical units: &quot;</span><span class="p">,</span> 
-      <span class="n">density</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="p">:</span><span class="mi">3</span><span class="p">]</span><span class="o">.</span><span class="n">in_units</span><span class="p">(</span><span class="s2">&quot;g/cm**3&quot;</span><span class="p">))</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span>
+    <span class="s2">&quot;The first 3 elements of the density field in physical units: &quot;</span><span class="p">,</span>
+    <span class="n">density</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="p">:</span><span class="mi">3</span><span class="p">]</span><span class="o">.</span><span class="n">in_units</span><span class="p">(</span><span class="s2">&quot;g/cm**3&quot;</span><span class="p">),</span>
+<span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -566,8 +578,10 @@ Check the type of the variable:  &lt;class &#39;unyt.array.unyt_array&#39;&gt;
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">density_np</span> <span class="o">=</span> <span class="n">density</span><span class="o">.</span><span class="n">in_units</span><span class="p">(</span><span class="s2">&quot;g/cm**3&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">value</span>
 <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Check the type of the variable: &quot;</span><span class="p">,</span> <span class="nb">type</span><span class="p">(</span><span class="n">density_np</span><span class="p">))</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;The first 3 elements of the density field in physical units of g/cm**3, converted to numpy array: &quot;</span><span class="p">,</span> 
-      <span class="n">density_np</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="p">:</span><span class="mi">3</span><span class="p">])</span>
+<span class="nb">print</span><span class="p">(</span>
+    <span class="s2">&quot;The first 3 elements of the density field in physical units of g/cm**3, converted to numpy array: &quot;</span><span class="p">,</span>
+    <span class="n">density_np</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="p">:</span><span class="mi">3</span><span class="p">],</span>
+<span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -584,9 +598,9 @@ The first 3 elements of the density field in physical units of g/cm**3, converte
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
 <span class="n">ax</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">111</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">density_np</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)),</span> <span class="n">bins</span><span class="o">=</span><span class="mi">50</span><span class="p">);</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">density_np</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)),</span> <span class="n">bins</span><span class="o">=</span><span class="mi">50</span><span class="p">)</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">set_yscale</span><span class="p">(</span><span class="s2">&quot;log&quot;</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;$\log_</span><span class="si">{10}</span><span class="s2">[\rho / (g/cm^3)]$&quot;</span><span class="p">);</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;$\log_</span><span class="si">{10}</span><span class="s2">[\rho / (g/cm^3)]$&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
