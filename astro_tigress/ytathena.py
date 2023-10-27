@@ -1,27 +1,22 @@
 import matplotlib.pyplot as plt
 import yt
-from yt.data_objects.level_sets.api import *
+from yt.data_objects.level_sets.api import Clump
 import yt.units as u
-from yt import add_field
 from yt import YTQuantity
-from yt.utilities.physical_constants import \
-    mh, \
-    me, \
-    sigma_thompson, \
-    clight, \
-    kboltz, \
-    G
+from yt.utilities.physical_constants import mh, kboltz
 import numpy as np
 import copy
 import math
 from yt.funcs import mylog
 import os
+import const
+
 dirpath = os.path.dirname(__file__)
 
 mylog.setLevel(50)
 
 global Zdg, GxHe, GxC, GxO, GxSi
-Gzdg = 1.
+Gzdg = 1.0
 GxHe = 0.1
 GxC = 1.6e-4 * Gzdg
 GxO = 3.2e-4 * Gzdg
@@ -32,7 +27,7 @@ muH = 1.4271
 
 
 class coolftn(object):
-    def __init__(self, fname=os.path.join(dirpath, 'coolftn.txt')):
+    def __init__(self, fname=os.path.join(dirpath, "coolftn.txt")):
         cdf = np.loadtxt(fname)
         self.cool = cdf[:, 0]
         self.heat = cdf[:, 1]
@@ -87,6 +82,7 @@ class coolftn(object):
 
         return heat
 
+
 # basic qunatities with renormalization
 
 
@@ -95,7 +91,8 @@ def _ndensity(field, data):
 
 
 def _ram_pok_z(field, data):
-    return data["gas", "density"] * data["gas", "velocity_z"]**2 / kboltz
+    return data["gas", "density"] * data["gas", "velocity_z"] ** 2 / kboltz
+
 
 # thermodynamics quantities
 
@@ -132,19 +129,23 @@ def _dvelocity(field, data):
 
 
 def _dvelocity_mag(field, data):
-    return np.sqrt(data["gas", "velocity_x"]**2 +
-                   data["gas", "dvelocity_y"]**2 +
-                   data["gas", "velocity_z"]**2)
+    return np.sqrt(
+        data["gas", "velocity_x"] ** 2
+        + data["gas", "dvelocity_y"] ** 2
+        + data["gas", "velocity_z"] ** 2
+    )
 
 
 def _dkinetic_energy(field, data):
-    return 0.5 * data['gas', 'dvelocity_magnitude']**2 * data['gas', 'density']
+    return 0.5 * data["gas", "dvelocity_magnitude"] ** 2 * data["gas", "density"]
+
 
 # magnetic fields
 
 
 def _mag_pok(field, data):
     return data["gas", "magnetic_pressure"] / kboltz
+
 
 # chemistry
 
@@ -158,9 +159,15 @@ def _C(field, data):
 
 
 def _H(field, data):
-    return (1. - (data["H2"] * 2 + 3 * data["H3+"] +
-                  2 * data["H2+"] + data["H+"] + data["HCO+"] +
-                  data["CHx"] + data["OHx"]))
+    return 1.0 - (
+        data["H2"] * 2
+        + 3 * data["H3+"]
+        + 2 * data["H2+"]
+        + data["H+"]
+        + data["HCO+"]
+        + data["CHx"]
+        + data["OHx"]
+    )
 
 
 def _O(field, data):
@@ -188,27 +195,28 @@ def _tH2(field, data):
 
 
 def _electron(field, data):
-    return (data["He+"] + data["C+"] + data["HCO+"] +
-            data["H+"] + data["H3+"] + data["H2+"])
+    return (
+        data["He+"] + data["C+"] + data["HCO+"] + data["H+"] + data["H3+"] + data["H2+"]
+    )
 
 
 def _temperature_chem(field, data):
     kb = 1.381e-16
-    return yt.units.K * data["E"] / (1.5 * kb *
-                                     (1. - data["H2"] + data["e"] + GxHe))
+    return yt.units.K * data["E"] / (1.5 * kb * (1.0 - data["H2"] + data["e"] + GxHe))
+
 
 # UV
 
 
 def _radiation_FUV(field, data):
     ds = data.ds
-    pressure_unit = ds.mass_unit / (ds.length_unit * (ds.time_unit)**2)
+    pressure_unit = ds.mass_unit / (ds.length_unit * (ds.time_unit) ** 2)
     return data["athena", "rad_energy_density1"] * pressure_unit
 
 
 def _radiation_EUV(field, data):
     ds = data.ds
-    pressure_unit = ds.mass_unit / (ds.length_unit * (ds.time_unit)**2)
+    pressure_unit = ds.mass_unit / (ds.length_unit * (ds.time_unit) ** 2)
     return data["athena", "rad_energy_density0"] * pressure_unit
 
 
@@ -229,20 +237,23 @@ def _radiation_nHI(field, data):
 
 
 def _radiation_nHII(field, data):
-    return (data["gas", "density"] *
-            (1 - data["athena", "specific_scalar[0]"]) / (muH * mh))
+    return (
+        data["gas", "density"] * (1 - data["athena", "specific_scalar[0]"]) / (muH * mh)
+    )
 
 
 def _radiation_ne(field, data):
-    return (data["gas", "density"] *
-            (1 - data["athena", "specific_scalar[0]"]) / (muH * mh))
+    return (
+        data["gas", "density"] * (1 - data["athena", "specific_scalar[0]"]) / (muH * mh)
+    )
+
 
 # basic
 
 
 def _pressure(field, data):
     ds = data.ds
-    pressure_unit = ds.mass_unit / (ds.length_unit * (ds.time_unit)**2)
+    pressure_unit = ds.mass_unit / (ds.length_unit * (ds.time_unit) ** 2)
     return data["press"] * pressure_unit
 
 
@@ -250,102 +261,254 @@ def _density(field, data):
     return data["rho"]
 
 
-def add_yt_fields(ds, chemistry=True, rad=False,
-                  cooling=True, mhd=False, rotation=False, zdg=1.):
-    Gzdg = zdg
-    GxHe = 0.1
-    GxC = 1.6e-4 * Gzdg
-    GxO = 3.2e-4 * Gzdg
-    GxSi = 1.7e-6 * Gzdg
-    ds.add_field(("gas", "nH"), function=_ndensity,
-                 units='cm**(-3)', display_name=r'$n_{\rm H}$', sampling_type="cell")
-    ds.add_field(("gas", "H_nuclei_density"), function=_ndensity,
-                 units='cm**(-3)', display_name=r'$n_{\rm H}$', sampling_type="cell")
-    ds.add_field(("gas", "ram_pok_z"), function=_ram_pok_z,
-                 units='K*cm**(-3)', display_name=r'$P_{\rm turb}/k_{\rm B}$',
-                 sampling_type="cell")
-    ds.add_field(("gas", "density"), function=_density, display_name="density",
-                 sampling_type="cell")
-    ds.add_field(("gas", "pressure"), function=_pressure, units="g/(cm* s**2)",
-                 display_name="pressure", sampling_type="cell")
+def add_yt_fields(
+    ds, chemistry=True, rad=False, cooling=True, mhd=False, rotation=False, zdg=1.0
+):
+    # Gzdg = zdg
+    # GxHe = 0.1
+    # GxC = 1.6e-4 * Gzdg
+    # GxO = 3.2e-4 * Gzdg
+    # GxSi = 1.7e-6 * Gzdg
+    ds.add_field(
+        ("gas", "nH"),
+        function=_ndensity,
+        units="cm**(-3)",
+        display_name=r"$n_{\rm H}$",
+        sampling_type="cell",
+    )
+    ds.add_field(
+        ("gas", "H_nuclei_density"),
+        function=_ndensity,
+        units="cm**(-3)",
+        display_name=r"$n_{\rm H}$",
+        sampling_type="cell",
+    )
+    ds.add_field(
+        ("gas", "ram_pok_z"),
+        function=_ram_pok_z,
+        units="K*cm**(-3)",
+        display_name=r"$P_{\rm turb}/k_{\rm B}$",
+        sampling_type="cell",
+    )
+    ds.add_field(
+        ("gas", "density"),
+        function=_density,
+        display_name="density",
+        sampling_type="cell",
+    )
+    ds.add_field(
+        ("gas", "pressure"),
+        function=_pressure,
+        units="g/(cm* s**2)",
+        display_name="pressure",
+        sampling_type="cell",
+    )
     if chemistry:
-        ds.add_field(("gas", "Si"), function=_Si,
-                     units="", display_name=r"${\rm Si}$", sampling_type="cell")
-        ds.add_field(("gas", "C"), function=_C,
-                     units="", display_name=r"${\rm C}$", sampling_type="cell")
-        ds.add_field(("gas", "H"), function=_H,
-                     units="", display_name=r"${\rm H}$", sampling_type="cell")
-        ds.add_field(("gas", "O"), function=_O,
-                     units="", display_name=r"${\rm O}$", sampling_type="cell")
-        ds.add_field(("gas", "He"), function=_He,
-                     units="", display_name=r"${\rm He}$", sampling_type="cell")
-        ds.add_field(("gas", "CO2Ctot"), function=_CO2Ctot,
-                     units="", display_name=r"${\rm CO}/{\rm C}_{\rm tot}$",
-                     sampling_type="cell")
-        ds.add_field(("gas", "C2Ctot"), function=_C2Ctot,
-                     units="", display_name=r"${\rm C}/{\rm C}_{\rm tot}$",
-                     sampling_type="cell")
-        ds.add_field(("gas", "C+2Ctot"), function=_Cp2Ctot,
-                     units="", display_name=r"${\rm C^+}/{\rm C}_{\rm tot}$",
-                     sampling_type="cell")
-        ds.add_field(("gas", "2H2"), function=_tH2,
-                     units="", display_name=r"${\rm 2H_2}$", sampling_type="cell")
-        ds.add_field(("gas", "e"), function=_electron,
-                     units="", display_name=r"${\rm e^{-}}$", sampling_type="cell")
-        ds.add_field(("gas", "temperature_chem"), function=_temperature_chem,
-                     units="K", display_name=r"$T$", sampling_type="cell")
+        ds.add_field(
+            ("gas", "Si"),
+            function=_Si,
+            units="",
+            display_name=r"${\rm Si}$",
+            sampling_type="cell",
+        )
+        ds.add_field(
+            ("gas", "C"),
+            function=_C,
+            units="",
+            display_name=r"${\rm C}$",
+            sampling_type="cell",
+        )
+        ds.add_field(
+            ("gas", "H"),
+            function=_H,
+            units="",
+            display_name=r"${\rm H}$",
+            sampling_type="cell",
+        )
+        ds.add_field(
+            ("gas", "O"),
+            function=_O,
+            units="",
+            display_name=r"${\rm O}$",
+            sampling_type="cell",
+        )
+        ds.add_field(
+            ("gas", "He"),
+            function=_He,
+            units="",
+            display_name=r"${\rm He}$",
+            sampling_type="cell",
+        )
+        ds.add_field(
+            ("gas", "CO2Ctot"),
+            function=_CO2Ctot,
+            units="",
+            display_name=r"${\rm CO}/{\rm C}_{\rm tot}$",
+            sampling_type="cell",
+        )
+        ds.add_field(
+            ("gas", "C2Ctot"),
+            function=_C2Ctot,
+            units="",
+            display_name=r"${\rm C}/{\rm C}_{\rm tot}$",
+            sampling_type="cell",
+        )
+        ds.add_field(
+            ("gas", "C+2Ctot"),
+            function=_Cp2Ctot,
+            units="",
+            display_name=r"${\rm C^+}/{\rm C}_{\rm tot}$",
+            sampling_type="cell",
+        )
+        ds.add_field(
+            ("gas", "2H2"),
+            function=_tH2,
+            units="",
+            display_name=r"${\rm 2H_2}$",
+            sampling_type="cell",
+        )
+        ds.add_field(
+            ("gas", "e"),
+            function=_electron,
+            units="",
+            display_name=r"${\rm e^{-}}$",
+            sampling_type="cell",
+        )
+        ds.add_field(
+            ("gas", "temperature_chem"),
+            function=_temperature_chem,
+            units="K",
+            display_name=r"$T$",
+            sampling_type="cell",
+        )
     if cooling:
-        ds.add_field(("gas", "pok"), function=_pok,
-                     units='K*cm**(-3)', display_name=r'$P/k_{\rm B}$',
-                     sampling_type="cell")
-        ds.add_field(("gas", "cs"), function=_cs,
-                     units='km*s**(-1)', display_name=r'$c_s$', sampling_type="cell")
-        ds.add_field(("gas", "T1"), function=_T1,
-                     units='K', display_name=r'$T_1$', sampling_type="cell")
-        ds.add_field(("gas", "mu_cgk"), function=_mu,
-                     units='', display_name=r'$\mu_{\rm cgk}$', force_override=True,
-                     sampling_type="cell")
-        ds.add_field(("gas", "temperature"), function=_temperature,
-                     units='K', display_name=r'$T$', force_override=True,
-                     sampling_type="cell")
+        ds.add_field(
+            ("gas", "pok"),
+            function=_pok,
+            units="K*cm**(-3)",
+            display_name=r"$P/k_{\rm B}$",
+            sampling_type="cell",
+        )
+        ds.add_field(
+            ("gas", "cs"),
+            function=_cs,
+            units="km*s**(-1)",
+            display_name=r"$c_s$",
+            sampling_type="cell",
+        )
+        ds.add_field(
+            ("gas", "T1"),
+            function=_T1,
+            units="K",
+            display_name=r"$T_1$",
+            sampling_type="cell",
+        )
+        ds.add_field(
+            ("gas", "mu_cgk"),
+            function=_mu,
+            units="",
+            display_name=r"$\mu_{\rm cgk}$",
+            force_override=True,
+            sampling_type="cell",
+        )
+        ds.add_field(
+            ("gas", "temperature"),
+            function=_temperature,
+            units="K",
+            display_name=r"$T$",
+            force_override=True,
+            sampling_type="cell",
+        )
     if rotation:
-        ds.add_field(("gas", "dvelocity_y"), function=_dvelocity,
-                     units='km/s', display_name=r'$\delta v_y$', force_override=True,
-                     sampling_type="cell")
-        ds.add_field(("gas", "dvelocity_magnitude"), function=_dvelocity_mag,
-                     units='km/s', display_name=r'$v$', force_override=True,
-                     sampling_type="cell")
-        ds.add_field(("gas", "dkinetic_energy"), function=_dkinetic_energy,
-                     units='erg/cm**3', display_name=r'$E_k$', force_override=True,
-                     sampling_type="cell")
+        ds.add_field(
+            ("gas", "dvelocity_y"),
+            function=_dvelocity,
+            units="km/s",
+            display_name=r"$\delta v_y$",
+            force_override=True,
+            sampling_type="cell",
+        )
+        ds.add_field(
+            ("gas", "dvelocity_magnitude"),
+            function=_dvelocity_mag,
+            units="km/s",
+            display_name=r"$v$",
+            force_override=True,
+            sampling_type="cell",
+        )
+        ds.add_field(
+            ("gas", "dkinetic_energy"),
+            function=_dkinetic_energy,
+            units="erg/cm**3",
+            display_name=r"$E_k$",
+            force_override=True,
+            sampling_type="cell",
+        )
     if mhd:
-        ds.add_field(("gas", "mag_pok"), function=_mag_pok,
-                     units='K*cm**(-3)', display_name=r'$P_{\rm mag}/k_{\rm B}$',
-                     sampling_type="cell")
+        ds.add_field(
+            ("gas", "mag_pok"),
+            function=_mag_pok,
+            units="K*cm**(-3)",
+            display_name=r"$P_{\rm mag}/k_{\rm B}$",
+            sampling_type="cell",
+        )
     if rad:
-        ds.add_field(("gas", "nHI"), function=_radiation_nHI,
-                     units='cm**(-3)', display_name=r'$n_{HI}$', force_override=True,
-                     sampling_type="cell")
-        ds.add_field(("gas", "xHI"), function=_radiation_xHI,
-                     units='dimensionless', display_name=r'$x_{HI}$', force_override=True,
-                     sampling_type="cell")
-        ds.add_field(("gas", "nHII"), function=_radiation_nHII,
-                     units='cm**(-3)', display_name=r'$n_{HII}$', force_override=True,
-                     sampling_type="cell")
-        ds.add_field(("gas", "xHII"), function=_radiation_xHII,
-                     units='dimensionless', display_name=r'$x_{HII}$',
-                     force_override=True,
-                     sampling_type="cell")
-        ds.add_field(("gas", "ne"), function=_radiation_ne,
-                     units='cm**(-3)', display_name=r'$n_{e}$', force_override=True,
-                     sampling_type="cell")
-        ds.add_field(("gas", "El_number_density"), function=_radiation_ne,
-                     units='cm**(-3)', display_name=r'$n_{e}$', force_override=True,
-                     sampling_type="cell")
-        ds.add_field(("gas", "xe"), function=_radiation_xe,
-                     units='dimensionless', display_name=r'$x_{e}$',
-                     force_override=True,
-                     sampling_type="cell")
+        ds.add_field(
+            ("gas", "nHI"),
+            function=_radiation_nHI,
+            units="cm**(-3)",
+            display_name=r"$n_{HI}$",
+            force_override=True,
+            sampling_type="cell",
+        )
+        ds.add_field(
+            ("gas", "xHI"),
+            function=_radiation_xHI,
+            units="dimensionless",
+            display_name=r"$x_{HI}$",
+            force_override=True,
+            sampling_type="cell",
+        )
+        ds.add_field(
+            ("gas", "nHII"),
+            function=_radiation_nHII,
+            units="cm**(-3)",
+            display_name=r"$n_{HII}$",
+            force_override=True,
+            sampling_type="cell",
+        )
+        ds.add_field(
+            ("gas", "xHII"),
+            function=_radiation_xHII,
+            units="dimensionless",
+            display_name=r"$x_{HII}$",
+            force_override=True,
+            sampling_type="cell",
+        )
+        ds.add_field(
+            ("gas", "ne"),
+            function=_radiation_ne,
+            units="cm**(-3)",
+            display_name=r"$n_{e}$",
+            force_override=True,
+            sampling_type="cell",
+        )
+        ds.add_field(
+            ("gas", "El_number_density"),
+            function=_radiation_ne,
+            units="cm**(-3)",
+            display_name=r"$n_{e}$",
+            force_override=True,
+            sampling_type="cell",
+        )
+        ds.add_field(
+            ("gas", "xe"),
+            function=_radiation_xe,
+            units="dimensionless",
+            display_name=r"$x_{e}$",
+            force_override=True,
+            sampling_type="cell",
+        )
 
         # ds.add_field(("gas","Erad_EUV"), function=_radiation_EUV, \
         #  units='erg*cm**(-3)',display_name=r'$\mathcal{E}_{\rm EUV}$',
@@ -357,58 +520,97 @@ def add_yt_fields(ds, chemistry=True, rad=False,
         #  sampling_type="cell")
 
 
-def set_aux(model='solar'):
+def set_aux(model="solar"):
     aux = {}
-    aux['nH'] = dict(label=r'$n_H\;[{\rm cm}^{-3}]$',
-                     unit='cm**(-3)', limits=(1.e-6, 1.e6),
-                     cmap=plt.cm.Spectral_r, clim=(2.e-5, 2.e2),
-                     cticks=(1.e-4, 1.e-2, 1, 1.e2),
-                     n_bins=128, log=True)
-    aux['pok'] = dict(label=r'$P/k_B\;[{\rm K}\,{\rm cm}^{-3}]$',
-                      unit='K*cm**(-3)', limits=(1.e-2, 1.e8),
-                      cmap=plt.cm.gnuplot2, clim=(10, 5.e5),
-                      n_bins=128, log=True)
-    aux['temperature'] = dict(label=r'$T\;[{\rm K}]$',
-                              unit='K', limits=(1.e0, 1.e9),
-                              cmap=plt.cm.RdYlBu_r,
-                              clim=(10, 1.e8),
-                              n_bins=128, log=True)
-    aux['surface_density'] = dict(
-        label=r'$\Sigma [{\rm M}_{\odot} {\rm pc}^{-2}]$',
-        cmap=plt.cm.pink_r, clim=(0.1, 100), log=True)
-    aux['dvelocity_magnitude'] = dict(label=r'$v [{\rm km/s}]$',
-                                      unit='km/s', limits=(0.1, 1.e4),
-                                      cmap=plt.cm.jet, clim=(1, 1000),
-                                      n_bins=128, log=True)
-    aux['velocity_z'] = dict(label=r'$v_z [{\rm km/s}]$',
-                             unit='km/s', limits=(-1500, 1500),
-                             cmap=plt.cm.RdBu_r, clim=(-200, 200),
-                             cticks=(-100, 0, 100),
-                             n_bins=256, log=False)
-    aux['magnetic_field_strength'] = dict(label=r'$B [\mu{\rm G}]$',
-                                          unit='gauss',
-                                          cmap=plt.cm.viridis, clim=(0.01, 10),
-                                          factor=1.e6,
-                                          n_bins=128, log=True)
-    aux['mag_pok'] = dict(label=r'$P_{\rm mag}/k_B [{\rm K}{\rm cm}^{-3}]$',
-                          unit='K*cm**(-3)', limits=(1.e-2, 1.e8),
-                          n_bins=128, log=True)
-    aux['ram_pok_z'] = dict(
-        label=r'$P_{\rm turb}/k_B [{\rm K}{\rm cm}^{-3}]$',
-        unit='K*cm**(-3)', limits=(1.e-2, 1.e8),
-        n_bins=128, log=True)
-    aux['plasma_beta'] = dict(label=r'$\beta$', limits=(1.e-4, 1.e16),
-                              n_bins=256, log=True)
+    aux["nH"] = dict(
+        label=r"$n_H\;[{\rm cm}^{-3}]$",
+        unit="cm**(-3)",
+        limits=(1.0e-6, 1.0e6),
+        cmap=plt.cm.Spectral_r,
+        clim=(2.0e-5, 2.0e2),
+        cticks=(1.0e-4, 1.0e-2, 1, 1.0e2),
+        n_bins=128,
+        log=True,
+    )
+    aux["pok"] = dict(
+        label=r"$P/k_B\;[{\rm K}\,{\rm cm}^{-3}]$",
+        unit="K*cm**(-3)",
+        limits=(1.0e-2, 1.0e8),
+        cmap=plt.cm.gnuplot2,
+        clim=(10, 5.0e5),
+        n_bins=128,
+        log=True,
+    )
+    aux["temperature"] = dict(
+        label=r"$T\;[{\rm K}]$",
+        unit="K",
+        limits=(1.0e0, 1.0e9),
+        cmap=plt.cm.RdYlBu_r,
+        clim=(10, 1.0e8),
+        n_bins=128,
+        log=True,
+    )
+    aux["surface_density"] = dict(
+        label=r"$\Sigma [{\rm M}_{\odot} {\rm pc}^{-2}]$",
+        cmap=plt.cm.pink_r,
+        clim=(0.1, 100),
+        log=True,
+    )
+    aux["dvelocity_magnitude"] = dict(
+        label=r"$v [{\rm km/s}]$",
+        unit="km/s",
+        limits=(0.1, 1.0e4),
+        cmap=plt.cm.jet,
+        clim=(1, 1000),
+        n_bins=128,
+        log=True,
+    )
+    aux["velocity_z"] = dict(
+        label=r"$v_z [{\rm km/s}]$",
+        unit="km/s",
+        limits=(-1500, 1500),
+        cmap=plt.cm.RdBu_r,
+        clim=(-200, 200),
+        cticks=(-100, 0, 100),
+        n_bins=256,
+        log=False,
+    )
+    aux["magnetic_field_strength"] = dict(
+        label=r"$B [\mu{\rm G}]$",
+        unit="gauss",
+        cmap=plt.cm.viridis,
+        clim=(0.01, 10),
+        factor=1.0e6,
+        n_bins=128,
+        log=True,
+    )
+    aux["mag_pok"] = dict(
+        label=r"$P_{\rm mag}/k_B [{\rm K}{\rm cm}^{-3}]$",
+        unit="K*cm**(-3)",
+        limits=(1.0e-2, 1.0e8),
+        n_bins=128,
+        log=True,
+    )
+    aux["ram_pok_z"] = dict(
+        label=r"$P_{\rm turb}/k_B [{\rm K}{\rm cm}^{-3}]$",
+        unit="K*cm**(-3)",
+        limits=(1.0e-2, 1.0e8),
+        n_bins=128,
+        log=True,
+    )
+    aux["plasma_beta"] = dict(
+        label=r"$\beta$", limits=(1.0e-4, 1.0e16), n_bins=256, log=True
+    )
 
-    if model == 'starburst':
-        aux['nH']['clim'] = (2.e-5, 2.e3)
-        aux['pok']['clim'] = (10, 5.e6)
-        aux['surface_density']['clim'] = (1, 1000)
-        aux['magnetic_field_strength']['clim'] = (0.1, 100)
+    if model == "starburst":
+        aux["nH"]["clim"] = (2.0e-5, 2.0e3)
+        aux["pok"]["clim"] = (10, 5.0e6)
+        aux["surface_density"]["clim"] = (1, 1000)
+        aux["magnetic_field_strength"]["clim"] = (0.1, 100)
 
-    if model == 'multi_SN':
-        aux['nH']['clim'] = (2.e-5, 2.e2)
-        aux['pok']['clim'] = (50, 1.e5)
+    if model == "multi_SN":
+        aux["nH"]["clim"] = (2.0e-5, 2.0e2)
+        aux["pok"]["clim"] = (50, 1.0e5)
     return aux
 
 
@@ -420,14 +622,18 @@ def check_aux(fields):
             print(aux[f])
 
 
-unit_base_pp = {"length_unit": (1.0, "pc"),
-                "time_unit": (1.0, "s*pc/km"),
-                "mass_unit": (2.38858753789e-24, "g/cm**3*pc**3")}
-unit_base = {"length_unit": (1.0, "pc"),
-             "time_unit": (1.0, "s*pc/km"),
-             "mass_unit": (2.38858753789e-24, "g/cm**3*pc**3"),
-             "velocity_unit": (1.0, "km/s"),
-             "magnetic_unit": (5.4786746797e-07, "gauss")}
+unit_base_pp = {
+    "length_unit": (1.0, "pc"),
+    "time_unit": (1.0, "s*pc/km"),
+    "mass_unit": (2.38858753789e-24, "g/cm**3*pc**3"),
+}
+unit_base = {
+    "length_unit": (1.0, "pc"),
+    "time_unit": (1.0, "s*pc/km"),
+    "mass_unit": (2.38858753789e-24, "g/cm**3*pc**3"),
+    "velocity_unit": (1.0, "km/s"),
+    "magnetic_unit": (5.4786746797e-07, "gauss"),
+}
 
 
 def load_athena4p2_mhd(filename):
@@ -458,25 +664,25 @@ def save_clumps(clumps_list, filename, fields_list=None):
     base_object = clumps_list[0].data.base_object
     if fields_list is None:
         fl = [
-            ('gas', 'density'),
-            ('gas', 'magnetic_field_x'),
-            ('gas', 'magnetic_field_y'),
-            ('gas', 'magnetic_field_z'),
-            ('gas', 'pressure'),
-            ('gas', 'velocity_x'),
-            ('gas', 'velocity_y'),
-            ('gas', 'velocity_z'),
-            ('gravitational_potential'),
-            ('gas', 'phi'),
-            ('cell_mass'),
-            ('cell_volume')
+            ("gas", "density"),
+            ("gas", "magnetic_field_x"),
+            ("gas", "magnetic_field_y"),
+            ("gas", "magnetic_field_z"),
+            ("gas", "pressure"),
+            ("gas", "velocity_x"),
+            ("gas", "velocity_y"),
+            ("gas", "velocity_z"),
+            ("gravitational_potential"),
+            ("gas", "phi"),
+            ("cell_mass"),
+            ("cell_volume"),
         ]
     else:
         fl = copy.deepcopy(fields_list)
     conditional_output = []
     # generate fields list
     for c in clumps_list:
-        contour_id = c.data.conditionals[0].split('contours')[1].split("'")[0]
+        contour_id = c.data.conditionals[0].split("contours")[1].split("'")[0]
         conditional_i = c.data.conditionals[0]
         fl.append(("index", "contours" + contour_id))
         conditional_output.append(("contours" + contour_id, conditional_i))
@@ -495,62 +701,83 @@ def read_clumps(data_set, fn_cond=None):
     clumps = []
     fo = open(fn_cond)
     for line in fo.readlines():
-        ls = line.split(',')
-        cli = ls[0]
-        condi = ls[1].split('\n')[0]
+        ls = line.split(",")
+        # cli = ls[0]
+        condi = ls[1].split("\n")[0]
         print(condi)
-        cut = data_set.cut_region(data_set.all_data(),
-                                  [condi])
-        c1 = Clump(cut, ('grid', 'phi'))
+        cut = data_set.cut_region(data_set.all_data(), [condi])
+        c1 = Clump(cut, ("grid", "phi"))
         clumps.append(c1)
     return clumps
 
 
 def get_clump_properties(cl):
-    vol = cl['cell_volume'][0]
-    totvol = cl.quantities.total_quantity('cell_volume').in_units('pc**3')
-    radius = (totvol * 3. * math.pi / 4.)**(1. / 3.)
-    mass = cl.quantities.total_quantity('cell_mass').in_units('Msun')
-    nden = cl.quantities.weighted_average_quantity('density', 'cell_mass')
-    vx_c = cl.quantities.weighted_average_quantity(
-        "velocity_x", "cell_mass").in_units("km/s")
-    vy_c = cl.quantities.weighted_average_quantity(
-        "velocity_y", "cell_mass").in_units("km/s")
-    vz_c = cl.quantities.weighted_average_quantity(
-        "velocity_z", "cell_mass").in_units("km/s")
+    vol = cl["cell_volume"][0]
+    totvol = cl.quantities.total_quantity("cell_volume").in_units("pc**3")
+    radius = (totvol * 3.0 * math.pi / 4.0) ** (1.0 / 3.0)
+    mass = cl.quantities.total_quantity("cell_mass").in_units("Msun")
+    nden = cl.quantities.weighted_average_quantity("density", "cell_mass")
+    vx_c = cl.quantities.weighted_average_quantity("velocity_x", "cell_mass").in_units(
+        "km/s"
+    )
+    vy_c = cl.quantities.weighted_average_quantity("velocity_y", "cell_mass").in_units(
+        "km/s"
+    )
+    vz_c = cl.quantities.weighted_average_quantity("velocity_z", "cell_mass").in_units(
+        "km/s"
+    )
     vc = [vx_c, vy_c, vz_c]
-    Ekin_cells = 0.5 * cl["cell_mass"] * ((cl["velocity_x"] - vx_c)**2 +
-                                          (cl["velocity_y"] - vy_c)**2 +
-                                          (cl["velocity_z"] - vz_c)**2)
+    Ekin_cells = (
+        0.5
+        * cl["cell_mass"]
+        * (
+            (cl["velocity_x"] - vx_c) ** 2
+            + (cl["velocity_y"] - vy_c) ** 2
+            + (cl["velocity_z"] - vz_c) ** 2
+        )
+    )
     Ekin = Ekin_cells.sum()
-    Emag = cl.quantities.total_quantity('magnetic_energy') * vol.in_cgs()
-    Eth = cl.quantities.total_quantity('pressure') * vol.in_cgs() * 1.5
-    Egrav = -(cl["gravitational_potential"].max() -
-              cl["gravitational_potential"].min()) * (u.km / u.s)**2 * mass
-    B = yt.YTArray([cl.quantities.weighted_average_quantity('magnetic_field_x',
-                                                            'cell_mass'),
-                    cl.quantities.weighted_average_quantity(
-                        'magnetic_field_y', 'cell_mass'),
-                    cl.quantities.weighted_average_quantity('magnetic_field_z',
-                                                            'cell_mass')])
+    Emag = cl.quantities.total_quantity("magnetic_energy") * vol.in_cgs()
+    Eth = cl.quantities.total_quantity("pressure") * vol.in_cgs() * 1.5
+    Egrav = (
+        -(cl["gravitational_potential"].max() - cl["gravitational_potential"].min())
+        * (u.km / u.s) ** 2
+        * mass
+    )
+    B = yt.YTArray(
+        [
+            cl.quantities.weighted_average_quantity("magnetic_field_x", "cell_mass"),
+            cl.quantities.weighted_average_quantity("magnetic_field_y", "cell_mass"),
+            cl.quantities.weighted_average_quantity("magnetic_field_z", "cell_mass"),
+        ]
+    )
     Eratio = -((Ekin + Emag + Eth) / Egrav)
-    print('==========================================')
-    print('Volume:', totvol)
-    print('Effective radius:', radius)
-    print('Mass:', mass)
-    print('center of mass velocity', vc)
-    print('Mass-weighted mean Density:', nden / u.mh)
-    print('Mass-weighted mean B (micro G):', B.in_units('uG'))
-    print('Ekin:', Ekin.in_units('erg'))
-    print('Emag:', Emag.in_units('erg'))
-    print('Eth:', Eth.in_units('erg'))
-    print('Egrav:', Egrav.in_units('erg'))
-    print('Eratio = (Ekin+Emag+Eth)/(-Egrav):', Eratio.in_cgs())
-    print('==========================================')
-    return {"volume": totvol, "radius": radius, "mtot": mass, "vc": vc,
-            "density_mass_weighted": nden, "B_mass_weigthed": B,
-            "Ekin": Ekin, "Emag": Emag, "Eth": Eth,
-            "Egrav": Egrav, "Eratio": Eratio}
+    print("==========================================")
+    print("Volume:", totvol)
+    print("Effective radius:", radius)
+    print("Mass:", mass)
+    print("center of mass velocity", vc)
+    print("Mass-weighted mean Density:", nden / u.mh)
+    print("Mass-weighted mean B (micro G):", B.in_units("uG"))
+    print("Ekin:", Ekin.in_units("erg"))
+    print("Emag:", Emag.in_units("erg"))
+    print("Eth:", Eth.in_units("erg"))
+    print("Egrav:", Egrav.in_units("erg"))
+    print("Eratio = (Ekin+Emag+Eth)/(-Egrav):", Eratio.in_cgs())
+    print("==========================================")
+    return {
+        "volume": totvol,
+        "radius": radius,
+        "mtot": mass,
+        "vc": vc,
+        "density_mass_weighted": nden,
+        "B_mass_weigthed": B,
+        "Ekin": Ekin,
+        "Emag": Emag,
+        "Eth": Eth,
+        "Egrav": Egrav,
+        "Eratio": Eratio,
+    }
 
 
 def get_covering_grid(ds, left_edge=None, dims=None):
@@ -559,8 +786,7 @@ def get_covering_grid(ds, left_edge=None, dims=None):
         left_edge = ds.domain_left_edge
     if dims is None:
         dims = ds.domain_dimensions
-    return ds.covering_grid(level=0, left_edge=left_edge,
-                            dims=dims)
+    return ds.covering_grid(level=0, left_edge=left_edge, dims=dims)
 
 
 def get_extent(grid, axis, unit):
