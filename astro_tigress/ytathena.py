@@ -9,7 +9,7 @@ import copy
 import math
 from yt.funcs import mylog
 import os
-import const
+from . import const
 
 dirpath = os.path.dirname(__file__)
 
