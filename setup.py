@@ -1,5 +1,8 @@
 from setuptools import setup
 
+with open("requirements.txt") as f:
+    install_requires = f.read().splitlines()
+
 setup(
     name="astro-tigress",
     version="1.0",
@@ -7,8 +10,6 @@ setup(
     author="",
     author_email="",
     packages=["astro_tigress"],
-    install_requires=["jupyter-book", "matplotlib", "numpy", "scipy", "astropy",
-                      "pandas", "docutils==0.17.1", "yt", "xarray", "h5py", "urllib3",
-                      "tqdm"],
+    install_requires=install_requires,
     package_data={"astro_tigress": ["coolftn.txt"]},
 )
