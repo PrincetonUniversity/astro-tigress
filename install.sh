@@ -1,7 +1,7 @@
 #!/bin/bash
 git clone git@github.com:PrincetonUniversity/astro-tigress.git
 cd astro-tigress
-conda create --name astro-tigress python=3.8 poetry jupyterlab xarray
+conda create --name astro-tigress python=3.8 pip
 conda activate astro-tigress
-poetry install
+pip install .
 python prepare_tutorial.py
