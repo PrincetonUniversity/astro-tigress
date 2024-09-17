@@ -1,0 +1,731 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>astro_tigress.tigress_read &#8212; TIGRESS public data release</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-book-theme.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.5ea377869091fd0449014c60fc090103.min.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/sphinx_highlight.js"></script>
+    <script src="../../_static/clipboard.min.js"></script>
+    <script src="../../_static/copybutton.js"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../_static/togglebutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../../_static/design-tabs.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../../_static/sphinx-thebe.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '_modules/astro_tigress/tigress_read';</script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+        
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../intro.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../_static/tigress_logo.jpg" class="logo__image only-light" alt="TIGRESS public data release - Home"/>
+    <script>document.write(`<img src="../../_static/tigress_logo.jpg" class="logo__image only-dark" alt="TIGRESS public data release - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../../intro.html">
+                    TIGRESS public data release
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">code packages</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../install.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api.html">API Reference</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">data reading examples</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../read_data_1-MHD.html">MHD datasets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../read_data_2-chem-CO_lines.html">Chemistry and CO synthetic observations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../read_data_3-MHD_PI.html">MHD_PI datasets</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">synthtic observation examples</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../example_1-synthetic-HI.html">Synthetic HI 21cm lines</a></li>
+
+<li class="toctree-l1"><a class="reference internal" href="../../example_2-synthetic-dustpol.html">Synthetic dust polarization map</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">additional examples</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../extract_data_subset.html">Extracting subset data</a></li>
+
+
+
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/PrincetonUniversity/astro-tigress" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/PrincetonUniversity/astro-tigress/issues/new?title=Issue%20on%20page%20%2F_modules/astro_tigress/tigress_read.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1></h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <h1>Source code for astro_tigress.tigress_read</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">os.path</span> <span class="k">as</span> <span class="nn">osp</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">athena_read</span>
+<span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">const</span>
+<span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">ytathena</span> <span class="k">as</span> <span class="n">ya</span>
+<span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">radmc</span>
+
+
+<div class="viewcode-block" id="Model"><a class="viewcode-back" href="../../api.html#astro_tigress.Model">[docs]</a><span class="k">class</span> <span class="nc">Model</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Class containing the simulation model information.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    model_id: str</span>
+<span class="sd">        name of the model, e.g. `R8_2pc`.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">model_id</span><span class="p">,</span> <span class="n">dir_master</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dir_master</span> <span class="o">=</span> <span class="n">dir_master</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">model_id</span> <span class="o">=</span> <span class="n">model_id</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dir_model</span> <span class="o">=</span> <span class="n">osp</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">dir_master</span><span class="p">,</span> <span class="n">model_id</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">osp</span><span class="o">.</span><span class="n">isdir</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dir_model</span><span class="p">):</span>
+            <span class="n">subdirs</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dir_model</span><span class="p">)</span>
+            <span class="n">ivtks</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">([</span><span class="nb">int</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">subdirs</span> <span class="k">if</span> <span class="n">x</span><span class="o">.</span><span class="n">isnumeric</span><span class="p">()])</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">ivtks</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">ivtks</span><span class="p">)</span>  <span class="c1"># list of vtk numbers of outputs</span>
+
+            <span class="c1"># contained data sets, e.g. [&quot;MHD&quot;, &quot;chem&quot;, &quot;CO_lines&quot;]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">data_sets</span> <span class="o">=</span> <span class="p">{}</span>
+            <span class="k">for</span> <span class="n">ivtk</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">ivtks</span><span class="p">:</span>
+                <span class="n">dir_ivtk</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">{:s}{:04d}</span><span class="s2">/&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dir_model</span><span class="p">,</span> <span class="n">ivtk</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">data_sets</span><span class="p">[</span><span class="n">ivtk</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span>
+                    <span class="n">d</span>
+                    <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="n">dir_ivtk</span><span class="p">)</span>
+                    <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isdir</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">dir_ivtk</span><span class="p">,</span> <span class="n">d</span><span class="p">))</span>
+                <span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_load_hst</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_load_input</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">CO_lines</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">return</span>
+
+    <span class="k">def</span> <span class="nf">_load_hst</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># check history file</span>
+        <span class="n">fn_hst</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">{:s}</span><span class="s2">history/MHD/</span><span class="si">{:s}</span><span class="s2">.hst&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dir_model</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">model_id</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">osp</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">fn_hst</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">hst</span> <span class="o">=</span> <span class="n">athena_read</span><span class="o">.</span><span class="n">hst</span><span class="p">(</span><span class="n">fn_hst</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">fn_hst</span> <span class="o">=</span> <span class="n">fn_hst</span>
+
+    <span class="k">def</span> <span class="nf">_load_input</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># read time output interval in input file</span>
+        <span class="n">fn_input_MHD</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">{:s}</span><span class="s2">input/MHD/</span><span class="si">{:s}</span><span class="s2">.par&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dir_model</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">model_id</span><span class="p">)</span>
+        <span class="c1"># time units</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tunit</span> <span class="o">=</span> <span class="n">const</span><span class="o">.</span><span class="n">pc</span> <span class="o">/</span> <span class="n">const</span><span class="o">.</span><span class="n">km</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tunit_Myr</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">tunit</span> <span class="o">/</span> <span class="n">const</span><span class="o">.</span><span class="n">Myr</span>
+        <span class="k">if</span> <span class="n">osp</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">fn_input_MHD</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">MHD_input</span> <span class="o">=</span> <span class="n">athena_read</span><span class="o">.</span><span class="n">athinput</span><span class="p">(</span><span class="n">fn_input_MHD</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">fn_input_MHD</span> <span class="o">=</span> <span class="n">fn_input_MHD</span>
+            <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">MHD_input</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+                <span class="k">if</span> <span class="n">k</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;output&quot;</span><span class="p">):</span>
+                    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">MHD_input</span><span class="p">[</span><span class="n">k</span><span class="p">][</span><span class="s2">&quot;out_fmt&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;vtk&quot;</span><span class="p">:</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">dt_code</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">MHD_input</span><span class="p">[</span><span class="n">k</span><span class="p">][</span><span class="s2">&quot;dt&quot;</span><span class="p">]</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">dt_Myr</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dt_code</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">tunit_Myr</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">t_Myr</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ivtks</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">dt_Myr</span>
+
+<div class="viewcode-block" id="Model.show"><a class="viewcode-back" href="../../api.html#astro_tigress.Model.show">[docs]</a>    <span class="k">def</span> <span class="nf">show</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Print available data list&quot;&quot;&quot;</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Avalable data:&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;fn_hst&quot;</span><span class="p">):</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;  history&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;fn_input_MHD&quot;</span><span class="p">):</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;  input&quot;</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">ivtks</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;  ivtk = </span><span class="si">{:d}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">i</span><span class="p">),</span> <span class="n">end</span><span class="o">=</span><span class="s2">&quot; &quot;</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">data_sets</span><span class="p">[</span><span class="n">i</span><span class="p">]:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s2">&quot; &quot;</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot; &quot;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Model.download"><a class="viewcode-back" href="../../api.html#astro_tigress.Model.download">[docs]</a>    <span class="k">def</span> <span class="nf">download</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ivtk</span><span class="o">=</span><span class="mi">300</span><span class="p">,</span> <span class="n">dataset</span><span class="o">=</span><span class="s2">&quot;MHD&quot;</span><span class="p">,</span> <span class="n">Z</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">iline</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Download simulation data from a certain data set.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        ivtk: int</span>
+<span class="sd">            vtk output number</span>
+<span class="sd">        dataset: str, [&quot;MHD&quot;, &quot;chem&quot;, &quot;CO_lines&quot;, &quot;history&quot;, &quot;input&quot;, &quot;all&quot;]</span>
+<span class="sd">            name of the dataset or download all.</span>
+<span class="sd">        Z: float, [0.5, 1, 2]</span>
+<span class="sd">            metallicity for chemistry post-processing.</span>
+<span class="sd">        iline: int, [1, 2]</span>
+<span class="sd">            uppper level of CO rotational line. 1 for J=1-0, 2 for J=2-1</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">fn</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_set_filename</span><span class="p">(</span><span class="n">ivtk</span><span class="p">,</span> <span class="n">Z</span><span class="o">=</span><span class="n">Z</span><span class="p">,</span> <span class="n">iline</span><span class="o">=</span><span class="n">iline</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">dataset</span> <span class="o">==</span> <span class="s2">&quot;all&quot;</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">d</span><span class="p">,</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">fn</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_download_file</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">atleast_1d</span><span class="p">(</span><span class="n">dataset</span><span class="p">):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_download_file</span><span class="p">(</span><span class="n">fn</span><span class="p">[</span><span class="n">d</span><span class="p">])</span></div>
+
+<div class="viewcode-block" id="Model.load"><a class="viewcode-back" href="../../api.html#astro_tigress.Model.load">[docs]</a>    <span class="k">def</span> <span class="nf">load</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ivtk</span><span class="p">,</span> <span class="n">dataset</span><span class="o">=</span><span class="s2">&quot;MHD&quot;</span><span class="p">,</span> <span class="n">Z</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">iline</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">Tdect</span><span class="o">=</span><span class="mf">0.0</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Load simulation data from a certain data set.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        ivtk: int</span>
+<span class="sd">            vtk output number</span>
+<span class="sd">        dataset: str or list, [&quot;MHD&quot;, &quot;chem&quot;, &quot;CO_lines&quot;, &quot;MHD_PI&quot;, &quot;all&quot;]</span>
+<span class="sd">            name of the dataset or load all.</span>
+<span class="sd">        Z: float, [0.5, 1, 2]</span>
+<span class="sd">            metallicity for chemistry post-processing.</span>
+<span class="sd">        iline: int, [1, 2]</span>
+<span class="sd">            uppper level of CO rotational line. 1 for J=1-0, 2 for J=2-1</span>
+<span class="sd">        Tdect: float</span>
+<span class="sd">            detection limit for atenna temperature in K</span>
+<span class="sd">            for each velocity channel.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">fn</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_set_filename</span><span class="p">(</span><span class="n">ivtk</span><span class="p">,</span> <span class="n">Z</span><span class="o">=</span><span class="n">Z</span><span class="p">,</span> <span class="n">iline</span><span class="o">=</span><span class="n">iline</span><span class="p">,</span> <span class="n">add_master</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">dataset</span> <span class="o">==</span> <span class="s2">&quot;all&quot;</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">data_sets</span><span class="p">[</span><span class="n">ivtk</span><span class="p">]:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_loadone</span><span class="p">(</span><span class="n">fn</span><span class="p">[</span><span class="n">d</span><span class="p">],</span> <span class="n">d</span><span class="p">,</span> <span class="n">iline</span><span class="o">=</span><span class="n">iline</span><span class="p">,</span> <span class="n">Tdect</span><span class="o">=</span><span class="n">Tdect</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">atleast_1d</span><span class="p">(</span><span class="n">dataset</span><span class="p">):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_loadone</span><span class="p">(</span><span class="n">fn</span><span class="p">[</span><span class="n">d</span><span class="p">],</span> <span class="n">d</span><span class="p">,</span> <span class="n">iline</span><span class="o">=</span><span class="n">iline</span><span class="p">,</span> <span class="n">Tdect</span><span class="o">=</span><span class="n">Tdect</span><span class="p">)</span></div>
+
+    <span class="k">def</span> <span class="nf">_loadone</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">d</span><span class="p">,</span> <span class="n">iline</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">Tdect</span><span class="o">=</span><span class="mf">0.0</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">d</span> <span class="o">==</span> <span class="s2">&quot;MHD&quot;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">MHD</span> <span class="o">=</span> <span class="n">DataMHD</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">d</span> <span class="o">==</span> <span class="s2">&quot;chem&quot;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">chem</span> <span class="o">=</span> <span class="n">DataChem</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">d</span> <span class="o">==</span> <span class="s2">&quot;CO_lines&quot;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">CO_lines</span><span class="p">[</span><span class="n">iline</span><span class="p">]</span> <span class="o">=</span> <span class="n">DataCO</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">iline</span><span class="p">,</span> <span class="n">Tdect</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">d</span> <span class="o">==</span> <span class="s2">&quot;MHD_PI&quot;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">MHD_PI</span> <span class="o">=</span> <span class="n">DataRad</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;ERROR: Model.load(): dataset name not recogonozed.</span><span class="se">\n</span><span class="s2">&quot;</span>
+            <span class="n">msg</span> <span class="o">+=</span> <span class="s1">&#39;dataset: {&quot;MHD&quot;, &quot;chem&quot;, &quot;CO_lines&quot;, &quot;MHD_PI&quot;}&#39;</span>
+            <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_set_filename</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ivtk</span><span class="p">,</span> <span class="n">Z</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">iline</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">add_master</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="n">source_dir_ivtk</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">{:s}</span><span class="s2">/</span><span class="si">{:04d}</span><span class="s2">/&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model_id</span><span class="p">,</span> <span class="n">ivtk</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">add_master</span><span class="p">:</span>
+            <span class="n">source_dir_ivtk</span> <span class="o">=</span> <span class="n">osp</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dir_master</span><span class="p">,</span> <span class="n">source_dir_ivtk</span><span class="p">)</span>
+        <span class="n">dict_Z</span> <span class="o">=</span> <span class="p">{</span><span class="mf">0.5</span><span class="p">:</span> <span class="s2">&quot;Z05&quot;</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">:</span> <span class="s2">&quot;Z1&quot;</span><span class="p">,</span> <span class="mf">2.0</span><span class="p">:</span> <span class="s2">&quot;Z2&quot;</span><span class="p">}</span>
+        <span class="n">Z_id</span> <span class="o">=</span> <span class="n">dict_Z</span><span class="p">[</span><span class="n">Z</span><span class="p">]</span>
+        <span class="n">fn</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+        <span class="n">fn</span><span class="p">[</span><span class="s2">&quot;MHD&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">{:s}</span><span class="s2">MHD/</span><span class="si">{:s}</span><span class="s2">.</span><span class="si">{:04d}</span><span class="s2">.vtk&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+            <span class="n">source_dir_ivtk</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">model_id</span><span class="p">,</span> <span class="n">ivtk</span>
+        <span class="p">)</span>
+        <span class="n">fn</span><span class="p">[</span><span class="s2">&quot;MHD_PI&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">{:s}</span><span class="s2">MHD_PI/</span><span class="si">{:s}</span><span class="s2">.</span><span class="si">{:04d}</span><span class="s2">.vtk&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+            <span class="n">source_dir_ivtk</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">model_id</span><span class="p">,</span> <span class="n">ivtk</span>
+        <span class="p">)</span>
+        <span class="n">fn</span><span class="p">[</span><span class="s2">&quot;chem&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">{:s}</span><span class="s2">chem/</span><span class="si">{:s}</span><span class="s2">/</span><span class="si">{:s}</span><span class="s2">-</span><span class="si">{:s}</span><span class="s2">.</span><span class="si">{:04d}</span><span class="s2">.athdf&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+            <span class="n">source_dir_ivtk</span><span class="p">,</span> <span class="n">Z_id</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">model_id</span><span class="p">,</span> <span class="n">Z_id</span><span class="p">,</span> <span class="n">ivtk</span>
+        <span class="p">)</span>
+        <span class="n">fn</span><span class="p">[</span><span class="s2">&quot;CO_lines&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">{:s}</span><span class="s2">CO_lines/</span><span class="si">{:s}</span><span class="s2">/il</span><span class="si">{:d}</span><span class="s2">/</span><span class="si">{:s}</span><span class="s2">-</span><span class="si">{:s}</span><span class="s2">.il</span><span class="si">{:d}</span><span class="s2">.</span><span class="si">{:04d}</span><span class="s2">.bout&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+            <span class="n">source_dir_ivtk</span><span class="p">,</span> <span class="n">Z_id</span><span class="p">,</span> <span class="n">iline</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">model_id</span><span class="p">,</span> <span class="n">Z_id</span><span class="p">,</span> <span class="n">iline</span><span class="p">,</span> <span class="n">ivtk</span>
+        <span class="p">)</span>
+        <span class="n">fn</span><span class="p">[</span><span class="s2">&quot;history&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">{0:s}</span><span class="s2">/history/MHD/</span><span class="si">{0:s}</span><span class="s2">.hst&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model_id</span><span class="p">)</span>
+        <span class="n">fn</span><span class="p">[</span><span class="s2">&quot;input&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">{0:s}</span><span class="s2">/input/MHD/</span><span class="si">{0:s}</span><span class="s2">.par&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model_id</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">fn</span>
+
+    <span class="k">def</span> <span class="nf">_download_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">f</span><span class="p">):</span>
+        <span class="kn">import</span> <span class="nn">urllib.request</span>
+        <span class="kn">from</span> <span class="nn">urllib.error</span> <span class="kn">import</span> <span class="n">URLError</span>
+        <span class="kn">import</span> <span class="nn">shutil</span>
+
+        <span class="n">target</span> <span class="o">=</span> <span class="n">osp</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dir_master</span><span class="p">,</span> <span class="n">f</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">osp</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">target</span><span class="p">):</span>
+            <span class="nb">print</span><span class="p">(</span>
+                <span class="s2">&quot;</span><span class="si">{}</span><span class="s2"> (</span><span class="si">{:.5f}</span><span class="s2">GB) already exists&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">osp</span><span class="o">.</span><span class="n">getsize</span><span class="p">(</span><span class="n">target</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span><span class="o">**</span><span class="mi">30</span><span class="p">)</span>
+            <span class="p">)</span>
+            <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+                <span class="n">answer</span> <span class="o">=</span> <span class="nb">input</span><span class="p">(</span><span class="s2">&quot;overwrite? [y/n]:&quot;</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">answer</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;y&quot;</span><span class="p">,</span> <span class="s2">&quot;n&quot;</span><span class="p">]:</span>
+                    <span class="k">break</span>
+            <span class="k">if</span> <span class="n">answer</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;n&quot;</span><span class="p">:</span>
+                <span class="k">return</span>
+        <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">osp</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">target</span><span class="p">),</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+        <span class="n">url</span> <span class="o">=</span> <span class="s2">&quot;https://tigress-web.princeton.edu/~munan/astro-tigress/&quot;</span>
+        <span class="n">source</span> <span class="o">=</span> <span class="n">url</span> <span class="o">+</span> <span class="n">f</span>
+        <span class="n">req</span> <span class="o">=</span> <span class="n">urllib</span><span class="o">.</span><span class="n">request</span><span class="o">.</span><span class="n">Request</span><span class="p">(</span><span class="n">source</span><span class="p">)</span>
+
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">response</span> <span class="o">=</span> <span class="n">urllib</span><span class="o">.</span><span class="n">request</span><span class="o">.</span><span class="n">urlopen</span><span class="p">(</span><span class="n">req</span><span class="p">)</span>
+        <span class="k">except</span> <span class="n">URLError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">e</span><span class="p">,</span> <span class="s2">&quot;reason&quot;</span><span class="p">):</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;We failed to reach a server.&quot;</span><span class="p">)</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Reason: &quot;</span><span class="p">,</span> <span class="n">e</span><span class="o">.</span><span class="n">reason</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">e</span><span class="p">,</span> <span class="s2">&quot;code&quot;</span><span class="p">):</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;The server couldn&#39;t fulfill the request.&quot;</span><span class="p">)</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Error code: &quot;</span><span class="p">,</span> <span class="n">e</span><span class="o">.</span><span class="n">code</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;We reached &quot;</span><span class="p">,</span> <span class="n">url</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;  downloading...&quot;</span><span class="p">,</span> <span class="n">osp</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">source</span><span class="p">),</span> <span class="n">end</span><span class="o">=</span><span class="s2">&quot; &quot;</span><span class="p">)</span>
+            <span class="k">with</span> <span class="n">urllib</span><span class="o">.</span><span class="n">request</span><span class="o">.</span><span class="n">urlopen</span><span class="p">(</span><span class="n">source</span><span class="p">)</span> <span class="k">as</span> <span class="n">response</span><span class="p">,</span> <span class="nb">open</span><span class="p">(</span>
+                <span class="n">target</span><span class="p">,</span> <span class="s2">&quot;wb&quot;</span>
+            <span class="p">)</span> <span class="k">as</span> <span class="n">target</span><span class="p">:</span>
+                <span class="n">shutil</span><span class="o">.</span><span class="n">copyfileobj</span><span class="p">(</span><span class="n">response</span><span class="p">,</span> <span class="n">target</span><span class="p">)</span>
+            <span class="c1"># urllib.request.urlretrieve(source,target)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot; complete!&quot;</span><span class="p">)</span></div>
+
+
+<span class="k">class</span> <span class="nc">DataMHD</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;MHD data in one time snapshot.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    fn: str</span>
+<span class="sd">        filename.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fn</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fn</span> <span class="o">=</span> <span class="n">fn</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ytds</span> <span class="o">=</span> <span class="n">ya</span><span class="o">.</span><span class="n">load_athena4p2_mhd</span><span class="p">(</span><span class="n">fn</span><span class="p">)</span>  <span class="c1"># yt data</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">grid</span> <span class="o">=</span> <span class="n">ya</span><span class="o">.</span><span class="n">get_covering_grid</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ytds</span><span class="p">)</span>  <span class="c1"># yt covering grid</span>
+        <span class="k">return</span>
+
+
+<span class="k">class</span> <span class="nc">DataRad</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;UV data in one time snapshot.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    fn: str</span>
+<span class="sd">        filename.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fn</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fn</span> <span class="o">=</span> <span class="n">fn</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ytds</span> <span class="o">=</span> <span class="n">ya</span><span class="o">.</span><span class="n">load_athena4p2_rad</span><span class="p">(</span><span class="n">fn</span><span class="p">)</span>  <span class="c1"># yt data</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">grid</span> <span class="o">=</span> <span class="n">ya</span><span class="o">.</span><span class="n">get_covering_grid</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ytds</span><span class="p">)</span>  <span class="c1"># yt covering grid</span>
+        <span class="k">return</span>
+
+
+<span class="k">class</span> <span class="nc">DataChem</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Chemistry data in one time snapshot.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    fn: str</span>
+<span class="sd">        filename.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fn</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fn</span> <span class="o">=</span> <span class="n">fn</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ytds</span> <span class="o">=</span> <span class="n">ya</span><span class="o">.</span><span class="n">load_athenapp</span><span class="p">(</span><span class="n">fn</span><span class="p">)</span>  <span class="c1"># yt data</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">grid</span> <span class="o">=</span> <span class="n">ya</span><span class="o">.</span><span class="n">get_covering_grid</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ytds</span><span class="p">)</span>  <span class="c1"># yt covering grid</span>
+        <span class="k">return</span>
+
+    <span class="k">def</span> <span class="nf">get_col</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">spec</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">2</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Calculate the column density of species.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        spec: str</span>
+<span class="sd">            name of species, e.g. &quot;H2&quot;.</span>
+<span class="sd">        axis: int, [0, 1, 2]</span>
+<span class="sd">            axis where the column is calculated along.</span>
+<span class="sd">            0:x, 1:y, 2:z.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        col: YTarray</span>
+<span class="sd">            column density, e.g. N_H2.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">dx</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">grid</span><span class="p">[</span><span class="s2">&quot;dx&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
+        <span class="n">nH</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">grid</span><span class="p">[</span><span class="s2">&quot;nH&quot;</span><span class="p">]</span>
+        <span class="n">abd</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">grid</span><span class="p">[</span><span class="n">spec</span><span class="p">]</span>
+        <span class="n">ns</span> <span class="o">=</span> <span class="n">abd</span> <span class="o">*</span> <span class="n">nH</span>
+        <span class="n">col</span> <span class="o">=</span> <span class="n">ns</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span> <span class="o">*</span> <span class="n">dx</span>
+        <span class="k">return</span> <span class="n">col</span>
+
+
+<span class="k">class</span> <span class="nc">DataCO</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;CO emission lines PPV in one time snapshot.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    fn: str</span>
+<span class="sd">        filename</span>
+<span class="sd">    iline: int, [1, 2]</span>
+<span class="sd">        index for CO rotaional line upper level.</span>
+<span class="sd">    Tdect: float</span>
+<span class="sd">        detection limit for atenna temperature in K</span>
+<span class="sd">        for each velocity channel.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fn</span><span class="p">,</span> <span class="n">iline</span><span class="p">,</span> <span class="n">Tdect</span><span class="o">=</span><span class="mf">0.0</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">iline</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">lam0</span> <span class="o">=</span> <span class="mf">2600.75763346</span>
+        <span class="k">elif</span> <span class="n">iline</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">lam0</span> <span class="o">=</span> <span class="mf">1300.4036558</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;ERROR: DataCO.__init__(): &quot;</span>
+            <span class="n">msg</span> <span class="o">+=</span> <span class="s2">&quot;Line index </span><span class="si">{:d}</span><span class="s2"> not recognized (iline=[1,2]).&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">iline</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fn</span> <span class="o">=</span> <span class="n">fn</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">Tdect</span> <span class="o">=</span> <span class="n">Tdect</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">img</span> <span class="o">=</span> <span class="n">radmc</span><span class="o">.</span><span class="n">Images</span><span class="p">(</span><span class="n">fn</span><span class="p">,</span> <span class="n">lam0</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">lam0</span><span class="p">)</span>  <span class="c1"># PPV cube</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">WCO</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">img</span><span class="o">.</span><span class="n">getimageWCO</span><span class="p">(</span><span class="n">Tdect</span><span class="o">=</span><span class="n">Tdect</span><span class="p">)</span>  <span class="c1"># CO line intensity in K*km/s</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">Tpeak</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">img</span><span class="o">.</span><span class="n">getTpeak</span><span class="p">(</span><span class="n">Tdect</span><span class="o">=</span><span class="n">Tdect</span><span class="p">)</span>  <span class="c1"># peak atenna temperature in K</span>
+        <span class="c1"># brightness weighted mean velocity and velocity dispersion in km/s</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">vz</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">sigmav</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">img</span><span class="o">.</span><span class="n">getimage_velocities</span><span class="p">(</span><span class="n">Tdect</span><span class="o">=</span><span class="n">Tdect</span><span class="p">)</span>
+        <span class="k">return</span>
+</pre></div>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Chang-Goo Kim
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2023.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>
