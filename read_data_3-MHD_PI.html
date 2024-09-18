@@ -436,10 +436,7 @@ document.write(`
 <p>This script focus on reading and analysing the full box <span class="math notranslate nohighlight">\(z=\pm 3584{\rm pc}\)</span> MHD data and UV radiation post-processed electro abundance presented in <a class="reference external" href="https://ui.adsabs.harvard.edu/abs/2020ApJ...897..143K/abstract">Kado-Fong et al. (2020)</a>.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">from</span> <span class="nn">scipy.interpolate</span> <span class="kn">import</span> <span class="n">interp1d</span>
-<span class="kn">import</span> <span class="nn">yt</span> <span class="c1">#https://yt-project.org/</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">yt</span>  <span class="c1"># https://yt-project.org/</span>
 </pre></div>
 </div>
 </div>
@@ -451,7 +448,7 @@ document.write(`
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Need to set the master directory where the data is stored</span>
 <span class="n">dir_master</span> <span class="o">=</span> <span class="s2">&quot;../data/&quot;</span>
 <span class="c1"># name of the simulation model</span>
-<span class="n">model_id</span> <span class="o">=</span> <span class="s2">&quot;R8_4pc&quot;</span> 
+<span class="n">model_id</span> <span class="o">=</span> <span class="s2">&quot;R8_4pc&quot;</span>
 </pre></div>
 </div>
 </div>
@@ -464,13 +461,19 @@ document.write(`
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># add path to astro_tigress module</span>
 <span class="c1"># this can also be done using PYTHONPATH environment variable</span>
 <span class="kn">import</span> <span class="nn">sys</span>
-<span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="s1">&#39;../&#39;</span><span class="p">)</span>
+
+<span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="s2">&quot;../&quot;</span><span class="p">)</span>
 
 <span class="kn">import</span> <span class="nn">astro_tigress</span>
-<span class="n">model</span> <span class="o">=</span> <span class="n">astro_tigress</span><span class="o">.</span><span class="n">Model</span><span class="p">(</span><span class="n">model_id</span><span class="p">,</span><span class="n">dir_master</span><span class="p">)</span> <span class="c1">#reading the model information</span>
+
+<span class="n">model</span> <span class="o">=</span> <span class="n">astro_tigress</span><span class="o">.</span><span class="n">Model</span><span class="p">(</span><span class="n">model_id</span><span class="p">,</span> <span class="n">dir_master</span><span class="p">)</span>  <span class="c1"># reading the model information</span>
 <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Snapshots and contained data sets:&quot;</span><span class="p">)</span>
 <span class="k">for</span> <span class="n">ivtk</span> <span class="ow">in</span> <span class="n">model</span><span class="o">.</span><span class="n">ivtks</span><span class="p">:</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;ivtk=</span><span class="si">{:d}</span><span class="s2">, t=</span><span class="si">{:.1f}</span><span class="s2"> Myr, datasets=</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">ivtk</span><span class="p">,</span> <span class="n">ivtk</span><span class="o">*</span><span class="n">model</span><span class="o">.</span><span class="n">dt_Myr</span><span class="p">,</span> <span class="n">model</span><span class="o">.</span><span class="n">data_sets</span><span class="p">[</span><span class="n">ivtk</span><span class="p">]))</span>
+    <span class="nb">print</span><span class="p">(</span>
+        <span class="s2">&quot;ivtk=</span><span class="si">{:d}</span><span class="s2">, t=</span><span class="si">{:.1f}</span><span class="s2"> Myr, datasets=</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+            <span class="n">ivtk</span><span class="p">,</span> <span class="n">ivtk</span> <span class="o">*</span> <span class="n">model</span><span class="o">.</span><span class="n">dt_Myr</span><span class="p">,</span> <span class="n">model</span><span class="o">.</span><span class="n">data_sets</span><span class="p">[</span><span class="n">ivtk</span><span class="p">]</span>
+        <span class="p">)</span>
+    <span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -487,7 +490,7 @@ ivtk=300, t=293.3 Myr, datasets=[&#39;Bfield&#39;, &#39;MHD&#39;, &#39;MHD_PI&#3
 <p>Now, we want to look into the detailed 3D simulation data of the simulations. First, we select a snapshot (identified by its ivtk number) and the type of dataset we want to look into (“rad” in this case). Then we need to load the data. Because the data files are large, it can take a while to load.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#load the UV data set for the snapshot ivtk=300</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># load the UV data set for the snapshot ivtk=300</span>
 <span class="n">model</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="mi">300</span><span class="p">,</span> <span class="n">dataset</span><span class="o">=</span><span class="s2">&quot;MHD_PI&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -551,7 +554,7 @@ x_{\rm HI} = n_{\rm HI}/n_{\rm H}
 <p>Below is midplane slices of electron fraction, electron number density, and radiation energy densities.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">yt</span><span class="o">.</span><span class="n">SlicePlot</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">MHD_PI</span><span class="o">.</span><span class="n">ytds</span><span class="p">,</span> <span class="s2">&quot;z&quot;</span><span class="p">,</span> <span class="n">fields</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;nHI&quot;</span><span class="p">,</span><span class="s2">&quot;ne&quot;</span><span class="p">])</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">yt</span><span class="o">.</span><span class="n">SlicePlot</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">MHD_PI</span><span class="o">.</span><span class="n">ytds</span><span class="p">,</span> <span class="s2">&quot;z&quot;</span><span class="p">,</span> <span class="n">fields</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;nHI&quot;</span><span class="p">,</span> <span class="s2">&quot;ne&quot;</span><span class="p">])</span>
 </pre></div>
 </div>
 </div>
@@ -560,7 +563,7 @@ x_{\rm HI} = n_{\rm HI}/n_{\rm H}
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">yt</span><span class="o">.</span><span class="n">SlicePlot</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">MHD_PI</span><span class="o">.</span><span class="n">ytds</span><span class="p">,</span> <span class="s2">&quot;x&quot;</span><span class="p">,</span> <span class="n">fields</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;nHI&quot;</span><span class="p">,</span><span class="s2">&quot;ne&quot;</span><span class="p">])</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">yt</span><span class="o">.</span><span class="n">SlicePlot</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">MHD_PI</span><span class="o">.</span><span class="n">ytds</span><span class="p">,</span> <span class="s2">&quot;x&quot;</span><span class="p">,</span> <span class="n">fields</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;nHI&quot;</span><span class="p">,</span> <span class="s2">&quot;ne&quot;</span><span class="p">])</span>
 </pre></div>
 </div>
 </div>

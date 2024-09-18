@@ -438,7 +438,6 @@ document.write(`
 <span class="kn">from</span> <span class="nn">matplotlib.colors</span> <span class="kn">import</span> <span class="n">LogNorm</span>
 <span class="kn">from</span> <span class="nn">matplotlib</span> <span class="kn">import</span> <span class="n">gridspec</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">import</span> <span class="nn">yt</span> <span class="c1">#https://yt-project.org/</span>
 </pre></div>
 </div>
 </div>
@@ -450,7 +449,7 @@ document.write(`
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Need to set the master directory where the data is stored</span>
 <span class="n">dir_master</span> <span class="o">=</span> <span class="s2">&quot;../data/&quot;</span>
 <span class="c1"># name of the simulation model</span>
-<span class="n">model_id</span> <span class="o">=</span> <span class="s2">&quot;R8_2pc&quot;</span> 
+<span class="n">model_id</span> <span class="o">=</span> <span class="s2">&quot;R8_2pc&quot;</span>
 </pre></div>
 </div>
 </div>
@@ -461,13 +460,19 @@ document.write(`
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># add path to astro_tigress module</span>
 <span class="c1"># this can also be done using PYTHONPATH environment variable</span>
 <span class="kn">import</span> <span class="nn">sys</span>
-<span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="s1">&#39;../&#39;</span><span class="p">)</span>
+
+<span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="s2">&quot;../&quot;</span><span class="p">)</span>
 
 <span class="kn">import</span> <span class="nn">astro_tigress</span>
-<span class="n">model</span> <span class="o">=</span> <span class="n">astro_tigress</span><span class="o">.</span><span class="n">Model</span><span class="p">(</span><span class="n">model_id</span><span class="p">,</span><span class="n">dir_master</span><span class="p">)</span> <span class="c1">#reading the model information</span>
+
+<span class="n">model</span> <span class="o">=</span> <span class="n">astro_tigress</span><span class="o">.</span><span class="n">Model</span><span class="p">(</span><span class="n">model_id</span><span class="p">,</span> <span class="n">dir_master</span><span class="p">)</span>  <span class="c1"># reading the model information</span>
 <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Snapshots and contained data sets:&quot;</span><span class="p">)</span>
 <span class="k">for</span> <span class="n">ivtk</span> <span class="ow">in</span> <span class="n">model</span><span class="o">.</span><span class="n">ivtks</span><span class="p">:</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;ivtk=</span><span class="si">{:d}</span><span class="s2">, t=</span><span class="si">{:.1f}</span><span class="s2"> Myr, datasets=</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">ivtk</span><span class="p">,</span> <span class="n">ivtk</span><span class="o">*</span><span class="n">model</span><span class="o">.</span><span class="n">dt_Myr</span><span class="p">,</span> <span class="n">model</span><span class="o">.</span><span class="n">data_sets</span><span class="p">[</span><span class="n">ivtk</span><span class="p">]))</span>
+    <span class="nb">print</span><span class="p">(</span>
+        <span class="s2">&quot;ivtk=</span><span class="si">{:d}</span><span class="s2">, t=</span><span class="si">{:.1f}</span><span class="s2"> Myr, datasets=</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+            <span class="n">ivtk</span><span class="p">,</span> <span class="n">ivtk</span> <span class="o">*</span> <span class="n">model</span><span class="o">.</span><span class="n">dt_Myr</span><span class="p">,</span> <span class="n">model</span><span class="o">.</span><span class="n">data_sets</span><span class="p">[</span><span class="n">ivtk</span><span class="p">]</span>
+        <span class="p">)</span>
+    <span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -495,7 +500,7 @@ ivtk=290, t=283.6 Myr, datasets=[&#39;CO_lines&#39;, &#39;MHD&#39;, &#39;chem&#3
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#load the chemistry data set for the snapshot ivtk=300</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># load the chemistry data set for the snapshot ivtk=300</span>
 <span class="n">model</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="mi">290</span><span class="p">,</span> <span class="n">dataset</span><span class="o">=</span><span class="s2">&quot;chem&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -504,7 +509,7 @@ ivtk=290, t=283.6 Myr, datasets=[&#39;CO_lines&#39;, &#39;MHD&#39;, &#39;chem&#3
 <p>You can print out the information of all the fields available using the code below (I commented it because the output is too long).</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#model.chem.ytds.field_info</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># model.chem.ytds.field_info</span>
 </pre></div>
 </div>
 </div>
@@ -551,7 +556,7 @@ ivtk=290, t=283.6 Myr, datasets=[&#39;CO_lines&#39;, &#39;MHD&#39;, &#39;chem&#3
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
 <span class="n">ax</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">111</span><span class="p">)</span>
-<span class="n">indx</span> <span class="o">=</span> <span class="n">nH2_np</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mf">1.</span>
+<span class="n">indx</span> <span class="o">=</span> <span class="n">nH2_np</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mf">1.0</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">nH2_np</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)[</span><span class="n">indx</span><span class="p">]),</span> <span class="n">bins</span><span class="o">=</span><span class="mi">50</span><span class="p">)</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">set_yscale</span><span class="p">(</span><span class="s2">&quot;log&quot;</span><span class="p">)</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;$\log_</span><span class="si">{10}</span><span class="s2">[n_</span><span class="si">{H_2}</span><span class="s2"> / cm^3]$&quot;</span><span class="p">);</span>
@@ -574,11 +579,11 @@ ivtk=290, t=283.6 Myr, datasets=[&#39;CO_lines&#39;, &#39;MHD&#39;, &#39;chem&#3
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
 <span class="n">ax</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">111</span><span class="p">)</span>
-<span class="n">keys_NH2</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;origin&quot;</span><span class="p">:</span><span class="s2">&quot;lower&quot;</span><span class="p">,</span> <span class="s2">&quot;cmap&quot;</span><span class="p">:</span><span class="s2">&quot;pink_r&quot;</span><span class="p">,</span> <span class="s2">&quot;norm&quot;</span><span class="p">:</span> <span class="n">LogNorm</span><span class="p">(</span><span class="n">vmin</span><span class="o">=</span><span class="mf">1e19</span><span class="p">,</span> <span class="n">vmax</span><span class="o">=</span><span class="mf">2e22</span><span class="p">)}</span>
+<span class="n">keys_NH2</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;origin&quot;</span><span class="p">:</span> <span class="s2">&quot;lower&quot;</span><span class="p">,</span> <span class="s2">&quot;cmap&quot;</span><span class="p">:</span> <span class="s2">&quot;pink_r&quot;</span><span class="p">,</span> <span class="s2">&quot;norm&quot;</span><span class="p">:</span> <span class="n">LogNorm</span><span class="p">(</span><span class="n">vmin</span><span class="o">=</span><span class="mf">1e19</span><span class="p">,</span> <span class="n">vmax</span><span class="o">=</span><span class="mf">2e22</span><span class="p">)}</span>
 <span class="n">left_edge_kpc</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">chem</span><span class="o">.</span><span class="n">grid</span><span class="o">.</span><span class="n">left_edge</span><span class="o">.</span><span class="n">in_units</span><span class="p">(</span><span class="s2">&quot;kpc&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">value</span>
 <span class="n">right_edge_kpc</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">chem</span><span class="o">.</span><span class="n">grid</span><span class="o">.</span><span class="n">right_edge</span><span class="o">.</span><span class="n">in_units</span><span class="p">(</span><span class="s2">&quot;kpc&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">value</span>
 <span class="n">extent</span> <span class="o">=</span> <span class="p">[</span><span class="n">left_edge_kpc</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">right_edge_kpc</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">left_edge_kpc</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">right_edge_kpc</span><span class="p">[</span><span class="mi">1</span><span class="p">]]</span>
-<span class="n">cax</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">swapaxes</span><span class="p">(</span><span class="n">NH2</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">extent</span><span class="o">=</span><span class="n">extent</span><span class="p">,</span>  <span class="o">**</span><span class="n">keys_NH2</span><span class="p">)</span>
+<span class="n">cax</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">swapaxes</span><span class="p">(</span><span class="n">NH2</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">extent</span><span class="o">=</span><span class="n">extent</span><span class="p">,</span> <span class="o">**</span><span class="n">keys_NH2</span><span class="p">)</span>
 <span class="n">cbar</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">colorbar</span><span class="p">(</span><span class="n">cax</span><span class="p">)</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&quot;x (kpc)&quot;</span><span class="p">)</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">&quot;y (kpc)&quot;</span><span class="p">)</span>
@@ -595,9 +600,9 @@ ivtk=290, t=283.6 Myr, datasets=[&#39;CO_lines&#39;, &#39;MHD&#39;, &#39;chem&#3
 <h2>Read and analyse the CO emission lines output<a class="headerlink" href="#read-and-analyse-the-co-emission-lines-output" title="Permalink to this heading">#</a></h2>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#load the CO line dataset for the snapshot ivtk=290</span>
-<span class="n">model</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="mi">290</span><span class="p">,</span> <span class="n">dataset</span><span class="o">=</span><span class="s2">&quot;CO_lines&quot;</span><span class="p">,</span> <span class="n">iline</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span> <span class="c1">#CO(J=1-0)</span>
-<span class="n">model</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="mi">290</span><span class="p">,</span> <span class="n">dataset</span><span class="o">=</span><span class="s2">&quot;CO_lines&quot;</span><span class="p">,</span> <span class="n">iline</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span> <span class="c1">#CO(J=2-1)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># load the CO line dataset for the snapshot ivtk=290</span>
+<span class="n">model</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="mi">290</span><span class="p">,</span> <span class="n">dataset</span><span class="o">=</span><span class="s2">&quot;CO_lines&quot;</span><span class="p">,</span> <span class="n">iline</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>  <span class="c1"># CO(J=1-0)</span>
+<span class="n">model</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="mi">290</span><span class="p">,</span> <span class="n">dataset</span><span class="o">=</span><span class="s2">&quot;CO_lines&quot;</span><span class="p">,</span> <span class="n">iline</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>  <span class="c1"># CO(J=2-1)</span>
 </pre></div>
 </div>
 </div>
@@ -605,7 +610,7 @@ ivtk=290, t=283.6 Myr, datasets=[&#39;CO_lines&#39;, &#39;MHD&#39;, &#39;chem&#3
 <p>Below is an example figure of CO (1-0) and (2-1) lines. Comparing to the H2 map above, you can see that CO traces denser gas than H2.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#setting the range of x and y axes</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># setting the range of x and y axes</span>
 <span class="n">model</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="mi">290</span><span class="p">,</span> <span class="n">dataset</span><span class="o">=</span><span class="s2">&quot;MHD&quot;</span><span class="p">)</span>
 <span class="n">left_edge_kpc</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">MHD</span><span class="o">.</span><span class="n">grid</span><span class="o">.</span><span class="n">left_edge</span><span class="o">.</span><span class="n">in_units</span><span class="p">(</span><span class="s2">&quot;kpc&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">value</span>
 <span class="n">right_edge_kpc</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">MHD</span><span class="o">.</span><span class="n">grid</span><span class="o">.</span><span class="n">right_edge</span><span class="o">.</span><span class="n">in_units</span><span class="p">(</span><span class="s2">&quot;kpc&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">value</span>
@@ -621,7 +626,7 @@ ivtk=290, t=283.6 Myr, datasets=[&#39;CO_lines&#39;, &#39;MHD&#39;, &#39;chem&#3
 <span class="n">ax1</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="n">gs</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">aspect</span><span class="o">=</span><span class="s2">&quot;equal&quot;</span><span class="p">)</span>
 <span class="n">ax2</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="n">gs</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">aspect</span><span class="o">=</span><span class="s2">&quot;equal&quot;</span><span class="p">)</span>
 <span class="n">ax_cbar</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="n">gs</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">])</span>
-<span class="n">keys_WCO</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;origin&quot;</span><span class="p">:</span><span class="s2">&quot;lower&quot;</span><span class="p">,</span> <span class="s2">&quot;cmap&quot;</span><span class="p">:</span><span class="s2">&quot;afmhot_r&quot;</span><span class="p">,</span> <span class="s2">&quot;norm&quot;</span><span class="p">:</span> <span class="n">LogNorm</span><span class="p">(</span><span class="n">vmin</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">vmax</span><span class="o">=</span><span class="mi">500</span><span class="p">)}</span>
+<span class="n">keys_WCO</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;origin&quot;</span><span class="p">:</span> <span class="s2">&quot;lower&quot;</span><span class="p">,</span> <span class="s2">&quot;cmap&quot;</span><span class="p">:</span> <span class="s2">&quot;afmhot_r&quot;</span><span class="p">,</span> <span class="s2">&quot;norm&quot;</span><span class="p">:</span> <span class="n">LogNorm</span><span class="p">(</span><span class="n">vmin</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">vmax</span><span class="o">=</span><span class="mi">500</span><span class="p">)}</span>
 <span class="n">cax</span> <span class="o">=</span> <span class="n">ax1</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">swapaxes</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">CO_lines</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">WCO</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">extent</span><span class="o">=</span><span class="n">extent</span><span class="p">,</span> <span class="o">**</span><span class="n">keys_WCO</span><span class="p">)</span>
 <span class="n">ax2</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">swapaxes</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">CO_lines</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">WCO</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">extent</span><span class="o">=</span><span class="n">extent</span><span class="p">,</span> <span class="o">**</span><span class="n">keys_WCO</span><span class="p">)</span>
 <span class="n">ax1</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;CO (J=1-0)&quot;</span><span class="p">)</span>
@@ -643,7 +648,7 @@ ivtk=290, t=283.6 Myr, datasets=[&#39;CO_lines&#39;, &#39;MHD&#39;, &#39;chem&#3
 <p>The commands below will save the CO (1-0) line PPV cube into a FITS file. Give it a try!</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#model.CO_lines[1].img.write_fits(fn_fits=&quot;CO1-0.fits&quot;)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># model.CO_lines[1].img.write_fits(fn_fits=&quot;CO1-0.fits&quot;)</span>
 </pre></div>
 </div>
 </div>
