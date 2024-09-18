@@ -39,7 +39,7 @@ class coolftn(object):
         self.nT = len(self.T1)
 
     def get_Tidx(self, T):
-        if type(T) == np.ndarray:
+        if type(T) is np.ndarray:
             Tidx = np.log10(T / self.Tmin) / self.dT
             Tidx[np.where(T < self.Tmin)] = 0
             Tidx[np.where(T >= self.Tmax)] = self.nT - 2
