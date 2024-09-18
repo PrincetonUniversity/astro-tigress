@@ -168,9 +168,7 @@ class Model:
 
         target = osp.join(self.dir_master, f)
         if osp.isfile(target):
-            print(
-                "{} ({:.5f}GB) already exists".format(f, osp.getsize(target) / 2**30)
-            )
+            print("{} ({:.5f}GB) already exists".format(f, osp.getsize(target) / 2**30))
             while True:
                 answer = input("overwrite? [y/n]:")
                 if answer.lower() in ["y", "n"]:
@@ -184,7 +182,7 @@ class Model:
         req = urllib.request.Request(source)
 
         try:
-            response = urllib.request.urlopen(req)
+            urllib.request.urlopen(req)
         except URLError as e:
             if hasattr(e, "reason"):
                 print("We failed to reach a server.")
