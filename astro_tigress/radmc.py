@@ -234,14 +234,14 @@ class Data:
         # clean up directory
         if clean_outfile:
             print("Cleaning radmc3d output files...")
-            cmd = "rm " + work_dir + "*\.*out " + work_dir + "*\.*dat"
+            cmd = "rm " + work_dir + "*.*out " + work_dir + r"*.*dat"
             p = Popen(
                 cmd, shell=True, stdin=PIPE, stdout=PIPE, stderr=STDOUT, close_fds=True
             )
             print(p.stdout.read())
         if clean_infile:
             print("Cleaning radmc3d input files...")
-            cmd = "rm " + work_dir + "*\.*inp "
+            cmd = "rm " + work_dir + "*.*inp "
             p = Popen(
                 cmd, shell=True, stdin=PIPE, stdout=PIPE, stderr=STDOUT, close_fds=True
             )
@@ -893,8 +893,8 @@ class Images:
         cbar = ax.figure.colorbar(cax)
         cbar.solids.set_edgecolor("face")
         cbar.ax.set_ylabel(clabel)
-        ax.set_xlabel("$x/\mathrm{pc}$")
-        ax.set_ylabel("$y/\mathrm{pc}$")
+        ax.set_xlabel(r"$x/\mathrm{pc}$")
+        ax.set_ylabel(r"$y/\mathrm{pc}$")
         return
 
     def plotsed(self, ax, **keys):
@@ -1044,8 +1044,8 @@ class Images:
             cbar = ax.figure.colorbar(cax1, cax=cax, orientation=orientation)
         cbar.solids.set_edgecolor("face")
         cbar.set_label(r"$\mathrm{W_{CO}}(\mathrm{K\cdot km/s})$", fontsize=25)
-        ax.set_xlabel("$x(\mathrm{kpc})$", fontsize=20)
-        ax.set_ylabel("$y(\mathrm{kpc})$", fontsize=20)
+        ax.set_xlabel(r"$x(\mathrm{kpc})$", fontsize=20)
+        ax.set_ylabel(r"$y(\mathrm{kpc})$", fontsize=20)
         return
 
     def plotimageXCO(
@@ -1086,8 +1086,8 @@ class Images:
             r"$\mathrm{X_\mathrm{CO}}(\mathrm{2\times 10^{20}cm^{-2}K^{-1} km^{-1}s})$",
             fontsize=25,
         )
-        ax.set_xlabel("$x(\mathrm{kpc})$", fontsize=20)
-        ax.set_ylabel("$y(\mathrm{kpc})$", fontsize=20)
+        ax.set_xlabel(r"$x(\mathrm{kpc})$", fontsize=20)
+        ax.set_ylabel(r"$y(\mathrm{kpc})$", fontsize=20)
         return
 
     def getimage_velocities(self, Tdect=0.0, dv=None):
