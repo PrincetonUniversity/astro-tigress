@@ -5,7 +5,7 @@
 
 ## Data Download
 
-Full data can be downloaded via [Globus](https://app.globus.org/file-manager?origin_id=bb151d8e-ea3f-4612-b357-94d07f538f0c&origin_path=%2F10.34770%2Fackh-7y71%2F330%2F&two_pane=true).
+Full data can be downloaded via [Globus](https://tinyurl.com/263pwve7).
 
 A few data files used in the tutorials is also available at [this
 webpage](https://tigress-web.princeton.edu/~munan/astro-tigress/).
