@@ -423,8 +423,8 @@ document.write(`
 <h1>Synthetic HI 21cm lines<a class="headerlink" href="#synthetic-hi-21cm-lines" title="Permalink to this heading">#</a></h1>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 </pre></div>
 </div>
 </div>
@@ -433,10 +433,10 @@ document.write(`
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># add path to astro_tigress module</span>
 <span class="c1"># this can also be done using PYTHONPATH environment variable</span>
-<span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">sys</span>
 <span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="s1">&#39;../&#39;</span><span class="p">)</span>
 
-<span class="kn">import</span> <span class="nn">astro_tigress</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">astro_tigress</span>
 <span class="c1"># Need to set the master directory where the data is stored</span>
 <span class="n">dir_master</span> <span class="o">=</span> <span class="s2">&quot;../data/&quot;</span>
 <span class="c1"># name of the simulation model</span>
@@ -574,7 +574,7 @@ document.write(`
 </ul>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">astro_tigress.synthetic_HI</span> <span class="kn">import</span> <span class="n">los_to_HI_axis_proj</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">astro_tigress.synthetic_HI</span><span class="w"> </span><span class="kn">import</span> <span class="n">los_to_HI_axis_proj</span>
 </pre></div>
 </div>
 </div>
@@ -647,7 +647,7 @@ los_to_HI_axis_proj(dens, temp, vel, vchannel, deltas=1.0, los_axis=1)
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">astro_tigress.synthetic_HI</span> <span class="kn">import</span> <span class="n">save_to_fits</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">astro_tigress.synthetic_HI</span><span class="w"> </span><span class="kn">import</span> <span class="n">save_to_fits</span>
 </pre></div>
 </div>
 </div>
@@ -739,7 +739,7 @@ CRPIX3  =                  0.0
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">xarray</span> <span class="k">as</span> <span class="nn">xr</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">xarray</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">xr</span>
 </pre></div>
 </div>
 </div>
@@ -773,7 +773,7 @@ CRPIX3  =                  0.0
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">matplotlib.colors</span> <span class="kn">import</span> <span class="n">LogNorm</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">matplotlib.colors</span><span class="w"> </span><span class="kn">import</span> <span class="n">LogNorm</span>
 <span class="n">NHthin</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">col</span><span class="o">=</span><span class="s1">&#39;v_bins&#39;</span><span class="p">,</span><span class="n">col_wrap</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">vmin</span><span class="o">=</span><span class="mf">1.e18</span><span class="p">,</span> <span class="n">vmax</span><span class="o">=</span><span class="mf">1.e22</span><span class="p">,</span> <span class="n">norm</span><span class="o">=</span><span class="n">LogNorm</span><span class="p">())</span>
 </pre></div>
 </div>

@@ -434,10 +434,10 @@ document.write(`
 <p>This script focus on reading and analysing the chemistry and CO emission line obtained from post-processing the TIGRESS simulations (<a class="reference external" href="https://ui.adsabs.harvard.edu/abs/2018ApJ...858...16G/abstract">Gong et al 2018</a>, <a class="reference external" href="https://ui.adsabs.harvard.edu/abs/2020ApJ...903..142G/abstract">Gong et al. 2020</a>).</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
-<span class="kn">from</span> <span class="nn">matplotlib.colors</span> <span class="kn">import</span> <span class="n">LogNorm</span>
-<span class="kn">from</span> <span class="nn">matplotlib</span> <span class="kn">import</span> <span class="n">gridspec</span>
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">matplotlib.colors</span><span class="w"> </span><span class="kn">import</span> <span class="n">LogNorm</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">matplotlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">gridspec</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 </pre></div>
 </div>
 </div>
@@ -459,11 +459,11 @@ document.write(`
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># add path to astro_tigress module</span>
 <span class="c1"># this can also be done using PYTHONPATH environment variable</span>
-<span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">sys</span>
 
 <span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="s2">&quot;../&quot;</span><span class="p">)</span>
 
-<span class="kn">import</span> <span class="nn">astro_tigress</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">astro_tigress</span>
 
 <span class="n">model</span> <span class="o">=</span> <span class="n">astro_tigress</span><span class="o">.</span><span class="n">Model</span><span class="p">(</span><span class="n">model_id</span><span class="p">,</span> <span class="n">dir_master</span><span class="p">)</span>  <span class="c1"># reading the model information</span>
 <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Snapshots and contained data sets:&quot;</span><span class="p">)</span>

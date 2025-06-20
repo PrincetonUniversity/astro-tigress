@@ -450,14 +450,14 @@ state is reached. Full MHD snapshots for every 1 Myr are available upon request.
 </section>
 <section id="quickstart">
 <h2>Quickstart<a class="headerlink" href="#quickstart" title="Permalink to this heading">#</a></h2>
-<div class="highlight-py notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">astro_tigress</span>
+<div class="highlight-py notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">astro_tigress</span>
 <span class="n">dir_master</span> <span class="o">=</span> <span class="o">...</span> <span class="c1"># master path to your data</span>
 <span class="n">model_id</span> <span class="o">=</span> <span class="s2">&quot;R8_2pc&quot;</span>
 <span class="n">model</span><span class="o">=</span><span class="n">astro_tigress</span><span class="o">.</span><span class="n">Model</span><span class="p">(</span><span class="n">model_id</span><span class="p">,</span><span class="n">dir_master</span><span class="p">)</span>
 <span class="n">model</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="mi">300</span><span class="p">,</span><span class="s2">&quot;MHD&quot;</span><span class="p">)</span>
 
 <span class="c1"># make plots using yt</span>
-<span class="kn">import</span> <span class="nn">yt</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">yt</span>
 <span class="n">slc</span><span class="o">=</span><span class="n">yt</span><span class="o">.</span><span class="n">SlicePlot</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">MHD</span><span class="o">.</span><span class="n">ytds</span><span class="p">,</span><span class="s1">&#39;z&#39;</span><span class="p">,</span><span class="n">fields</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;gas&#39;</span><span class="p">,</span><span class="s1">&#39;nH&#39;</span><span class="p">))</span>
 <span class="n">slc</span><span class="o">.</span><span class="n">annotate_magnetic_field</span><span class="p">()</span>
 </pre></div>
