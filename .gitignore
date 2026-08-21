@@ -6,5 +6,10 @@ _build
 data/
 dist/
 site/
-*.fits
 *.nc
+*.fits
+*.h5
+*.pha
+
+# personal experiments / under-development work (X-ray synthetic obs, etc.)
+/dev/
