@@ -80,14 +80,15 @@ def import_pyathena(pyathena_path):
     return pa
 
 
-def load_cube(pa, s, num, fmap):
+def load_cube(pa, s, num, fmap, zmax=None):
     """Return ``(dd, t_Myr)`` for one snapshot.
 
     ``dd`` is an xarray Dataset with fields ``nH`` [cm^-3], ``pok`` [K cm^-3],
     ``vx, vy, vz`` [km/s] and ``T`` [K], on coordinates ``x, y, z`` [pc].  The
     temperature is the native ``T`` field when the backend can build it,
     otherwise it is derived from the classic two-phase cooling function
-    (``T1 = pok / (nH * muH)`` -> ``coolftn.get_temp``).
+    (``T1 = pok / (nH * muH)`` -> ``coolftn.get_temp``).  ``zmax`` (pc) restricts
+    the read to ``|z| < zmax`` -- useful for tall boxes.
     """
     # Prefer the framework loader; fall back to a direct read of the discovered
     # file (the data-release layout puts each snapshot in its own subdirectory,
@@ -97,12 +98,17 @@ def load_cube(pa, s, num, fmap):
     except Exception:
         ds = pa.AthenaDataSet(fmap[num], units=s.u, dfi=s.dfi)
 
+    le = re = None
+    if zmax is not None:  # read only the |z| < zmax slab
+        le, re = list(ds.domain["le"]), list(ds.domain["re"])
+        le[2], re[2] = -abs(zmax), abs(zmax)
+
     base_fields = ["nH", "pok", "velocity"]
     try:
-        dd = ds.get_field(base_fields + ["T"])
+        dd = ds.get_field(base_fields + ["T"], le=le, re=re)
         temperature = dd["T"]
     except Exception:  # native T unavailable -> classic cooling function
-        dd = ds.get_field(base_fields)
+        dd = ds.get_field(base_fields, le=le, re=re)
         from pyathena.classic.cooling import coolftn
 
         T1 = dd["pok"] / (dd["nH"] * s.u.muH)
@@ -221,6 +227,10 @@ def main(argv=None):
                    help="model name for filenames (default: basename of basedir)")
     p.add_argument("--nums", default="all",
                    help="comma-separated snapshot numbers, or 'all' (default)")
+    p.add_argument("--every", type=int, default=1,
+                   help="process every Nth snapshot (stride on the sorted list)")
+    p.add_argument("--zmax", type=float, default=None,
+                   help="restrict reads to |z| < zmax pc (for tall boxes)")
     p.add_argument("--Tcnm", type=float, default=500.0,
                    help="CNM temperature threshold in K (default 500)")
     p.add_argument("--pyathena", default=_DEFAULT_PYATHENA,
@@ -241,9 +251,10 @@ def main(argv=None):
     Omega = float(s.par["problem"]["Omega"])     # km/s/pc (code units)
     qshear = float(s.par["problem"]["qshear"])
     muH = float(s.u.muH)
-    fmap = dict(zip(s.nums, s.files["vtk"]))
+    fmap = dict(zip(s.nums, s.files.get("vtk", [])))  # only used for the direct-read fallback
 
     nums = list(s.nums) if args.nums == "all" else [int(x) for x in args.nums.split(",")]
+    nums = nums[:: args.every]
     print(f"model={model}  Tcnm={args.Tcnm:g} K  Omega={Omega:g} km/s/pc  "
           f"qshear={qshear:g}  muH={muH:g}")
     print(f"outdir={outdir}  processing {len(nums)} snapshot(s): {nums}")
@@ -254,7 +265,7 @@ def main(argv=None):
             print(f"[{num:04d}] exists, skip")
             continue
         t0 = time.time()
-        dd, t_Myr = load_cube(pa, s, num, fmap)
+        dd, t_Myr = load_cube(pa, s, num, fmap, zmax=args.zmax)
         prof = compute_profiles(dd, t_Myr, num, Omega, qshear, muH, Tcnm=args.Tcnm)
         engine = save_netcdf(prof, fname)
         fmid = float(prof["f_A"].sel(z=0, method="nearest"))
