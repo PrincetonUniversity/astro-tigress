@@ -149,8 +149,9 @@ plt.rcParams.update({"figure.dpi": 100, "font.size": 11})
 MODEL = "R8_2pc"
 DATADIR = osp.join("..", "cnm_profiles", MODEL)
 
-# rendered figures are also written to files here (next to the notebook)
-FIGDIR = "figures"
+# rendered figures are written beside this model's data (per-model folder),
+# matching scripts/cnm_profile_figures.py
+FIGDIR = osp.join(DATADIR, "figures")
 os.makedirs(FIGDIR, exist_ok=True)
 
 
