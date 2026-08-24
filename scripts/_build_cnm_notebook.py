@@ -372,7 +372,83 @@ savefig(fig, "cnm_layer_thickness.png")
 """)
 
 md(r"""
-## 8. Notes
+## 8. Vertical profiles within the mean CNM layer
+
+We now zoom into the **mean CNM layer** — the height range between the
+snapshot-averaged boundaries $\langle z_{\rm bot}\rangle$ and
+$\langle z_{\rm top}\rangle$ obtained in section 7 — and show each profile there
+with a proper $y$-range (auto-scaled to the data inside the layer).  For every
+quantity we overplot the **median** (solid) and the **mean** (dashed) across
+snapshots, with the **16-84 percentile** range shaded.
+""")
+
+code(r"""
+# snapshot-mean profile (companion to the median/percentiles in `stat`)
+meands = comb.mean(dim="ivtk", skipna=True)
+
+# the "mean CNM layer": average boundaries from section 7
+zL = float(np.nanmean(zbot))   # mean layer bottom [kpc]
+zH = float(np.nanmean(ztop))   # mean layer top    [kpc]
+zsel = (np.asarray(zkpc) >= zL) & (np.asarray(zkpc) <= zH)
+print(f"mean CNM layer: z = {zL:+.3f} .. {zH:+.3f} kpc (thickness {zH - zL:.3f} kpc)")
+
+
+def plot_layer(ax, name, color="C0", logy=False, title="", ylabel="", ymin=None):
+    # median (solid) + mean (dashed) + 16-84 band, restricted to the mean layer
+    med = stat[name].sel(quantile=0.50)
+    lo = stat[name].sel(quantile=0.16)
+    hi = stat[name].sel(quantile=0.84)
+    mean = meands[name]
+    ax.fill_between(zkpc, lo, hi, color=color, alpha=0.20, lw=0, label="16-84%")
+    ax.plot(zkpc, med, color=color, lw=2, label="median")
+    ax.plot(zkpc, mean, color=color, lw=1.5, ls="--", label="mean")
+    ax.set_xlim(zL, zH)
+    if logy:
+        ax.set_yscale("log")
+    # proper y-range: fit the band and the mean inside the layer, with padding;
+    # a fixed lower bound (ymin) overrides the auto-scaled floor when given.
+    vals = np.concatenate([lo.values[zsel], hi.values[zsel], mean.values[zsel]])
+    vals = vals[np.isfinite(vals)]
+    if vals.size:
+        vmax = float(vals.max())
+        vmin = ymin if ymin is not None else float(vals.min())
+        if logy:
+            lo_lim = ymin if ymin is not None else vmin / 1.4
+            ax.set_ylim(lo_lim, vmax * 1.4)
+        else:
+            pad = 0.10 * (vmax - vmin) + 1e-12
+            lo_lim = ymin if ymin is not None else vmin - pad
+            ax.set_ylim(lo_lim, vmax + pad)
+    ax.set_xlabel(r"$z\ [{\rm kpc}]$")
+    ax.set_ylabel(ylabel)
+    ax.set_title(title)
+    ax.grid(alpha=0.3)
+
+
+fig, axes = plt.subplots(2, 4, figsize=(16, 8))
+plot_layer(axes[0, 0], "nH", "C0", logy=True, ymin=1.0,
+           title="number density", ylabel=r"$n_{\rm H}\ [{\rm cm^{-3}}]$")
+plot_layer(axes[0, 1], "Pth", "C3", logy=True, ymin=5.0e2,
+           title="thermal pressure", ylabel=r"$P_{\rm th}/k_B\ [{\rm K\,cm^{-3}}]$")
+plot_layer(axes[0, 2], "T", "C1",
+           title="temperature", ylabel=r"$T\ [{\rm K}]$")
+plot_layer(axes[0, 3], "cs", "C4",
+           title="sound speed", ylabel=r"$c_s\ [{\rm km\,s^{-1}}]$")
+plot_layer(axes[1, 0], "sigma_z", "C2",
+           title=r"$\sigma_z$ (kinetic)", ylabel=r"$\sigma_z\ [{\rm km\,s^{-1}}]$")
+plot_layer(axes[1, 1], "sigma_eff_z", "k",
+           title="effective vertical", ylabel=r"$\sigma_{\rm eff,z}\ [{\rm km\,s^{-1}}]$")
+plot_layer(axes[1, 2], "f_A", "C4", title="area fraction", ylabel=r"$f_A$")
+plot_layer(axes[1, 3], "f_M", "C5", title="mass fraction", ylabel=r"$f_M$")
+axes[0, 0].legend(fontsize=9, loc="best")
+fig.suptitle(r"CNM profiles within the mean CNM layer ($f_M>1\%$): "
+             r"mean, median, and 16-84%", y=1.01)
+fig.tight_layout()
+savefig(fig, "cnm_layer_profiles.png")
+""")
+
+md(r"""
+## 9. Notes
 
 * **Weighting.** Densities and pressures are volume-weighted horizontal means over
   cold cells; temperature and all velocity moments are mass-weighted
