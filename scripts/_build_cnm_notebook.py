@@ -143,9 +143,11 @@ import xarray as xr
 import matplotlib.pyplot as plt
 plt.rcParams.update({"figure.dpi": 100, "font.size": 11})
 
-# directory with per-snapshot NetCDF files written by cnm_vertical_profiles.py
-DATADIR = osp.join("..", "cnm_profiles")
+# directory with this model's per-snapshot NetCDF files (per-model folder).
+# For a writable model tree this is <basedir>/cnm_profiles; here we read the
+# repo's bundled R8_2pc example.
 MODEL = "R8_2pc"
+DATADIR = osp.join("..", "cnm_profiles", MODEL)
 
 # rendered figures are also written to files here (next to the notebook)
 FIGDIR = "figures"

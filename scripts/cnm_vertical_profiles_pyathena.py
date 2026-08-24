@@ -22,11 +22,24 @@ It works on both
   layout that ``load_vtk`` can't address -> read the discovered file directly), and
 * standard pyathena model trees (``load_vtk`` + native ``T`` when present).
 
+Output layout
+-------------
+By default the per-snapshot NetCDF files are written **beside the model data**,
+into ``<basedir>/cnm_profiles/`` (the companion figure script then writes to
+``<basedir>/cnm_profiles/figures/``).  Because each model has its own
+``basedir`` this is automatically per-model and collision-free.  When the model
+directory is read-only (e.g. the public data release), pass ``--outdir`` to a
+writable location instead.
+
 Usage
 -----
+    # writable model tree: outputs land in <basedir>/cnm_profiles/
+    python scripts/cnm_vertical_profiles_pyathena.py --basedir /path/to/MODEL
+
+    # read-only public release: choose a writable --outdir
     python scripts/cnm_vertical_profiles_pyathena.py \
         --basedir /projects/EOSTRIKE/TIGRESS_data_release/R8_2pc \
-        --outdir cnm_profiles_pyathena
+        --outdir cnm_profiles/R8_2pc
 
 Run with ``--help`` for all options.
 """
@@ -167,6 +180,24 @@ def compute_profiles(dd, t_Myr, num, Omega, qshear, muH, Tcnm=500.0):
     return prof.assign_coords(t_Myr=float(t_Myr), ivtk=int(num))
 
 
+def resolve_outdir(outdir):
+    """Create ``outdir`` (must be writable) or exit with actionable guidance."""
+    try:
+        os.makedirs(outdir, exist_ok=True)
+    except OSError as e:
+        raise SystemExit(
+            f"cannot create output directory {outdir!r}: {e}\n"
+            "The model directory is likely read-only (e.g. the public data "
+            "release). Re-run with --outdir <writable path>."
+        )
+    if not os.access(outdir, os.W_OK):
+        raise SystemExit(
+            f"output directory {outdir!r} is not writable; "
+            "re-run with --outdir <writable path>."
+        )
+    return outdir
+
+
 def save_netcdf(ds, fname):
     """Write ``ds`` to NetCDF, trying available engines in order."""
     last = None
@@ -185,7 +216,7 @@ def main(argv=None):
     )
     p.add_argument("--basedir", required=True, help="model base directory")
     p.add_argument("--outdir", default=None,
-                   help="output dir (default: cnm_profiles_pyathena/<model>)")
+                   help="output directory (default: <basedir>/cnm_profiles)")
     p.add_argument("--model", default=None,
                    help="model name for filenames (default: basename of basedir)")
     p.add_argument("--nums", default="all",
@@ -203,8 +234,9 @@ def main(argv=None):
 
     s = pa.LoadSim(args.basedir, verbose=False)
     model = args.model or osp.basename(osp.normpath(args.basedir))
-    outdir = args.outdir or osp.join("cnm_profiles_pyathena", model)
-    os.makedirs(outdir, exist_ok=True)
+    # default: write beside the model data (per-model, collision-free)
+    outdir = args.outdir or osp.join(args.basedir, "cnm_profiles")
+    outdir = resolve_outdir(outdir)
 
     Omega = float(s.par["problem"]["Omega"])     # km/s/pc (code units)
     qshear = float(s.par["problem"]["qshear"])

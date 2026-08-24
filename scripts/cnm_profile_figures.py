@@ -9,9 +9,11 @@ the notebook — combine over snapshots, time median/mean and 16-84 percentiles,
 locate the CNM layer (``f_M > 1%``) — and writes the same six figures to PNG.
 
 The notebook remains the interactive example; this script reproduces its figures
-for any model's ``datadir`` in one command:
+for any model's ``datadir`` in one command.  Point ``--datadir`` at the folder
+of per-snapshot files (by default ``<basedir>/cnm_profiles`` next to the model
+data); figures land in ``<datadir>/figures`` alongside them:
 
-    python scripts/cnm_profile_figures.py --datadir cnm_profiles_pyathena/R8_2pc
+    python scripts/cnm_profile_figures.py --datadir /path/to/MODEL/cnm_profiles
 
 Figures written (to ``--figdir``, default ``<datadir>/figures``):
     cnm_thermodynamic_profiles.png   cnm_layer_extent_vs_time.png

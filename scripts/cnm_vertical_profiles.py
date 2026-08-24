@@ -299,8 +299,9 @@ def main(argv=None):
     )
     p.add_argument(
         "--outdir",
-        default=osp.join(_REPO_ROOT, "cnm_profiles"),
-        help="output directory for per-snapshot NetCDF files",
+        default=None,
+        help="output directory (default: <data-root>/<model>/cnm_profiles, "
+        "i.e. beside the model data; pass an explicit path if that is read-only)",
     )
     p.add_argument(
         "--Tcnm",
@@ -315,7 +316,22 @@ def main(argv=None):
     )
     args = p.parse_args(argv)
 
-    os.makedirs(args.outdir, exist_ok=True)
+    # default: write beside the model data (per-model, collision-free)
+    outdir = args.outdir or osp.join(args.data_root, args.model, "cnm_profiles")
+    try:
+        os.makedirs(outdir, exist_ok=True)
+    except OSError as e:
+        raise SystemExit(
+            f"cannot create output directory {outdir!r}: {e}\n"
+            "The model directory is likely read-only (e.g. the public data "
+            "release). Re-run with --outdir <writable path>."
+        )
+    if not os.access(outdir, os.W_OK):
+        raise SystemExit(
+            f"output directory {outdir!r} is not writable; "
+            "re-run with --outdir <writable path>."
+        )
+    args.outdir = outdir
     model = at.Model(args.model, args.data_root)
 
     if args.ivtks == "all":

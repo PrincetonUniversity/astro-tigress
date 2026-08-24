@@ -213,6 +213,15 @@ variable (see §4) before writing.
 
 ## 4. Output artifact — NetCDF per snapshot
 
+**Output location (per-model, collision-free).** Write each model's files into a
+`cnm_profiles/` folder **beside that model's data**, i.e. the default output
+directory is `<basedir>/cnm_profiles/`, and the companion figures go in
+`<basedir>/cnm_profiles/figures/`.  Because every model has its own `basedir`,
+different models never collide.  When the model directory is read-only (e.g. the
+public data release), the script must fail with a clear message and accept an
+explicit `--outdir <writable path>` (the repo ships the R8_2pc example under
+`cnm_profiles/R8_2pc/`).
+
 Write one file per snapshot to `<outdir>/<model>.cnm_zprof.<num:04d>.nc`.
 
 - **coordinate:** `z` [pc] (and scalar `t_Myr`, `num`).
@@ -275,15 +284,20 @@ $[\langle z_{\rm bot}\rangle,\langle z_{\rm top}\rangle]$ averaged over snapshot
 ## 6. Running for a new model
 
 ```
-python cnm_vertical_profiles.py --basedir /path/to/MODEL --outdir cnm_profiles/MODEL
-python cnm_vertical_profiles.py --basedir /path/to/MODEL --nums all --Tcnm 500
+# 1. per-snapshot profiles -> <basedir>/cnm_profiles/ (beside the model data)
+python cnm_vertical_profiles_pyathena.py --basedir /path/to/MODEL
+
+# 2. combined figures -> <basedir>/cnm_profiles/figures/
+python cnm_profile_figures.py --datadir /path/to/MODEL/cnm_profiles
 ```
 
-Then point the combine notebook at `cnm_profiles/MODEL` and run it.
+For a read-only model directory, pass an explicit writable `--outdir` in step 1
+(and the matching `--datadir` in step 2).  The combine notebook is the
+interactive equivalent of step 2 — point its `DATADIR` at the same folder.
 
-Suggested CLI: `--basedir`, `--nums` (`all` or comma list), `--outdir`,
-`--Tcnm` (default 500), `--zrange` (optional, restrict `get_field` to
-`|z| < zmax` for tall boxes to save memory), `--overwrite`.
+Suggested CLI: `--basedir`, `--nums` (`all` or comma list), `--outdir`
+(default `<basedir>/cnm_profiles`), `--Tcnm` (default 500), `--overwrite`;
+optionally `--zrange` to restrict `get_field` to `|z| < zmax` for tall boxes.
 
 ---
 
