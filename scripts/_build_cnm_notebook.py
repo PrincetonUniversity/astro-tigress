@@ -396,56 +396,64 @@ zsel = (np.asarray(zkpc) >= zL) & (np.asarray(zkpc) <= zH)
 print(f"mean CNM layer: z = {zL:+.3f} .. {zH:+.3f} kpc (thickness {zH - zL:.3f} kpc)")
 
 
-def plot_layer(ax, name, color="C0", logy=False, title="", ylabel="", ymin=None):
+def plot_layer(ax, series, logy=False, title="", ylabel="", ymin=None):
+    # one or more (name, color, label) series in a panel; each drawn as
     # median (solid) + mean (dashed) + 16-84 band, restricted to the mean layer
-    med = stat[name].sel(quantile=0.50)
-    lo = stat[name].sel(quantile=0.16)
-    hi = stat[name].sel(quantile=0.84)
-    mean = meands[name]
-    ax.fill_between(zkpc, lo, hi, color=color, alpha=0.20, lw=0, label="16-84%")
-    ax.plot(zkpc, med, color=color, lw=2, label="median")
-    ax.plot(zkpc, mean, color=color, lw=1.5, ls="--", label="mean")
+    chunks = []
+    for name, color, label in series:
+        med = stat[name].sel(quantile=0.50)
+        lo = stat[name].sel(quantile=0.16)
+        hi = stat[name].sel(quantile=0.84)
+        mean = meands[name]
+        ax.fill_between(zkpc, lo, hi, color=color, alpha=0.18, lw=0)
+        ax.plot(zkpc, med, color=color, lw=2, label=label)
+        ax.plot(zkpc, mean, color=color, lw=1.5, ls="--")
+        chunks += [lo.values[zsel], hi.values[zsel], mean.values[zsel]]
     ax.set_xlim(zL, zH)
     if logy:
         ax.set_yscale("log")
-    # proper y-range: fit the band and the mean inside the layer, with padding;
+    # proper y-range: fit the bands and means inside the layer, with padding;
     # a fixed lower bound (ymin) overrides the auto-scaled floor when given.
-    vals = np.concatenate([lo.values[zsel], hi.values[zsel], mean.values[zsel]])
+    vals = np.concatenate(chunks)
     vals = vals[np.isfinite(vals)]
     if vals.size:
         vmax = float(vals.max())
         vmin = ymin if ymin is not None else float(vals.min())
         if logy:
-            lo_lim = ymin if ymin is not None else vmin / 1.4
-            ax.set_ylim(lo_lim, vmax * 1.4)
+            ax.set_ylim(ymin if ymin is not None else vmin / 1.4, vmax * 1.4)
         else:
             pad = 0.10 * (vmax - vmin) + 1e-12
-            lo_lim = ymin if ymin is not None else vmin - pad
-            ax.set_ylim(lo_lim, vmax + pad)
+            ax.set_ylim(ymin if ymin is not None else vmin - pad, vmax + pad)
     ax.set_xlabel(r"$z\ [{\rm kpc}]$")
     ax.set_ylabel(ylabel)
     ax.set_title(title)
     ax.grid(alpha=0.3)
+    if len(series) > 1:
+        ax.legend(fontsize=8, loc="best")
 
 
-fig, axes = plt.subplots(2, 4, figsize=(16, 8))
-plot_layer(axes[0, 0], "nH", "C0", logy=True, ymin=1.0,
+fig, axes = plt.subplots(2, 3, figsize=(14, 8))
+# top row: density, temperature, pressure
+plot_layer(axes[0, 0], [("nH", "C0", "")], logy=True, ymin=1.0,
            title="number density", ylabel=r"$n_{\rm H}\ [{\rm cm^{-3}}]$")
-plot_layer(axes[0, 1], "Pth", "C3", logy=True, ymin=5.0e2,
-           title="thermal pressure", ylabel=r"$P_{\rm th}/k_B\ [{\rm K\,cm^{-3}}]$")
-plot_layer(axes[0, 2], "T", "C1",
+plot_layer(axes[0, 1], [("T", "C1", "")],
            title="temperature", ylabel=r"$T\ [{\rm K}]$")
-plot_layer(axes[0, 3], "cs", "C4",
-           title="sound speed", ylabel=r"$c_s\ [{\rm km\,s^{-1}}]$")
-plot_layer(axes[1, 0], "sigma_z", "C2",
-           title=r"$\sigma_z$ (kinetic)", ylabel=r"$\sigma_z\ [{\rm km\,s^{-1}}]$")
-plot_layer(axes[1, 1], "sigma_eff_z", "k",
-           title="effective vertical", ylabel=r"$\sigma_{\rm eff,z}\ [{\rm km\,s^{-1}}]$")
-plot_layer(axes[1, 2], "f_A", "C4", title="area fraction", ylabel=r"$f_A$")
-plot_layer(axes[1, 3], "f_M", "C5", title="mass fraction", ylabel=r"$f_M$")
-axes[0, 0].legend(fontsize=9, loc="best")
-fig.suptitle(r"CNM profiles within the mean CNM layer ($f_M>1\%$): "
-             r"mean, median, and 16-84%", y=1.01)
+plot_layer(axes[0, 2], [("Pth", "C3", "")], logy=True, ymin=5.0e2,
+           title="thermal pressure", ylabel=r"$P_{\rm th}/k_B\ [{\rm K\,cm^{-3}}]$")
+# bottom row: sound speed + 1D turbulence, 1D effective, volume + mass fractions
+plot_layer(axes[1, 0],
+           [("cs", "C4", r"$c_s$"),
+            ("sigma_turb_1D", "C2", r"$\sigma_{\rm turb,1D}$")],
+           title="sound speed & turbulence", ylabel=r"$[{\rm km\,s^{-1}}]$")
+plot_layer(axes[1, 1], [("sigma_eff_1D", "k", "")],
+           title="1D effective dispersion",
+           ylabel=r"$\sigma_{\rm eff,1D}\ [{\rm km\,s^{-1}}]$")
+plot_layer(axes[1, 2],
+           [("f_A", "C4", r"$f_A$ (volume)"),
+            ("f_M", "C5", r"$f_M$ (mass)")],
+           title="CNM volume & mass fractions", ylabel="fraction", ymin=0.0)
+fig.suptitle(r"CNM profiles within the mean CNM layer ($f_M>1\%$) — "
+             r"solid: median, dashed: mean, shaded: 16-84%", y=1.01)
 fig.tight_layout()
 savefig(fig, "cnm_layer_profiles.png")
 """)
