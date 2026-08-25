@@ -31,7 +31,9 @@ md(r"""
 # Mock HI + 3D-dust observer: can the vertical trend be recovered?
 
 An observer sitting near the **midplane** of the TIGRESS-NCR box looks out along
-many Galactic $(l, b)$ directions (out to $\sim500$ pc, the 3D-dust regime).
+many Galactic $(l, b)$ directions, restricted to **high latitude $|b|>30^\circ$**
+and $d<500$ pc — the regime of real HI-absorption / 3D-dust CNM studies, where
+low-$b$ sightlines blend many components as they graze the plane.
 Along each sightline we build, from the 3D cube,
 
 * the 21 cm **emission** $T_B(v)$ and **absorption** $\tau(v)$ profiles
@@ -206,21 +208,23 @@ fig.savefig(osp.join(FIGDIR, "mockobs_vs_z.png"), dpi=150, bbox_inches="tight")
 md(r"""
 ## 4. Sky maps of the fitted results
 
-The fitted clouds for a **single** observer, shown on **zenithal equal-area**
-(Lambert azimuthal) sky maps — one per hemisphere.  The pole ($|b|=90^\circ$,
+The fitted clouds (all observers combined; positions jittered within the $(l,b)$
+grid cell for clarity) shown on **zenithal equal-area** (Lambert azimuthal) sky
+maps — one per hemisphere.  The pole ($|b|=90^\circ$,
 straight up/down) is at the center, Galactic longitude $l$ is the azimuth, and
 the radius is the equal-area co-latitude $r = 2\sin[(90^\circ-|b|)/2]$ (rings
-mark $b=20,40,60,80^\circ$).
+mark $b=40,60,80^\circ$; the outer edge is the $|b|=30^\circ$ selection limit).
 """)
 
 code(r"""
 import matplotlib.colors as mcolors
 
-# single-observer catalog (one sky = one observer)
-mcat = np.load(osp.join(NCR, "mock_obs", "R8_4pc_NCR.mockobs_map.0300.npz"))
-ml, mb = mcat["l"], mcat["b"]
-print(f"{len(ml)} clouds in the single-observer sky "
-      f"({(mb > 0).sum()} north, {(mb < 0).sum()} south)")
+# all detections on one sky; jitter positions within the (l,b) grid cell
+_rng = np.random.default_rng(0)
+ml = cat["l"] + _rng.uniform(-3.5, 3.5, len(cat["l"]))
+mb = cat["b"] + _rng.uniform(-3.0, 3.0, len(cat["b"]))
+north, south = cat["b"] > 0, cat["b"] < 0
+print(f"{len(ml)} detections ({north.sum()} north, {south.sum()} south)")
 
 
 def skymap(ax, l, b, c, vmn, vmx, cmap, logc, s=34):
@@ -228,10 +232,10 @@ def skymap(ax, l, b, c, vmn, vmx, cmap, logc, s=34):
     r = 2 * np.sin(np.deg2rad(90 - np.abs(b)) / 2)     # Lambert equal-area radius
     norm = mcolors.LogNorm(vmn, vmx) if logc else mcolors.Normalize(vmn, vmx)
     sc = ax.scatter(th, r, c=c, s=s, cmap=cmap, norm=norm, edgecolor="k", lw=0.3)
-    bt = np.array([20, 40, 60, 80])
+    bt = np.array([40, 60, 80])
     ax.set_rgrids(2 * np.sin(np.deg2rad(90 - bt) / 2), labels=[str(v) for v in bt],
                   fontsize=7, angle=112)
-    ax.set_rmax(2 * np.sin(np.deg2rad(90 - 6) / 2))
+    ax.set_rmax(2 * np.sin(np.deg2rad(90 - 30) / 2))   # edge at |b| = 30 deg
     ax.set_xticks(np.deg2rad([0, 90, 180, 270]))
     ax.set_xticklabels(["0", "90", "180", "270"], fontsize=7)
     ax.grid(alpha=0.3)
@@ -245,15 +249,16 @@ qs = [("Ts", r"$T_s$ [K]", "viridis", True, 60, 500, [60, 100, 200, 500]),
 fig, axes = plt.subplots(2, 4, figsize=(17, 9.2),
                          subplot_kw=dict(projection="polar"))
 for col, (q, lab, cmap, logc, vmn, vmx, ticks) in enumerate(qs):
-    for row, (sel, hemi) in enumerate([(mb > 0, "North (b>0)"),
-                                       (mb < 0, "South (b<0)")]):
-        sc = skymap(axes[row, col], ml[sel], mb[sel], mcat[q][sel],
+    for row, (sel, hemi) in enumerate([(north, "North (b>0)"),
+                                       (south, "South (b<0)")]):
+        sc = skymap(axes[row, col], ml[sel], mb[sel], cat[q][sel],
                     vmn, vmx, cmap, logc)
         if col == 0:
             axes[row, col].annotate(hemi, xy=(-0.32, 0.5), xycoords="axes fraction",
                                     rotation=90, va="center", fontsize=12)
     cb = fig.colorbar(sc, ax=[axes[0, col], axes[1, col]], location="bottom",
                       shrink=0.72, pad=0.06, label=lab)
+    cb.minorticks_off()
     cb.set_ticks(ticks)
     cb.set_ticklabels([str(t) for t in ticks])
 fig.suptitle(r"Zenithal equal-area sky maps of fitted CNM clouds "
