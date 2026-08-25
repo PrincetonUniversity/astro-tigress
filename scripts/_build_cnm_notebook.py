@@ -165,6 +165,13 @@ assert files, f"no files in {DATADIR}; run scripts/cnm_vertical_profiles.py firs
 # concatenate along the snapshot (ivtk) axis; t_Myr rides along as a coordinate
 dsets = [xr.open_dataset(f) for f in files]
 comb = xr.concat(dsets, dim="ivtk")
+
+# kinetic temperature from the 1D effective dispersion and the matching
+# effective (thermal+turbulent) pressure -- both from existing profile vars:
+#   T_kmax = T (sigma_eff_1D / cs)^2 ,   n T_kmax = Pth (sigma_eff_1D / cs)^2
+_ratio = (comb["sigma_eff_1D"] / comb["cs"]) ** 2
+comb["T_kmax"] = comb["T"] * _ratio
+comb["nT_kmax"] = comb["Pth"] * _ratio
 comb
 """)
 
@@ -383,6 +390,23 @@ $\langle z_{\rm top}\rangle$ obtained in section 7 — and show each profile the
 with a proper $y$-range (auto-scaled to the data inside the layer).  For every
 quantity we overplot the **median** (solid) and the **mean** (dashed) across
 snapshots, with the **16-84 percentile** range shaded.
+
+The temperature and pressure panels also show a **kinetic** counterpart derived
+from the 1D effective dispersion.  Translating $\sigma_{\rm eff,1D}$ into a
+temperature via the gas's own thermal $T$–$c_s$ relation gives the *maximum
+kinetic temperature* — the temperature a purely thermal gas would need to
+reproduce the full 1D dispersion —
+
+$$
+T_{k,\max} = T\left(\frac{\sigma_{\rm eff,1D}}{c_s}\right)^2,
+\qquad
+n\,T_{k,\max} = \frac{P_{\rm th}}{k_B}\left(\frac{\sigma_{\rm eff,1D}}{c_s}\right)^2 ,
+$$
+
+so $n\,T_{k,\max}$ is the matching **effective (thermal + turbulent) pressure**.
+Both reduce to $T$ and $P_{\rm th}/k_B$ when turbulence vanishes
+($\sigma_{\rm eff,1D}\to c_s$); since here $\sigma_{\rm turb}\gg c_s$, they sit
+well above the thermal values (turbulent support dominates).
 """)
 
 code(r"""
@@ -433,13 +457,18 @@ def plot_layer(ax, series, logy=False, title="", ylabel="", ymin=None):
 
 
 fig, axes = plt.subplots(2, 3, figsize=(14, 8))
-# top row: density, temperature, pressure
+# top row: density; thermal T with kinetic T_kmax; thermal & effective pressure
 plot_layer(axes[0, 0], [("nH", "C0", "")], logy=True, ymin=1.0,
            title="number density", ylabel=r"$n_{\rm H}\ [{\rm cm^{-3}}]$")
-plot_layer(axes[0, 1], [("T", "C1", "")],
-           title="temperature", ylabel=r"$T\ [{\rm K}]$")
-plot_layer(axes[0, 2], [("Pth", "C3", "")], logy=True, ymin=5.0e2,
-           title="thermal pressure", ylabel=r"$P_{\rm th}/k_B\ [{\rm K\,cm^{-3}}]$")
+plot_layer(axes[0, 1],
+           [("T", "C1", r"$T$ (thermal)"),
+            ("T_kmax", "C4", r"$T_{k,\max}$")],
+           logy=True, title="temperature", ylabel=r"$T\ [{\rm K}]$")
+plot_layer(axes[0, 2],
+           [("Pth", "C3", "thermal"),
+            ("nT_kmax", "C4", r"$n\,T_{k,\max}$")],
+           logy=True, ymin=5.0e2,
+           title="pressure", ylabel=r"$P/k_B\ [{\rm K\,cm^{-3}}]$")
 # bottom row: sound speed + 1D turbulence, 1D effective, volume + mass fractions
 plot_layer(axes[1, 0],
            [("cs", "C4", r"$c_s$"),

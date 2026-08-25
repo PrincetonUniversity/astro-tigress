@@ -54,6 +54,22 @@ def load_combined(datadir, model=None):
     return comb, files, prefixes.pop() if len(prefixes) == 1 else model
 
 
+def add_effective_temperature(comb):
+    """Add the kinetic temperature and effective pressure from existing vars.
+
+    ``T_kmax = T (sigma_eff_1D / cs)^2`` is the temperature a purely thermal gas
+    would need to reproduce the *full* 1D effective (thermal+turbulent)
+    dispersion -- the maximum kinetic temperature.  ``nT_kmax = Pth
+    (sigma_eff_1D / cs)^2`` is the matching effective (thermal+turbulent)
+    pressure ``n T_kmax``.  Both reduce to ``T`` and ``Pth`` when turbulence
+    vanishes (``sigma_eff_1D -> cs``); no reprocessing of the raw data is needed.
+    """
+    ratio = (comb["sigma_eff_1D"] / comb["cs"]) ** 2
+    comb["T_kmax"] = comb["T"] * ratio
+    comb["nT_kmax"] = comb["Pth"] * ratio
+    return comb
+
+
 def cnm_layer(comb, fMthr=FMTHR):
     """Per-snapshot outermost heights (kpc) where f_M exceeds the threshold."""
     fM = comb["f_M"].values                 # (n_snap, n_z)
@@ -242,13 +258,18 @@ def fig_inlayer(stat, meands, zkpc, zbot, ztop):
     zsel = (np.asarray(zkpc) >= zL) & (np.asarray(zkpc) <= zH)
     fig, axes = plt.subplots(2, 3, figsize=(14, 8))
     a = (stat, meands, zkpc, zsel, zL, zH)
-    # top row: density, temperature, pressure
+    # top row: density; thermal T with kinetic T_kmax; thermal & effective pressure
     plot_layer(axes[0, 0], *a, [("nH", "C0", "")], logy=True, ymin=1.0,
                title="number density", ylabel=r"$n_{\rm H}\ [{\rm cm^{-3}}]$")
-    plot_layer(axes[0, 1], *a, [("T", "C1", "")],
-               title="temperature", ylabel=r"$T\ [{\rm K}]$")
-    plot_layer(axes[0, 2], *a, [("Pth", "C3", "")], logy=True, ymin=5.0e2,
-               title="thermal pressure", ylabel=r"$P_{\rm th}/k_B\ [{\rm K\,cm^{-3}}]$")
+    plot_layer(axes[0, 1], *a,
+               [("T", "C1", r"$T$ (thermal)"),
+                ("T_kmax", "C4", r"$T_{k,\max}$")],
+               logy=True, title="temperature", ylabel=r"$T\ [{\rm K}]$")
+    plot_layer(axes[0, 2], *a,
+               [("Pth", "C3", "thermal"),
+                ("nT_kmax", "C4", r"$n\,T_{k,\max}$")],
+               logy=True, ymin=5.0e2,
+               title="pressure", ylabel=r"$P/k_B\ [{\rm K\,cm^{-3}}]$")
     # bottom row: sound speed + 1D turbulence, 1D effective, volume + mass fractions
     plot_layer(axes[1, 0], *a,
                [("cs", "C4", r"$c_s$"),
@@ -281,6 +302,7 @@ def main(argv=None):
     args = p.parse_args(argv)
 
     comb, files, model = load_combined(args.datadir, args.model)
+    comb = add_effective_temperature(comb)
     figdir = args.figdir or osp.join(args.datadir, "figures")
     os.makedirs(figdir, exist_ok=True)
 
