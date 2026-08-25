@@ -204,7 +204,65 @@ fig.savefig(osp.join(FIGDIR, "mockobs_vs_z.png"), dpi=150, bbox_inches="tight")
 """)
 
 md(r"""
-## 4. What the experiment shows
+## 4. Sky maps of the fitted results
+
+The fitted clouds for a **single** observer, shown on **zenithal equal-area**
+(Lambert azimuthal) sky maps — one per hemisphere.  The pole ($|b|=90^\circ$,
+straight up/down) is at the center, Galactic longitude $l$ is the azimuth, and
+the radius is the equal-area co-latitude $r = 2\sin[(90^\circ-|b|)/2]$ (rings
+mark $b=20,40,60,80^\circ$).
+""")
+
+code(r"""
+import matplotlib.colors as mcolors
+
+# single-observer catalog (one sky = one observer)
+mcat = np.load(osp.join(NCR, "mock_obs", "R8_4pc_NCR.mockobs_map.0300.npz"))
+ml, mb = mcat["l"], mcat["b"]
+print(f"{len(ml)} clouds in the single-observer sky "
+      f"({(mb > 0).sum()} north, {(mb < 0).sum()} south)")
+
+
+def skymap(ax, l, b, c, vmn, vmx, cmap, logc, s=34):
+    th = np.deg2rad(l)
+    r = 2 * np.sin(np.deg2rad(90 - np.abs(b)) / 2)     # Lambert equal-area radius
+    norm = mcolors.LogNorm(vmn, vmx) if logc else mcolors.Normalize(vmn, vmx)
+    sc = ax.scatter(th, r, c=c, s=s, cmap=cmap, norm=norm, edgecolor="k", lw=0.3)
+    bt = np.array([20, 40, 60, 80])
+    ax.set_rgrids(2 * np.sin(np.deg2rad(90 - bt) / 2), labels=[str(v) for v in bt],
+                  fontsize=7, angle=112)
+    ax.set_rmax(2 * np.sin(np.deg2rad(90 - 6) / 2))
+    ax.set_xticks(np.deg2rad([0, 90, 180, 270]))
+    ax.set_xticklabels(["0", "90", "180", "270"], fontsize=7)
+    ax.grid(alpha=0.3)
+    return sc
+
+
+qs = [("Ts", r"$T_s$ [K]", "viridis", True, 60, 500, [60, 100, 200, 500]),
+      ("dv", r"$\Delta v$ [km/s]", "plasma", False, 1.5, 5.5, [2, 3, 4, 5]),
+      ("A_V", r"$A_V$ [mag]", "cividis", True, 0.6, 8.0, [1, 2, 4, 8]),
+      ("d0", r"$d_0$ [pc]", "turbo", False, 0, 500, [0, 100, 200, 300, 400, 500])]
+fig, axes = plt.subplots(2, 4, figsize=(17, 9.2),
+                         subplot_kw=dict(projection="polar"))
+for col, (q, lab, cmap, logc, vmn, vmx, ticks) in enumerate(qs):
+    for row, (sel, hemi) in enumerate([(mb > 0, "North (b>0)"),
+                                       (mb < 0, "South (b<0)")]):
+        sc = skymap(axes[row, col], ml[sel], mb[sel], mcat[q][sel],
+                    vmn, vmx, cmap, logc)
+        if col == 0:
+            axes[row, col].annotate(hemi, xy=(-0.32, 0.5), xycoords="axes fraction",
+                                    rotation=90, va="center", fontsize=12)
+    cb = fig.colorbar(sc, ax=[axes[0, col], axes[1, col]], location="bottom",
+                      shrink=0.72, pad=0.06, label=lab)
+    cb.set_ticks(ticks)
+    cb.set_ticklabels([str(t) for t in ticks])
+fig.suptitle(r"Zenithal equal-area sky maps of fitted CNM clouds "
+             r"(center = pole $|b|=90^\circ$; rings = $b$; azimuth = $l$)", y=0.99)
+fig.savefig(osp.join(FIGDIR, "mockobs_skymaps.png"), dpi=150, bbox_inches="tight")
+""")
+
+md(r"""
+## 5. What the experiment shows
 
 * **The temperature trend is recovered.** The emission/absorption spin
   temperature $T_s(z)$ tracks the true mass-weighted $T(z)\sim200$ K, and for
