@@ -54,19 +54,21 @@ def load_combined(datadir, model=None):
     return comb, files, prefixes.pop() if len(prefixes) == 1 else model
 
 
-def add_effective_temperature(comb):
-    """Add the kinetic temperature and effective pressure from existing vars.
+MH_KB = 121.2  # m_H / k_B  [K / (km/s)^2]
 
-    ``T_kmax = T (sigma_eff_1D / cs)^2`` is the temperature a purely thermal gas
-    would need to reproduce the *full* 1D effective (thermal+turbulent)
-    dispersion -- the maximum kinetic temperature.  ``nT_kmax = Pth
-    (sigma_eff_1D / cs)^2`` is the matching effective (thermal+turbulent)
-    pressure ``n T_kmax``.  Both reduce to ``T`` and ``Pth`` when turbulence
-    vanishes (``sigma_eff_1D -> cs``); no reprocessing of the raw data is needed.
+
+def add_effective_temperature(comb):
+    """Add the observational maximum kinetic temperature and n*T_kmax.
+
+    From a Gaussian CNM (H I) linewidth ``Delta v``, the maximum kinetic
+    temperature is ``T_kmax = m_H (Delta v)^2 / (8 k_B ln2) = m_H sigma^2 / k_B``,
+    using the 1D effective dispersion ``sigma = sigma_eff_1D``
+    (``Delta v = 2 sqrt(2 ln2) sigma``) and the hydrogen mass ``m_H``.
+    ``nT_kmax = nH * T_kmax`` is the matching effective pressure.  Computed from
+    existing profile variables -- no reprocessing of the raw data is needed.
     """
-    ratio = (comb["sigma_eff_1D"] / comb["cs"]) ** 2
-    comb["T_kmax"] = comb["T"] * ratio
-    comb["nT_kmax"] = comb["Pth"] * ratio
+    comb["T_kmax"] = MH_KB * comb["sigma_eff_1D"] ** 2
+    comb["nT_kmax"] = comb["nH"] * comb["T_kmax"]
     return comb
 
 

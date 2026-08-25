@@ -166,12 +166,12 @@ assert files, f"no files in {DATADIR}; run scripts/cnm_vertical_profiles.py firs
 dsets = [xr.open_dataset(f) for f in files]
 comb = xr.concat(dsets, dim="ivtk")
 
-# kinetic temperature from the 1D effective dispersion and the matching
-# effective (thermal+turbulent) pressure -- both from existing profile vars:
-#   T_kmax = T (sigma_eff_1D / cs)^2 ,   n T_kmax = Pth (sigma_eff_1D / cs)^2
-_ratio = (comb["sigma_eff_1D"] / comb["cs"]) ** 2
-comb["T_kmax"] = comb["T"] * _ratio
-comb["nT_kmax"] = comb["Pth"] * _ratio
+# observational maximum kinetic temperature from the CNM (H I) linewidth and
+# the matching effective pressure n*T_kmax -- from existing profile vars:
+#   T_kmax = m_H (Delta v)^2 / (8 k_B ln2) = m_H sigma_eff_1D^2 / k_B
+#   n T_kmax = nH * T_kmax          (m_H/k_B = 121.2 K / (km/s)^2)
+comb["T_kmax"] = 121.2 * comb["sigma_eff_1D"] ** 2
+comb["nT_kmax"] = comb["nH"] * comb["T_kmax"]
 comb
 """)
 
@@ -392,21 +392,23 @@ quantity we overplot the **median** (solid) and the **mean** (dashed) across
 snapshots, with the **16-84 percentile** range shaded.
 
 The temperature and pressure panels also show a **kinetic** counterpart derived
-from the 1D effective dispersion.  Translating $\sigma_{\rm eff,1D}$ into a
-temperature via the gas's own thermal $T$–$c_s$ relation gives the *maximum
-kinetic temperature* — the temperature a purely thermal gas would need to
-reproduce the full 1D dispersion —
+from the 1D effective dispersion, using the observational *maximum kinetic
+temperature* — the temperature at which a Gaussian **H i** linewidth
+$\Delta v_{\rm CNM}$ would be entirely thermal:
 
 $$
-T_{k,\max} = T\left(\frac{\sigma_{\rm eff,1D}}{c_s}\right)^2,
+T_{k,\max} = \frac{m_{\rm H}\,(\Delta v_{\rm CNM})^2}{8\,k_B\ln 2}
+           = \frac{m_{\rm H}\,\sigma_{\rm eff,1D}^2}{k_B},
 \qquad
-n\,T_{k,\max} = \frac{P_{\rm th}}{k_B}\left(\frac{\sigma_{\rm eff,1D}}{c_s}\right)^2 ,
+n\,T_{k,\max} = n_{\rm H}\,T_{k,\max},
 $$
 
-so $n\,T_{k,\max}$ is the matching **effective (thermal + turbulent) pressure**.
-Both reduce to $T$ and $P_{\rm th}/k_B$ when turbulence vanishes
-($\sigma_{\rm eff,1D}\to c_s$); since here $\sigma_{\rm turb}\gg c_s$, they sit
-well above the thermal values (turbulent support dominates).
+where the FWHM $\Delta v_{\rm CNM} = 2\sqrt{2\ln 2}\,\sigma_{\rm eff,1D}$ and
+$m_{\rm H}/k_B = 121.2\ {\rm K}\,({\rm km\,s^{-1}})^{-2}$.  Note the bare
+hydrogen mass $m_{\rm H}$ (not $\mu m_{\rm H}$) is used, as in 21 cm analyses.
+Because the CNM linewidth is turbulence-dominated ($\sigma_{\rm turb}\gg c_s$),
+$T_{k,\max}$ is a few $\times 10^3$ K — far above the actual (spin) temperature —
+and $n\,T_{k,\max}$ is the matching effective pressure.
 """)
 
 code(r"""
