@@ -1,10 +1,6 @@
 # TIGRESS full-domain, high-cadence MHD data
 
-This collaborator collection is stored at:
-
-```text
-/tigerdata/EOSTRIKE/TIGRESS-classic/TIGRESS-full-data-share
-```
+This Globus collection provides collaborator access to raw TIGRESS outputs.
 
 ## Included data
 
@@ -72,8 +68,58 @@ Preserve the `idN` and `starpar` directory structure. The `.par`, `.hst`, and
 `.sn` files are small and may be downloaded once. Approximate VTK sizes are
 42 GiB per `R8_2pc` snapshot and 5.25 GiB per `R8_4pc` snapshot.
 
-For repeated or multi-snapshot transfers, a Globus batch list is less tedious
-than selecting each processor file in the web interface.
+### Globus batch transfer
+
+For repeated or multi-snapshot transfers, use the
+[Globus CLI](https://docs.globus.org/cli/) to create a batch list. Each line has
+a source-relative path followed by its destination-relative path. For example,
+the following Bash commands create a list for `R8_2pc` outputs `0300` and
+`0310`:
+
+```bash
+model=R8_2pc
+run=R8_2pc_rst
+last_rank=55
+snapshots=(0300 0310)
+batch="${model}-selected.batch"
+
+: > "${batch}"
+add_path() {
+    printf '%s\t%s\n' "$1" "$1" >> "${batch}"
+}
+
+add_path "${run}.par"
+add_path "hst/${run}.hst"
+add_path "hst/${run}.sn"
+
+for snapshot in "${snapshots[@]}"; do
+    add_path "starpar/${run}.${snapshot}.starpar.vtk"
+    add_path "id0/${run}.${snapshot}.vtk"
+    for rank in $(seq 1 "${last_rank}"); do
+        add_path "id${rank}/${run}-id${rank}.${snapshot}.vtk"
+    done
+done
+```
+
+For `R8_4pc`, use `model=R8_4pc`, `run=R8_4pc_newacc`, and
+`last_rank=27`. Change the `snapshots` array to the desired output numbers.
+Inspect the generated list, then submit it using collection UUIDs and paths
+appropriate to your accounts:
+
+```bash
+globus login
+globus transfer \
+    --batch "${batch}" \
+    --verify-checksum \
+    --preserve-mtime \
+    "SOURCE_COLLECTION_UUID:/${model}/" \
+    "DESTINATION_COLLECTION_UUID:/desired/path/${model}/"
+```
+
+The source and destination prefixes are prepended to each path in the batch
+file. The repeated relative path in each row preserves the native `idN`,
+`starpar`, and `hst` layout at the destination. Use `globus task show TASK_ID`
+to monitor the returned task ID.
 
 The collection uses file symlinks. Globus follows individually transferred
 file symlinks and creates ordinary files at the destination, but recursive
@@ -91,7 +137,7 @@ detects the available snapshot numbers from `id0`:
 ```python
 import pyathena as pa
 
-model_dir = "/path/to/TIGRESS-full-data-share/R8_2pc"
+model_dir = "/path/to/downloaded/R8_2pc"
 sim = pa.LoadSim(model_dir)
 
 print(sim.nums_vtk)
