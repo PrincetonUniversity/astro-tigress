@@ -1,29 +1,23 @@
 # TIGRESS full-domain, high-cadence MHD data
 
-This is the README draft for the collaborator-facing Globus collection at:
+This collaborator collection is stored at:
 
 ```text
 /tigerdata/EOSTRIKE/TIGRESS-classic/TIGRESS-full-data-share
 ```
-
-Before publication, replace this paragraph with the collection UUID, release
-date, content version, maintainer contact, and final manifest link.
 
 ## Included data
 
 | Model | Shared outputs | Resolution | Full domain |
 |---|---:|---:|---|
 | `R8_2pc` | `0285-0448` | 2 pc | `[-512,512] x [-512,512] x [-3584,3584] pc` |
-| `R8_4pc` | `0200-0674` currently; policy limit `0700` | 4 pc | `[-512,512] x [-512,512] x [-3584,3584] pc` |
+| `R8_4pc` | `0200-0650` | 4 pc | `[-512,512] x [-512,512] x [-3584,3584] pc` |
 
-Each output contains the complete native MHD VTK processor set, matching
-`starpar.vtk`, and canonical `.par`, `.hst`, and `.sn` files. The `R8_4pc`
-source currently ends at `0674`; outputs through `0700` will be added only if
-they become available and pass completeness validation.
-
-Restart files, plots, FITS and pickle products, projections, slices, maps,
-scripts, logs, executables, and other analysis or administrative files are
-intentionally excluded.
+Each model contains the complete native MHD VTK processor files for every
+listed output, matching `starpar.vtk` files, and one canonical `.par`, `.hst`,
+and `.sn` file. Restart files and personal analysis products are excluded.
+The entries in this collection are allowlisted symbolic links to immutable
+source files; the data bytes are not duplicated.
 
 ## Difference from the public release
 
@@ -42,47 +36,65 @@ MODEL/NNNN/MHD/MODEL.NNNN.vtk
 That cube covers `x,y,z = [-512,512] pc`, with `512^3` cells for `R8_2pc` and
 `256^3` cells for `R8_4pc`.
 
-This collection provides the denser native MHD sequence over the full vertical
-domain. It preserves 56 processor pieces for `R8_2pc` and 28 for `R8_4pc`:
+This collection instead provides the high-cadence native MHD sequence over the
+full vertical domain. It preserves 56 processor pieces for `R8_2pc` and 28 for
+`R8_4pc`:
 
 ```text
-R8_2pc/snapshots/0300/
+R8_2pc/
 ├── R8_2pc_rst.par
 ├── hst/
 │   ├── R8_2pc_rst.hst
 │   └── R8_2pc_rst.sn
-├── starpar/R8_2pc_rst.0300.starpar.vtk
-├── id0/R8_2pc_rst.0300.vtk
-├── id1/R8_2pc_rst-id1.0300.vtk
-├── ...
-└── id55/R8_2pc_rst-id55.0300.vtk
+├── starpar/
+│   ├── R8_2pc_rst.0285.starpar.vtk
+│   └── ...
+├── id0/
+│   ├── R8_2pc_rst.0285.vtk
+│   └── ...
+├── id1/
+│   ├── R8_2pc_rst-id1.0285.vtk
+│   └── ...
+└── ... id55/
 ```
 
-`R8_4pc` has the same layout through `id27`. One directory per snapshot lets
-Globus users download only the outputs they need.
+`R8_4pc` has the same layout through `id27`.
 
 ## Download selected snapshots
 
-Select one or more four-digit directories under:
+To download only output `NNNN`, select:
 
-```text
-R8_2pc/snapshots/
-R8_4pc/snapshots/
-```
+- `<run>.NNNN.vtk` from `id0`;
+- `<run>-idN.NNNN.vtk` from every nonzero `idN` directory; and
+- `<run>.NNNN.starpar.vtk` from `starpar`.
 
-Transfer recursively and preserve the internal structure. Approximate VTK sizes
-are 42 GiB per `R8_2pc` snapshot and 5.25 GiB per `R8_4pc` snapshot.
+Preserve the `idN` and `starpar` directory structure. The `.par`, `.hst`, and
+`.sn` files are small and may be downloaded once. Approximate VTK sizes are
+42 GiB per `R8_2pc` snapshot and 5.25 GiB per `R8_4pc` snapshot.
+
+For repeated or multi-snapshot transfers, a Globus batch list is less tedious
+than selecting each processor file in the web interface.
+
+The collection uses file symlinks. Globus follows individually transferred
+file symlinks and creates ordinary files at the destination, but recursive
+transfers generally skip symlinks. Select the required files explicitly or use
+a batch list; do not recursively transfer an `idN` directory and assume every
+link will be followed. Report any `Path not allowed` error to the collection
+maintainer because endpoint path restrictions may need administrator changes.
 
 ## Read with pyathena
 
 [pyathena](https://github.com/jeonggyukim/pyathena) is recommended for this
-native layout:
+native layout. Point `LoadSim` at the model directory; pyathena automatically
+detects the available snapshot numbers from `id0`:
 
 ```python
 import pyathena as pa
 
-snapshot_dir = "/path/to/R8_2pc/snapshots/0300"
-sim = pa.LoadSim(snapshot_dir)
+model_dir = "/path/to/TIGRESS-full-data-share/R8_2pc"
+sim = pa.LoadSim(model_dir)
+
+print(sim.nums_vtk)
 ds = sim.load_vtk(num=300, id0=True, load_method="xarray")
 starpar = sim.load_starpar_vtk(num=300)
 
@@ -105,10 +117,6 @@ For `R8_4pc`, the edges are identical, with `Nx = [256,256,1792]` and
 The public-release readers in `astro-tigress` assume the public
 snapshot/product layout. Use pyathena here unless you explicitly rearrange or
 join the native files.
-
-pyathena also reads its per-snapshot uncompressed tar format, but tar archives
-are not stored here because they would duplicate the VTK data. Users who need a
-single archive may create one after download.
 
 ## Citation
 

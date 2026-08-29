@@ -1,8 +1,8 @@
 # Full-cadence TIGRESS data sharing plan
 
-Status: proposed
+Status: approved for initial build
 
-Last reviewed: 2026-08-28
+Last reviewed: 2026-08-29
 
 ## Decisions
 
@@ -14,99 +14,68 @@ Build the collaborator-facing data at:
 
 Include:
 
-- all currently available raw VTK outputs for `R8_2pc` (`0285-0448`);
-- raw VTK outputs `0200-0700` for `R8_4pc`, adding only snapshots that exist
-  and pass validation (`0200-0674` are currently available);
-- the matching `*.starpar.vtk` for every shared snapshot;
-- the canonical `.par`, `.hst`, and `.sn` files; and
-- documentation and manifests, but no personal analysis products.
+- all raw VTK outputs currently available for `R8_2pc` (`0285-0448`);
+- raw VTK outputs `0200-0650` inclusive for `R8_4pc`;
+- the matching `*.starpar.vtk` for every shared snapshot; and
+- one canonical `.par`, `.hst`, and `.sn` file per model.
 
-The canonical VTK representation will be a **self-contained directory per
-snapshot**, populated with hard links to the native processor files. Version 1
-will not store tar archives.
+Preserve the native processor-oriented layout. Do not rearrange VTK files into
+per-snapshot directories and do not create tar archives. Populate the clean
+share tree with file symlinks selected by a strict allowlist, then expose only
+the share tree through a read-only Globus guest collection.
 
-This lets a collaborator select one snapshot directory in Globus without
-duplicating VTK data blocks. The collection will be read-only to a dedicated
-Globus group. The DOI-backed release at
-`/projects/EOSTRIKE/TIGRESS_data_release` remains the canonical public release;
-this collection is a raw, full-domain, high-cadence supplement for
-collaborators.
+This choice:
 
-## VTK layout decision
+- lets pyathena automatically discover all available snapshot numbers;
+- stores `.par`, `.hst`, and `.sn` only once per model;
+- does not duplicate any simulation or star-particle data blocks;
+- keeps personal analysis files out of the shared namespace; and
+- is reversible by unlinking the generated symlinks, without changing the
+  source pathnames or data.
 
-[pyathena](https://github.com/jeonggyukim/pyathena) supports uncompressed
-per-snapshot archives named `vtk/<problem_id>.<NNNN>.tar`. This is convenient,
-but building those archives writes a second complete copy of the VTK bytes.
-
-| Selection | Files | Approximate VTK size |
-|---|---:|---:|
-| One `R8_2pc` snapshot (`0300`) | 56 | 42.00 GiB |
-| All current `R8_2pc` snapshots (`0285-0448`) | 9,184 | 6.73 TiB |
-| One `R8_4pc` snapshot (`0300`) | 28 | 5.25 GiB |
-| Current `R8_4pc` selection (`0200-0674`) | 13,300 | 2.44 TiB |
-
-A canonical tar tier would require roughly another 9.17 TiB for the current
-selection. Compression is not a good default for dense binary VTK and would
-depart from pyathena's expected simple `.tar` naming.
-
-The ordinary pyathena reader already loads an `id0` VTK and discovers matching
-files in sibling `idN` directories. Each exported snapshot will therefore look
-like a small, self-contained native run. This provides direct pyathena support,
-one-folder Globus selection, and no duplicate data blocks.
-
-Tar remains an optional downstream format. A collaborator may create a tar
-after transfer. Add a server-side tar tier only if later usage justifies its
-explicit storage and maintenance cost.
-
-This plan checked pyathena revision
-`08b509f1375cf41a4da2e7d735877bb470c6dd08` (2026-07-22). Revalidate the loading
-example against the installed version before publication.
+The DOI-backed release at `/projects/EOSTRIKE/TIGRESS_data_release` remains the
+canonical public release. This collection is a raw, full-domain, high-cadence
+supplement for collaborators.
 
 ## Source inventory
 
-| Shared model | Native run | Source | Processor directories |
-|---|---|---|---:|
-| `R8_2pc` | `R8_2pc_rst` | `/tigerdata/EOSTRIKE/TIGRESS-classic/TIGRESS-R8/R8_2pc_rst` | `id0-id55` |
-| `R8_4pc` | `R8_4pc_newacc` | `/tigerdata/EOSTRIKE/TIGRESS-classic/TIGRESS-local/R8_4pc_newacc` | `id0-id27` |
+| Shared model | Native run | Source | Shared VTK range | Processor directories |
+|---|---|---|---:|---:|
+| `R8_2pc` | `R8_2pc_rst` | `/tigerdata/EOSTRIKE/TIGRESS-classic/TIGRESS-R8/R8_2pc_rst` | `0285-0448` | `id0-id55` |
+| `R8_4pc` | `R8_4pc_newacc` | `/tigerdata/EOSTRIKE/TIGRESS-classic/TIGRESS-local/R8_4pc_newacc` | `0200-0650` | `id0-id27` |
 
-The strict `id0` inventory is contiguous:
+The source inventories are contiguous over both selected ranges, and every
+selected `id0` output has a matching star-particle file. The builder must also
+verify every nonzero processor file before creating the public tree.
 
-| Model | Raw VTK range | VTK count | Matching star-particle count |
-|---|---:|---:|---:|
-| `R8_2pc` | `0285-0448` | 164 | 164 |
-| `R8_4pc` | `0000-0674` | 675 | 675 |
-
-The `R8_4pc` sharing policy is `0200-0700`, but `0675-0700` do not currently
-exist. Publish `0200-0674` first. Add later outputs only in a new validated
-content version; never create empty snapshot directories or undocumented gaps.
-
-Both sources and the target parent currently report filesystem device ID 47,
-which permits hard links. Verify this at build time. The target directory does
-not yet exist.
+Although the sources and target parent report the same client filesystem device
+ID, the NFS server returns `EIO` for hard links, even within a source directory.
+The no-copy user-level implementation must therefore use symlinks. If the
+Globus endpoint rejects those links, an administrator-provided namespace view
+is required; copying is not an approved fallback.
 
 ## Allowlisted data
 
 For every approved snapshot `NNNN`, include exactly:
 
 - `id0/<native_run>.NNNN.vtk`;
-- every expected `idN/<native_run>-idN.NNNN.vtk`;
-- `starpar/<native_run>.NNNN.starpar.vtk`;
+- every expected `idN/<native_run>-idN.NNNN.vtk`; and
+- `starpar/<native_run>.NNNN.starpar.vtk`.
+
+Include once per model:
+
 - `<native_run>.par`;
 - `hst/<native_run>.hst`; and
 - `hst/<native_run>.sn`.
-
-Hard-link `.par`, `.hst`, and `.sn` into every snapshot directory. These
-repeated directory entries make each download self-contained for pyathena but
-refer to the same source inodes.
 
 Exclude restart/checkpoint data; FITS, pickle, PNG, PDF, map, projection, slice,
 and phase products; scheduler output, scripts, executables, CSV products, and
 logs; merged or auxiliary VTK products; and public-release chemistry, CO-line,
 or radiation post-processing.
 
-This must be an allowlist. The source roots contain analysis directories, and
+This must be an allowlist. The native roots contain analysis directories, and
 raw-looking directories are mixed too: `id0` contains a derived FITS file,
-`starpar` contains PNGs, and `hst` contains pickles. Sharing a native root would
+`starpar` contains PNGs, and `hst` contains pickles. Sharing a source root would
 expose personal files.
 
 ## Shared tree
@@ -117,43 +86,77 @@ expose personal files.
 ├── RELEASE.json
 ├── R8_2pc/
 │   ├── MANIFEST.tsv
-│   └── snapshots/
-│       ├── 0285/
-│       │   ├── R8_2pc_rst.par
-│       │   ├── hst/
-│       │   │   ├── R8_2pc_rst.hst
-│       │   │   └── R8_2pc_rst.sn
-│       │   ├── starpar/R8_2pc_rst.0285.starpar.vtk
-│       │   ├── id0/R8_2pc_rst.0285.vtk
-│       │   ├── id1/R8_2pc_rst-id1.0285.vtk
-│       │   ├── ...
-│       │   └── id55/R8_2pc_rst-id55.0285.vtk
-│       ├── 0286/
-│       └── ...
+│   ├── R8_2pc_rst.par
+│   ├── hst/
+│   │   ├── R8_2pc_rst.hst
+│   │   └── R8_2pc_rst.sn
+│   ├── starpar/
+│   │   ├── R8_2pc_rst.0285.starpar.vtk
+│   │   └── ...
+│   ├── id0/
+│   │   ├── R8_2pc_rst.0285.vtk
+│   │   └── ...
+│   ├── id1/
+│   │   ├── R8_2pc_rst-id1.0285.vtk
+│   │   └── ...
+│   └── ... id55/
 └── R8_4pc/
     ├── MANIFEST.tsv
-    └── snapshots/
-        ├── 0200/
-        │   ├── R8_4pc_newacc.par
-        │   ├── hst/
-        │   │   ├── R8_4pc_newacc.hst
-        │   │   └── R8_4pc_newacc.sn
-        │   ├── starpar/R8_4pc_newacc.0200.starpar.vtk
-        │   ├── id0/R8_4pc_newacc.0200.vtk
-        │   ├── id1/R8_4pc_newacc-id1.0200.vtk
-        │   ├── ...
-        │   └── id27/R8_4pc_newacc-id27.0200.vtk
-        ├── 0201/
-        └── ...
+    ├── R8_4pc_newacc.par
+    ├── hst/
+    │   ├── R8_4pc_newacc.hst
+    │   └── R8_4pc_newacc.sn
+    ├── starpar/
+    │   ├── R8_4pc_newacc.0200.starpar.vtk
+    │   └── ... through 0650
+    ├── id0/
+    │   ├── R8_4pc_newacc.0200.vtk
+    │   └── ... through 0650
+    └── ... id27/
 ```
 
-`FULL_CADENCE_SHARE_README.md` is the share-root README draft. Install it as
-`README.md` after filling in the collection UUID, contact, release date, and
-final inventory.
+`FULL_CADENCE_SHARE_README.md` is copied to the root as `README.md` during the
+build. Each `MANIFEST.tsv` records the shared relative path, size, UTC
+modification time, device, and inode of the symlink target.
+
+## VTK layout and pyathena
+
+[pyathena](https://github.com/jeonggyukim/pyathena) scans `id0` for the primary
+VTK outputs, combines those numbers with other supported VTK representations,
+and loads matching files from sibling `idN` directories. Pointing `LoadSim` at
+the model root therefore exposes the complete `nums_vtk` list automatically:
+
+```python
+import pyathena as pa
+
+sim = pa.LoadSim("/path/to/TIGRESS-full-data-share/R8_2pc")
+print(sim.nums_vtk)
+ds = sim.load_vtk(num=300, id0=True, load_method="xarray")
+starpar = sim.load_starpar_vtk(num=300)
+```
+
+The behavior was reviewed against pyathena revision
+`08b509f1375cf41a4da2e7d735877bb470c6dd08` (2026-07-22). A runtime smoke test
+with the installed collaborator environment remains a publication gate.
+
+Users who want only selected snapshots must select the matching filename in
+each `idN` directory plus the matching `starpar` file while preserving the
+directory structure. With 56 or 28 processor directories, this is manageable
+manually or with a Globus batch list. The collection does not store an easier
+second representation because per-snapshot tar archives would duplicate about
+9 TiB for the previously considered range.
+
+Globus follows a symlink when an individual file is transferred and writes an
+ordinary file at the destination. Recursive transfers generally skip symlinks,
+and collection path restrictions can reject links whose targets are outside the
+allowed namespace. Test an individual VTK link and a complete batch transfer on
+the actual guest collection before inviting collaborators. If the test fails,
+ask the endpoint administrator for a permitted namespace/bind view or an
+appropriate server policy; do not broaden access to the native source roots.
 
 ## Domain and public-release comparison
 
-Both full-domain models cover:
+Both shared full-domain models cover:
 
 ```text
 x = [-512, 512] pc
@@ -174,95 +177,70 @@ full vertical domain. The public release has selected snapshots at roughly
 collection has the denser native MHD sequence, star particles, and run metadata
 only.
 
-The collection README must distinguish:
+The README distinguishes:
 
 - public: `MODEL/NNNN/MHD/<model>.NNNN.vtk`, one joined central-cube file;
-- shared: `MODEL/snapshots/NNNN/idN/...`, multiple full-domain processor files;
+- shared: `MODEL/idN/<native-run>[-idN].NNNN.vtk`, full-domain processor files;
 - the public readers here assume the public snapshot/product tree; and
 - pyathena is recommended for the shared native tree.
 
-## Build procedure
+## Build and validation procedure
 
-### 1. Generate and review manifests
+Use `scripts/build_full_data_share.py`. Its default mode performs source
+inventory checks and prints the intended build without writing. `--execute`
+creates a uniquely named sibling staging directory, symlinks only exact
+allowlisted files, validates it, and atomically renames it to the target. It
+refuses to overwrite an existing target. `--validate-only` audits the published
+tree against the sources.
 
-Generate strict manifests containing at least:
+The builder must reject:
 
-```text
-export_path<TAB>source_relative_path<TAB>size_bytes<TAB>mtime_utc
-```
+- a snapshot without exactly 56 (`R8_2pc`) or 28 (`R8_4pc`) VTK pieces;
+- a missing or duplicate matching star-particle file;
+- output numbers outside the approved ranges;
+- symbolic links, non-regular files, paths outside the approved sources, and
+  duplicate destinations; and
+- any source symlink or non-regular source file.
 
-Reject a snapshot without exactly 56 (`R8_2pc`) or 28 (`R8_4pc`) processor
-files; a missing or duplicate star-particle file; output numbers outside the
-policy; symlinks and non-regular files; paths outside the two approved roots;
-duplicate destinations; and filenames that match only a broad suffix such as
-`*.vtk` rather than the complete native-run pattern.
+Validation requires every export symlink to have the exact expected absolute
+target, every target to be a regular file, manifests to contain the expected
+counts, and no unexpected pathname to exist.
 
-Review and commit the rules and manifests before publication. Published
-manifests should not contain unrelated internal absolute paths.
+After the filesystem audit, load an early, middle, and late snapshot for both
+models with the README example. Confirm `nums_vtk`, domain edges, grid count,
+resolution, fields, simulation time, and star-particle time. Then transfer one
+snapshot through Globus with checksum verification and test access with a
+non-owner identity.
 
-### 2. Build in staging
-
-- Create a uniquely named staging tree beside the target.
-- Create ordinary snapshot, `idN`, `starpar`, and `hst` directories.
-- Hard-link only files in the reviewed manifest.
-- Add README and release metadata as ordinary small files.
-- Do not `chmod` or `chown` a hard-linked file; that changes the source inode.
-- Rename staging into place only after validation.
-
-Treat a published version as immutable. In-place source edits are visible
-through hard links, while atomic source replacements are not reflected in old
-links. Rebuild a new version rather than silently changing published content.
-
-### 3. Validate
-
-For every snapshot:
-
-- match file count and total bytes to the manifest;
-- confirm export/source device and inode numbers are identical;
-- confirm the continuous `idN` range and matching output number;
-- confirm the star-particle output number matches;
-- reject unexpected file types and suffixes; and
-- load gas and star particles with pyathena.
-
-Test early, middle, and late snapshots for both models with the exact README
-example. Confirm domain edges, grid count, resolution, fields, simulation time,
-and star-particle time. Transfer one snapshot through Globus with checksum
-verification. A non-owner test identity must not browse native or analysis
-paths.
-
-## Globus configuration and lifecycle
+## Globus and reversibility
 
 - Root the guest collection at the clean share root, never at a native run or a
   broader `TIGRESS-classic` directory.
 - Grant `r` to a dedicated Globus group; do not grant collaborators `rw`,
   anonymous access, or management roles.
 - Record collection UUID, group, maintainer, content version, build time,
-  source ranges, and validation result in `RELEASE.json`.
+  ranges, and validation result in `RELEASE.json`.
 
 Globus guest permissions are directory-based and additive. Transfer filters
 help users select files but are not access controls. The clean export root makes
 a root-level read permission safe.
 
-When `R8_4pc` outputs `0675-0700` appear, run the full manifest and validation
-workflow and publish a new version. Do not expose partially written processor
-sets.
-
-Removing an export hard link does not remove the source. Deleting the source
-pathname does not free data while an export link remains. To retire a version,
-revoke its Globus permission, retain its manifest, remove only the reviewed
-export tree, and inspect link counts and storage afterward.
+The share is reversible because all large data entries are symlinks. Removing
+the generated share directory unlinks only those references; it does not remove
+the target files. Deletion must still be performed only after revoking
+Globus access, comparing the target to the committed manifest, and confirming
+the exact target path. The build script intentionally provides no removal
+command.
 
 ## Checklist
 
-- [x] Choose target path and model ranges.
-- [x] Include matching star particles, `.par`, `.hst`, and `.sn`.
-- [x] Choose hard-linked snapshot directories over canonical tar.
+- [x] Isolate changes on the `full-data-share` branch.
+- [x] Choose target, model ranges, native layout, and allowlist.
+- [x] Include matching star particles and one `.par`, `.hst`, `.sn` per model.
 - [x] Record full and public-release extents.
-- [ ] Write inventory/build/validation scripts with dry-run support.
-- [ ] Generate and review manifests.
-- [ ] Create target and staging trees.
-- [ ] Build and validate the first content version.
-- [ ] Finalize and install the collection README.
+- [x] Run the builder dry run.
+- [x] Create and validate the symlink share tree.
+- [ ] Run pyathena smoke tests in a complete environment.
 - [ ] Create the read-only Globus collection and group.
 - [ ] Test with a non-owner identity and record the collection UUID.
 
@@ -272,5 +250,4 @@ export tree, and inspect link counts and storage afterward.
 - [pyathena documentation](https://jeonggyukim.github.io/pyathena/intro.html)
 - [Sharing with a Globus guest collection](https://docs.globus.org/how-to/share-files/)
 - [Globus guest permission behavior](https://docs.globus.org/api/transfer/permissions/)
-- [Globus handling of symlinks](https://docs.globus.org/faq/transfer-sharing/)
 - [Globus transfer filters and checksums](https://docs.globus.org/cli/reference/transfer/)
