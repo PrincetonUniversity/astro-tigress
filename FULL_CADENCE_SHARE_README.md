@@ -2,18 +2,32 @@
 
 This Globus collection provides collaborator access to raw TIGRESS outputs.
 
+## Accessing the collection
+
+Open the collection in the Globus web app:
+
+[TIGRESS full-data-share](https://app.globus.org/file-manager?origin_id=db422b43-55bc-41d6-876f-ffe7e6582b47&origin_path=%2F)
+
+- Collection UUID: `db422b43-55bc-41d6-876f-ffe7e6582b47`
+
+The collection root is the shared tree itself: the two models are at `/R8_2pc/`
+and `/R8_4pc/`, with `README.md` and `RELEASE.json` at the root. Browse or point
+transfers from `/`. Every shared path in this document is relative to the
+collection root.
+
 ## Included data
 
 | Model | Shared outputs | Resolution | Full domain |
 |---|---:|---:|---|
 | `R8_2pc` | `0285-0448` | 2 pc | `[-512,512] x [-512,512] x [-3584,3584] pc` |
-| `R8_4pc` | `0200-0650` | 4 pc | `[-512,512] x [-512,512] x [-3584,3584] pc` |
+| `R8_4pc` | `0000-0674` | 4 pc | `[-512,512] x [-512,512] x [-3584,3584] pc` |
 
 Each model contains the complete native MHD VTK processor files for every
 listed output, matching `starpar.vtk` files, and one canonical `.par`, `.hst`,
 and `.sn` file. Restart files and personal analysis products are excluded.
-The entries in this collection are allowlisted symbolic links to immutable
-source files; the data bytes are not duplicated.
+The entries in this collection are regular files: the VTK outputs are stored
+here directly, so recursive directory transfers work and no special symlink
+handling is needed. `R8_4pc` includes all available outputs, `0000-0674`.
 
 ## Difference from the public release
 
@@ -112,7 +126,7 @@ globus transfer \
     --batch "${batch}" \
     --verify-checksum \
     --preserve-mtime \
-    "SOURCE_COLLECTION_UUID:/${model}/" \
+    "db422b43-55bc-41d6-876f-ffe7e6582b47:/${model}/" \
     "DESTINATION_COLLECTION_UUID:/desired/path/${model}/"
 ```
 
@@ -121,12 +135,11 @@ file. The repeated relative path in each row preserves the native `idN`,
 `starpar`, and `hst` layout at the destination. Use `globus task show TASK_ID`
 to monitor the returned task ID.
 
-The collection uses file symlinks. Globus follows individually transferred
-file symlinks and creates ordinary files at the destination, but recursive
-transfers generally skip symlinks. Select the required files explicitly or use
-a batch list; do not recursively transfer an `idN` directory and assume every
-link will be followed. Report any `Path not allowed` error to the collection
-maintainer because endpoint path restrictions may need administrator changes.
+The collection root is the shared tree, so browse or transfer from `/`. Its
+entries are regular files, so recursive transfers work — you can transfer a
+whole `idN/` directory, or an entire model, instead of listing files
+individually. A batch list is still convenient for pulling specific snapshots
+across all `idN` directories at once.
 
 ## Read with pyathena
 

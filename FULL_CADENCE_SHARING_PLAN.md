@@ -1,8 +1,53 @@
 # Full-cadence TIGRESS data sharing plan
 
-Status: approved for initial build
+Status: built, then reworked — the symlink export was replaced by an in-place
+data move. See "Resolution (2026-09-01)" below.
 
-Last reviewed: 2026-08-29
+Last reviewed: 2026-09-01
+
+## Resolution (2026-09-01)
+
+The symlink export designed below did not work through Globus, and the fix
+changed the design. This section records what actually shipped; the sections
+after it are kept as history.
+
+**What failed.** The guest collection served allowlisted symlinks whose targets
+lived in the native run directories. Globus canonicalizes a symlink and applies
+the endpoint's path policy to the *resolved* target, so every data file was
+rejected with `500 Command failed: Path not allowed`, while directory listings
+and the real `README.md`/`RELEASE.json` succeeded. Re-rooting the guest
+collection at `TIGRESS-classic` did not help — the check is on the physical
+target, not the collection namespace.
+
+**Why the no-copy alternatives were out.** Hard links are impossible on this
+NFS: the server returns `EIO` for `link()` even within a single directory
+(verified empirically). So one inode cannot appear under two names, and no
+symlink arrangement keeps the resolved target inside the served area.
+
+**What was built instead.** `scripts/migrate_full_data_share.py` MOVES every VTK
+file (`id*/*.vtk`) into the share tree with `os.rename` — a zero-copy,
+server-side rename — and leaves a symlink at the native path so pyathena still
+resolves the original path. It COPIES the small `starpar`, `hst`/`sn`, and `par`
+files (native originals kept). The share tree now holds the only physical copy
+of each VTK (10.19 TiB, 28,084 files); the migration validated cleanly.
+Consequence: the share tree is authoritative data now, not a disposable view —
+deleting it deletes the data.
+
+**Scope change.** VTK selection is now every available snapshot, not the curated
+range. R8_2pc is unchanged at `0285-0448` (164 snapshots); R8_4pc widened to
+`0000-0674` (675), including the early spin-up.
+
+**Collection.** Consolidated to a single guest collection rooted directly at the
+share tree (`TIGRESS-full-data-share`, UUID
+`db422b43-55bc-41d6-876f-ffe7e6582b47`), which matches the "root at the clean
+share root" guidance below. The interim `TIGRESS-classic`-rooted collection
+(`bf2b9af9-…`) was only a workaround for the symlink problem and is to be
+deleted.
+
+**Tools.** `scripts/migrate_full_data_share.py` is the current tool (`--validate`
+re-audits, `--finalize` regenerates metadata). `scripts/build_full_data_share.py`
+is deprecated — it builds the old symlink layout and its validator no longer
+matches the published tree.
 
 ## Decisions
 
@@ -240,9 +285,12 @@ command.
 - [x] Record full and public-release extents.
 - [x] Run the builder dry run.
 - [x] Create and validate the symlink share tree.
+- [x] Replace the symlink export with an in-place data move (see Resolution).
 - [ ] Run pyathena smoke tests in a complete environment.
-- [ ] Create the read-only Globus collection and group.
-- [ ] Test with a non-owner identity and record the collection UUID.
+- [x] Create the read-only Globus collection, UUID `db422b43-55bc-41d6-876f-ffe7e6582b47`, rooted at the share tree.
+- [x] Grant the collaborator read on the collection.
+- [x] Test with a non-owner identity (collaborator confirmed collection A works).
+- [ ] Delete the interim `bf2b9af9-…` collection.
 
 ## References
 

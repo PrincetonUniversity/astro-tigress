@@ -1,5 +1,11 @@
 #!/usr/bin/env python3
-"""Build and validate the raw-only TIGRESS symlink share tree."""
+"""Build and validate the raw-only TIGRESS symlink share tree.
+
+DEPRECATED (2026-09-01): superseded by ``migrate_full_data_share.py``. The
+published share tree no longer uses symlinks -- the VTK data was moved into it --
+so this script's builder and validator no longer match the live tree. Kept for
+historical reference only; it refuses to run.
+"""
 
 import argparse
 import json
@@ -288,6 +294,14 @@ def print_summary(summaries) -> None:
 
 
 def main() -> int:
+    print(
+        "DEPRECATED: build_full_data_share.py is superseded by "
+        "migrate_full_data_share.py; the published tree no longer uses symlinks. "
+        "Refusing to run.",
+        file=sys.stderr,
+    )
+    return 2
+
     parser = argparse.ArgumentParser(description=__doc__)
     action = parser.add_mutually_exclusive_group()
     action.add_argument(
