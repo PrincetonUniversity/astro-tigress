@@ -8,3 +8,6 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: chartboost/ruff-action@v1
+        with:
+          # Keep in sync with .pre-commit-config.yaml.
+          version: "0.6.5"

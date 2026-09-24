@@ -32,6 +32,7 @@ jobs:
     - name: Build the book
       run: |
         PYTHONPATH=./ jupyter-book build docs/
+        test -s docs/_build/html/index.html
 
     # Push the book's HTML to github-pages
     - name: GitHub Pages action
