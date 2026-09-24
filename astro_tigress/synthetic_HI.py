@@ -16,6 +16,7 @@ def los_to_HI_axis_proj(dens, temp, vel, vchannel, deltas=1.0, los_axis=1):
         deltas: length of line segments in units of pc
         memlim: memory limit in GB
         los_axis: 0 -- z, 1 -- y, 2 -- x
+            Index 0 along this axis is nearest the observer.
     outputs: a dictionary
         TB: the brightness temperature
         tau: optical depth
@@ -44,12 +45,15 @@ def los_to_HI_axis_proj(dens, temp, vel, vchannel, deltas=1.0, los_axis=1):
         kappa_v = 2.6137475e-15 * nlos / Tspin * phi_v  # area/volume = 1/length
         tau_los = kappa_v * ds  # dimensionless
 
-        tau_cumul = tau_los.cumsum(axis=los_axis)
+        # A cell's (1 - exp(-tau_los)) factor already includes its own opacity.
+        # Only cells at lower indices lie between it and the observer.
+        tau_foreground = tau_los.cumsum(axis=los_axis) - tau_los
 
         # same unit with Tspin
         TB.append(
             np.nansum(
-                Tspin * (1 - np.exp(-tau_los)) * np.exp(-tau_cumul), axis=los_axis
+                Tspin * (1 - np.exp(-tau_los)) * np.exp(-tau_foreground),
+                axis=los_axis,
             )
         )
         # dimensionless
